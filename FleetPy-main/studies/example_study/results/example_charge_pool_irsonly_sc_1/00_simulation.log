@@ -1,0 +1,70 @@
+23864-src.FleetSimulationBase-INFO-Initialization of network and routing engine...
+23864-src.routing.NetworkBasic-INFO-... no network dynamics file given -> read folder structure
+23864-src.routing.NetworkBasic-INFO-Loading nodes from E:\Sharing bike\FleetPy-main\FleetPy-main\data\networks\example_network\base\nodes.csv ...
+23864-src.routing.NetworkBasic-INFO-Loading edges from E:\Sharing bike\FleetPy-main\FleetPy-main\data\networks\example_network\base\edges.csv ...
+23864-src.routing.NetworkBasic-INFO-... 7617 nodes loaded!
+23864-src.FleetSimulationBase-INFO-Initialization of line-based public transportation...
+23864-src.FleetSimulationBase-INFO-Initialization of travelers...
+23864-src.demand.demand-INFO-init(): 0/100 requests removed (rq_time not in simulation time)
+23864-src.demand.demand-INFO-init(): 0/100 requests removed (start == end)
+23864-src.FleetSimulationBase-INFO-Initialization of MoD fleets...
+23864-src.fleetctrl.FleetControlBase-INFO-Scenario example_charge_pool_irsonly_sc_1
+Operator 0 control strategy: PoolingInsertionHeuristicOnly
+	 control function: {'func_key': 'distance_and_user_times_with_walk', 'vot': 0.45}
+Operator 0 additional strategies:
+	 RV Heuristics: {}
+	 Stop-Insert Heuristics: {}
+	 Charging: ChargingThresholdPublicInfrastructure
+	 On-Street Parking: True
+	 Repositioning: None
+	 Dynamic Pricing: None
+	 Dynamic Fleet Sizing: None
+
+23864-src.fleetctrl.pooling.objectives-INFO- -> assignment_reward_per_rq for objective function: 100000.0
+23864-src.FleetSimulationBase-INFO-Simulation environment specific initializations...
+23864-src.FleetSimulationBase-INFO-Creating or loading initial vehicle states...
+23864-src.FleetSimulationBase-INFO-Initialization of scenario example_charge_pool_irsonly_sc_1 successful.
+23864-src.FleetSimulationBase-INFO-No broker type specified, using default broker: BrokerBasic.
+23864-src.FleetSimulationBase-INFO-Saving final simulation state.
+23864-src.FleetSimulationBase-INFO-record_remaining_assignments()
+23864-src.FleetSimulationBase-INFO-	 time 7200, remaining tasks 15
+23864-src.FleetSimulationBase-INFO-	 time 7260, remaining tasks 15
+23864-src.FleetSimulationBase-INFO-	 time 7320, remaining tasks 13
+23864-src.FleetSimulationBase-INFO-	 time 7380, remaining tasks 12
+23864-src.FleetSimulationBase-INFO-	 time 7440, remaining tasks 10
+23864-src.FleetSimulationBase-INFO-	 time 7500, remaining tasks 7
+23864-src.FleetSimulationBase-INFO-	 time 7560, remaining tasks 5
+23864-src.FleetSimulationBase-INFO-	 time 7620, remaining tasks 5
+23864-src.FleetSimulationBase-INFO-	 time 7680, remaining tasks 5
+23864-src.FleetSimulationBase-INFO-	 time 7740, remaining tasks 5
+23864-src.FleetSimulationBase-INFO-	 time 7800, remaining tasks 5
+23864-src.FleetSimulationBase-INFO-	 time 7860, remaining tasks 4
+23864-src.FleetSimulationBase-INFO-	 time 7920, remaining tasks 4
+23864-src.FleetSimulationBase-INFO-	 time 7980, remaining tasks 4
+23864-src.FleetSimulationBase-INFO-	 time 8040, remaining tasks 4
+23864-src.FleetSimulationBase-INFO-	 time 8100, remaining tasks 4
+23864-src.FleetSimulationBase-INFO-	 time 8160, remaining tasks 2
+23864-src.FleetSimulationBase-INFO-	 time 8220, remaining tasks 2
+23864-src.FleetSimulationBase-INFO-	 time 8280, remaining tasks 2
+23864-src.FleetSimulationBase-INFO-	 time 8340, remaining tasks 2
+23864-src.FleetSimulationBase-INFO-	 time 8400, remaining tasks 2
+23864-src.FleetSimulationBase-INFO-	 time 8460, remaining tasks 2
+23864-src.FleetSimulationBase-INFO-	 time 8520, remaining tasks 2
+23864-src.FleetSimulationBase-INFO-	 time 8580, remaining tasks 2
+23864-src.FleetSimulationBase-INFO-	 time 8640, remaining tasks 2
+23864-src.FleetSimulationBase-INFO-	 time 8700, remaining tasks 2
+23864-src.FleetSimulationBase-INFO-	 time 8760, remaining tasks 1
+23864-src.FleetSimulationBase-INFO-	 time 8820, remaining tasks 1
+23864-src.FleetSimulationBase-INFO-	 time 8880, remaining tasks 1
+23864-src.FleetSimulationBase-INFO-	 time 8940, remaining tasks 1
+23864-src.FleetSimulationBase-INFO-	 time 9000, remaining tasks 1
+23864-src.FleetSimulationBase-INFO-	 time 9060, remaining tasks 1
+23864-src.FleetSimulationBase-INFO-	 time 9120, remaining tasks 1
+23864-src.FleetSimulationBase-INFO-	 time 9180, remaining tasks 1
+23864-src.FleetSimulationBase-INFO-	 time 9240, remaining tasks 0
+23864-src.FleetSimulationBase-INFO-Scenario example_charge_pool_irsonly_sc_1 finished:
+      initialization : 0:00:00 h
+          simulation : 0:00:08 h
+          evaluation : 0:00:00 h
+
+23864-src.FleetSimulationBase-INFO-General initialization of scenario example_charge_pool_irsopt_sc_1...

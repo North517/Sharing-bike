@@ -1,0 +1,7 @@
+19588-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraParallelization-INFO-Initialization of network and routing engine... on 0
+19588-src.routing.NetworkBasic-INFO-... no network dynamics file given -> read folder structure
+19588-src.routing.NetworkBasic-INFO-Loading nodes from E:\Sharing bike\FleetPy-main\FleetPy-main\data\networks\example_network\base\nodes.csv ...
+19588-src.routing.NetworkBasic-INFO-Loading edges from E:\Sharing bike\FleetPy-main\FleetPy-main\data\networks\example_network\base\edges.csv ...
+19588-src.routing.NetworkBasic-INFO-... 7617 nodes loaded!
+19588-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraParallelization-INFO-time to run PP 0
+19588-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraParallelization-INFO-Process 0 started work!

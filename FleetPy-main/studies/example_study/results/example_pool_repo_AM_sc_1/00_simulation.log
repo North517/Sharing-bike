@@ -1,0 +1,1704 @@
+23864-src.FleetSimulationBase-INFO-Initialization of network and routing engine...
+23864-src.routing.NetworkBasic-INFO-... no network dynamics file given -> read folder structure
+23864-src.routing.NetworkBasic-INFO-Loading nodes from E:\Sharing bike\FleetPy-main\FleetPy-main\data\networks\example_network\base\nodes.csv ...
+23864-src.routing.NetworkBasic-INFO-Loading edges from E:\Sharing bike\FleetPy-main\FleetPy-main\data\networks\example_network\base\edges.csv ...
+23864-src.routing.NetworkBasic-INFO-... 7617 nodes loaded!
+23864-src.FleetSimulationBase-INFO-Initialization of line-based public transportation...
+23864-src.FleetSimulationBase-INFO-Initialization of travelers...
+23864-src.demand.demand-INFO-init(): 0/200 requests removed (rq_time not in simulation time)
+23864-src.demand.demand-INFO-init(): 0/200 requests removed (start == end)
+23864-src.FleetSimulationBase-INFO-Initialization of MoD fleets...
+23864-src.fleetctrl.FleetControlBase-INFO-Scenario example_pool_repo_AM_sc_1
+Operator 0 control strategy: PoolingIRSAssignmentBatchOptimization
+	 control function: {'func_key': 'distance_and_user_times_with_walk', 'vot': 0.45}
+Operator 0 additional strategies:
+	 RV Heuristics: {'op_max_VR_con': 3}
+	 Stop-Insert Heuristics: {}
+	 Charging: None
+	 On-Street Parking: True
+	 Repositioning: AlonsoMoraRepositioning
+	 Dynamic Pricing: None
+	 Dynamic Fleet Sizing: None
+
+23864-src.fleetctrl.pooling.objectives-INFO- -> assignment_reward_per_rq for objective function: 100000.0
+23864-src.FleetSimulationBase-INFO-Simulation environment specific initializations...
+23864-src.fleetctrl.RidePoolingBatchOptimizationFleetControlBase-INFO-add init: 1
+23864-src.FleetSimulationBase-INFO-Creating or loading initial vehicle states...
+23864-src.FleetSimulationBase-INFO-Initialization of scenario example_pool_repo_AM_sc_1 successful.
+23864-src.FleetSimulationBase-INFO-No broker type specified, using default broker: BrokerBasic.
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 0:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 0 | number revealed requests 0 | number active requests: 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;0,setup;0.0,rr;0.0,rv;0.0,build;0.0,opt;0.0031385421752929688,all;0.0031385421752929688
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 0 : opt duration 0.0031385421752929688 | res cfv 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 0 for AM: 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 60:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 3 | number revealed requests 3 | number active requests: 3
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 48
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;60,setup;0.0,rr;0.0,rv;0.03657698631286621,build;0.1340775489807129,opt;0.0045833587646484375,all;0.17523789405822754
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 60 : opt duration 0.17523789405822754 | res cfv -299337.55223696225
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 36 | plans_ 36
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 12 | plans_ 12
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 60 for AM: -299337.55223696225
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 120:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 5 | number revealed requests 5 | number active requests: 5
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 74
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;120,setup;0.0,rr;0.0,rv;0.040712594985961914,build;0.15615415573120117,opt;0.0041921138763427734,all;0.20105886459350586
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 120 : opt duration 0.20105886459350586 | res cfv -498686.5739685454
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 60 | plans_ 60
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 14 | plans_ 26
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 120 for AM: -498686.5739685454
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 180:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 8 | number revealed requests 8 | number active requests: 8
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 68
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;180,setup;0.0,rr;0.0,rv;0.09587883949279785,build;0.31227731704711914,opt;0.004861116409301758,all;0.41301727294921875
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 180 : opt duration 0.41301727294921875 | res cfv -798145.1706745217
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 52 | plans_ 52
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 16 | plans_ 18
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 180 for AM: -798145.1706745217
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 240:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 10 | number revealed requests 10 | number active requests: 10
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 55
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;240,setup;0.0015642642974853516,rr;0.0,rv;0.02990579605102539,build;0.15875911712646484,opt;0.0045816898345947266,all;0.1948108673095703
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 240 : opt duration 0.1948108673095703 | res cfv -997894.7662183801
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 42 | plans_ 42
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 11 | plans_ 13
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 2 | plans_ 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 240 for AM: -997894.7662183801
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 300:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 12 | number revealed requests 12 | number active requests: 12
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 62
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;300,setup;0.00156402587890625,rr;0.0,rv;0.05207371711730957,build;0.09549546241760254,opt;0.004107475280761719,all;0.15324068069458008
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 300 : opt duration 0.15324068069458008 | res cfv -1197561.9514532909
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 42 | plans_ 42
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 19 | plans_ 21
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 1 | plans_ 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 300 for AM: -1197561.9514532909
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 360:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 14 | number revealed requests 14 | number active requests: 14
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 75
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;360,setup;0.0010063648223876953,rr;0.0015828609466552734,rv;0.08322310447692871,build;0.2598707675933838,opt;0.0063059329986572266,all;0.3504061698913574
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 360 : opt duration 0.3504061698913574 | res cfv -1397024.9513783092
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 44 | plans_ 44
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 28 | plans_ 28
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 3 | plans_ 4
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 360 for AM: -1397024.9513783092
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 420:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 14 | number revealed requests 14 | number active requests: 14
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 43
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;420,setup;0.0,rr;0.0,rv;0.03480720520019531,build;0.1079401969909668,opt;0.003511667251586914,all;0.14625906944274902
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 420 : opt duration 0.14625906944274902 | res cfv -1397080.5505724717
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 32 | plans_ 32
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 10 | plans_ 10
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 1 | plans_ 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 420 for AM: -1397080.5505724717
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 480:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 13 | number revealed requests 13 | number active requests: 13
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 17
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;480,setup;0.0,rr;0.0,rv;0.0,build;0.0031366348266601562,opt;0.004736185073852539,all;0.007872819900512695
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 480 : opt duration 0.007872819900512695 | res cfv -1297295.916948842
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 14 | plans_ 14
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 3 | plans_ 3
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 480 for AM: -1297295.916948842
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 540:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 15 | number revealed requests 15 | number active requests: 15
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 33
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;540,setup;0.0,rr;0.0,rv;0.10540366172790527,build;0.22556328773498535,opt;0.004791975021362305,all;0.33575892448425293
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 540 : opt duration 0.33575892448425293 | res cfv -1496814.5063241601
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 13 | plans_ 13
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 19 | plans_ 20
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 1 | plans_ 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 540 for AM: -1496814.5063241601
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 600:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 15 | number revealed requests 15 | number active requests: 15
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 47
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;600,setup;0.0,rr;0.0,rv;0.09542489051818848,build;0.11709070205688477,opt;0.004781007766723633,all;0.21729660034179688
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 600 : opt duration 0.21729660034179688 | res cfv -1496930.896333248
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 24 | plans_ 24
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 19 | plans_ 21
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 4 | plans_ 4
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 600 for AM: -1496930.896333248
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 660:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 18 | number revealed requests 18 | number active requests: 18
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 67
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;660,setup;0.0,rr;0.0,rv;0.166243314743042,build;0.26906418800354004,opt;0.005071401596069336,all;0.44037890434265137
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 660 : opt duration 0.44037890434265137 | res cfv -1796446.188081863
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 34 | plans_ 34
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 26 | plans_ 27
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 6 | plans_ 6
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 1 | plans_ 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 660 for AM: -1796446.188081863
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 720:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 16 | number revealed requests 16 | number active requests: 16
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 21
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;720,setup;0.0010251998901367188,rr;0.0,rv;0.0,build;0.0420374870300293,opt;0.003132343292236328,all;0.046195030212402344
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 720 : opt duration 0.046195030212402344 | res cfv -1596955.2705970015
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 12 | plans_ 12
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 7 | plans_ 7
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 1 | plans_ 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 1 | plans_ 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 720 for AM: -1596955.2705970015
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 780:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 14 | number revealed requests 14 | number active requests: 14
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 17
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;780,setup;0.0,rr;0.0,rv;0.03777050971984863,build;0.12147116661071777,opt;0.0031876564025878906,all;0.1624293327331543
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 780 : opt duration 0.1624293327331543 | res cfv -1397313.2439212615
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 11 | plans_ 11
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 5 | plans_ 5
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 1 | plans_ 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 780 for AM: -1397313.2439212615
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 840:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 12 | number revealed requests 12 | number active requests: 12
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 19
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;840,setup;0.0,rr;0.0,rv;0.028954029083251953,build;0.022504091262817383,opt;0.003139972686767578,all;0.054598093032836914
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 840 : opt duration 0.054598093032836914 | res cfv -1197837.9794807031
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 12 | plans_ 12
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 7 | plans_ 8
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 840 for AM: -1197837.9794807031
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 900:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 11 | number revealed requests 11 | number active requests: 11
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 25
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;900,setup;0.0,rr;0.0,rv;0.035891056060791016,build;0.0071103572845458984,opt;0.0035746097564697266,all;0.04657602310180664
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 900 : opt duration 0.04657602310180664 | res cfv -1098195.218331715
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 13 | plans_ 13
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 12 | plans_ 14
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 900 for AM: -1098195.218331715
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 960:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 9 | number revealed requests 9 | number active requests: 9
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 16
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;960,setup;0.0,rr;0.0,rv;0.02884984016418457,build;0.019816875457763672,opt;0.003083467483520508,all;0.05175018310546875
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 960 : opt duration 0.05175018310546875 | res cfv -898442.9764834534
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 11 | plans_ 11
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 4 | plans_ 4
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 1 | plans_ 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 960 for AM: -898442.9764834534
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 1020:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 9 | number revealed requests 9 | number active requests: 9
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 16
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;1020,setup;0.0,rr;0.0,rv;0.033525705337524414,build;0.0025484561920166016,opt;0.0031299591064453125,all;0.03920412063598633
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 1020 : opt duration 0.03920412063598633 | res cfv -898572.4084261212
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 10 | plans_ 10
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 5 | plans_ 5
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 1 | plans_ 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 1020 for AM: -898572.4084261212
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 1080:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 8 | number revealed requests 8 | number active requests: 8
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 39
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;1080,setup;0.0,rr;0.0,rv;0.12108659744262695,build;0.0871422290802002,opt;0.0047435760498046875,all;0.21297240257263184
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 1080 : opt duration 0.21297240257263184 | res cfv -798681.1284447745
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 27 | plans_ 27
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 12 | plans_ 20
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 1080 for AM: -798681.1284447745
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 1140:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 6 | number revealed requests 6 | number active requests: 6
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 14
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;1140,setup;0.0,rr;0.0,rv;0.032607316970825195,build;0.08353757858276367,opt;0.003084897994995117,all;0.11922979354858398
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 1140 : opt duration 0.11922979354858398 | res cfv -598923.2078964121
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 11 | plans_ 11
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 3 | plans_ 4
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 1140 for AM: -598923.2078964121
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 1200:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 8 | number revealed requests 8 | number active requests: 8
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 34
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;1200,setup;0.0,rr;0.0,rv;0.06765961647033691,build;0.05025148391723633,opt;0.0030465126037597656,all;0.12095761299133301
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 1200 : opt duration 0.12095761299133301 | res cfv -798572.9377502684
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 26 | plans_ 26
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 8 | plans_ 9
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 1200 for AM: -798572.9377502684
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 1260:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 8 | number revealed requests 8 | number active requests: 8
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 19
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;1260,setup;0.0,rr;0.0,rv;0.03856348991394043,build;0.02537846565246582,opt;0.003046274185180664,all;0.06698822975158691
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 1260 : opt duration 0.06698822975158691 | res cfv -798531.5850420968
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 15 | plans_ 15
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 4 | plans_ 5
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 1260 for AM: -798531.5850420968
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 1320:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 4
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 12 | number revealed requests 12 | number active requests: 12
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 64
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;1320,setup;0.0,rr;0.0,rv;0.14417266845703125,build;0.13062691688537598,opt;0.0045566558837890625,all;0.2793562412261963
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 1320 : opt duration 0.2793562412261963 | res cfv -1198098.651578287
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 33 | plans_ 33
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 30 | plans_ 34
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 1 | plans_ 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 1320 for AM: -1198098.651578287
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 1380:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 13 | number revealed requests 13 | number active requests: 13
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 45
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;1380,setup;0.0010166168212890625,rr;0.0,rv;0.05263161659240723,build;0.03763294219970703,opt;0.0031156539916992188,all;0.09439682960510254
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 1380 : opt duration 0.09439682960510254 | res cfv -1298108.9464675058
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 24 | plans_ 24
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 20 | plans_ 21
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 1 | plans_ 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 1380 for AM: -1298108.9464675058
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 1440:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 3
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 13 | number revealed requests 13 | number active requests: 13
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 60
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;1440,setup;0.0,rr;0.0,rv;0.09769463539123535,build;0.08727836608886719,opt;0.004819154739379883,all;0.18979215621948242
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 1440 : opt duration 0.18979215621948242 | res cfv -1298055.9886851185
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 31 | plans_ 31
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 27 | plans_ 28
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 2 | plans_ 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 1440 for AM: -1298055.9886851185
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 1500:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 12 | number revealed requests 12 | number active requests: 12
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 28
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;1500,setup;0.0,rr;0.0,rv;0.053226470947265625,build;0.02191019058227539,opt;0.0033791065216064453,all;0.07851576805114746
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 1500 : opt duration 0.07851576805114746 | res cfv -1198174.332350363
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 14 | plans_ 14
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 14 | plans_ 16
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 1500 for AM: -1198174.332350363
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 1560:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 14 | number revealed requests 14 | number active requests: 14
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 46
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;1560,setup;0.0018107891082763672,rr;0.0,rv;0.0955042839050293,build;0.0454714298248291,opt;0.004652500152587891,all;0.14743900299072266
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 1560 : opt duration 0.14743900299072266 | res cfv -1397742.8377072504
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 18 | plans_ 18
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 25 | plans_ 27
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 3 | plans_ 3
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 1560 for AM: -1397742.8377072504
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 1620:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 12 | number revealed requests 12 | number active requests: 12
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 43
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;1620,setup;0.0,rr;0.0,rv;0.09819531440734863,build;0.1656198501586914,opt;0.0031027793884277344,all;0.2669179439544678
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 1620 : opt duration 0.2669179439544678 | res cfv -1197495.5986338372
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 27 | plans_ 27
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 15 | plans_ 16
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 1 | plans_ 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 1620 for AM: -1197495.5986338372
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 1680:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 13 | number revealed requests 13 | number active requests: 13
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 63
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;1680,setup;0.0,rr;0.0,rv;0.036637067794799805,build;0.14208650588989258,opt;0.003281116485595703,all;0.18200469017028809
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 1680 : opt duration 0.18200469017028809 | res cfv -1297226.4166722281
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 37 | plans_ 37
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 24 | plans_ 26
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 2 | plans_ 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 1680 for AM: -1297226.4166722281
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 1740:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 14 | number revealed requests 14 | number active requests: 14
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 77
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;1740,setup;0.0015530586242675781,rr;0.0,rv;0.05435347557067871,build;0.1874833106994629,opt;0.0047760009765625,all;0.24816584587097168
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 1740 : opt duration 0.24816584587097168 | res cfv -1397138.5466793512
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 43 | plans_ 43
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 32 | plans_ 38
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 2 | plans_ 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 1740 for AM: -1397138.5466793512
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 1800:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 14 | number revealed requests 14 | number active requests: 14
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 46
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;1800,setup;0.0,rr;0.0,rv;0.10243988037109375,build;0.12493133544921875,opt;0.0047855377197265625,all;0.23215675354003906
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 1800 : opt duration 0.23215675354003906 | res cfv -1396953.2717967317
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 27 | plans_ 27
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 17 | plans_ 20
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 2 | plans_ 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 1800 for AM: -1396953.2717967317
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 1860:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 14 | number revealed requests 14 | number active requests: 14
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 24
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;1860,setup;0.001573801040649414,rr;0.0,rv;0.025341033935546875,build;0.08087539672851562,opt;0.0035500526428222656,all;0.11134028434753418
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 1860 : opt duration 0.11134028434753418 | res cfv -1396943.1818135404
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 17 | plans_ 17
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 6 | plans_ 6
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 1 | plans_ 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 1860 for AM: -1396943.1818135404
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 1920:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 16 | number revealed requests 16 | number active requests: 16
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 34
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;1920,setup;0.0005047321319580078,rr;0.0,rv;0.09145212173461914,build;0.044156789779663086,opt;0.004067897796630859,all;0.1401815414428711
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 1920 : opt duration 0.1401815414428711 | res cfv -1596483.7178671379
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 22 | plans_ 22
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 10 | plans_ 10
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 2 | plans_ 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 1920 for AM: -1596483.7178671379
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 1980:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 17 | number revealed requests 17 | number active requests: 17
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 31
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;1980,setup;0.0010259151458740234,rr;0.0,rv;0.03625130653381348,build;0.07808828353881836,opt;0.0031490325927734375,all;0.1185145378112793
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 1980 : opt duration 0.1185145378112793 | res cfv -1696506.4717868625
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 16 | plans_ 16
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 12 | plans_ 12
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 3 | plans_ 3
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 1980 for AM: -1696506.4717868625
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 2040:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 17 | number revealed requests 17 | number active requests: 17
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 43
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;2040,setup;0.0015943050384521484,rr;0.0,rv;0.08334136009216309,build;0.04835987091064453,opt;0.004952192306518555,all;0.13824772834777832
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 2040 : opt duration 0.13824772834777832 | res cfv -1696467.079243799
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 20 | plans_ 20
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 18 | plans_ 22
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 5 | plans_ 6
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 2040 for AM: -1696467.079243799
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 2100:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 14 | number revealed requests 14 | number active requests: 14
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 10
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;2100,setup;0.001580953598022461,rr;0.0,rv;0.0,build;0.0015251636505126953,opt;0.003130197525024414,all;0.00623631477355957
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 2100 : opt duration 0.00623631477355957 | res cfv -1397097.9583841595
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 5 | plans_ 5
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 5 | plans_ 5
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 2100 for AM: -1397097.9583841595
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 2160:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 12 | number revealed requests 12 | number active requests: 12
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 18
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;2160,setup;0.0,rr;0.0,rv;0.033106327056884766,build;0.007071733474731445,opt;0.0030412673950195312,all;0.04321932792663574
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 2160 : opt duration 0.04321932792663574 | res cfv -1197499.258070448
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 10 | plans_ 10
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 7 | plans_ 7
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 1 | plans_ 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 2160 for AM: -1197499.258070448
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 2220:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 10 | number revealed requests 10 | number active requests: 10
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 26
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;2220,setup;0.0,rr;0.0,rv;0.029846906661987305,build;0.0061187744140625,opt;0.004179716110229492,all;0.0401453971862793
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 2220 : opt duration 0.0401453971862793 | res cfv -997961.6978933439
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 16 | plans_ 16
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 10 | plans_ 10
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 2220 for AM: -997961.6978933439
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 2280:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 11 | number revealed requests 11 | number active requests: 11
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 38
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;2280,setup;0.0,rr;0.0,rv;0.10260820388793945,build;0.01165318489074707,opt;0.004018545150756836,all;0.11827993392944336
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 2280 : opt duration 0.11827993392944336 | res cfv -1097873.1491798337
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 21 | plans_ 21
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 15 | plans_ 17
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 2 | plans_ 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 2280 for AM: -1097873.1491798337
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 2340:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 12 | number revealed requests 12 | number active requests: 12
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 42
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;2340,setup;0.0,rr;0.0,rv;0.11959075927734375,build;0.054982662200927734,opt;0.004738330841064453,all;0.17931175231933594
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 2340 : opt duration 0.17931175231933594 | res cfv -1197923.3436993496
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 26 | plans_ 26
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 15 | plans_ 15
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 1 | plans_ 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 2340 for AM: -1197923.3436993496
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 2400:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 10 | number revealed requests 10 | number active requests: 10
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 35
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;2400,setup;0.0,rr;0.0,rv;0.07825994491577148,build;0.015824556350708008,opt;0.00519561767578125,all;0.09928011894226074
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 2400 : opt duration 0.09928011894226074 | res cfv -998296.75542685
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 22 | plans_ 22
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 12 | plans_ 13
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 1 | plans_ 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 2400 for AM: -998296.75542685
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 2460:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 9 | number revealed requests 9 | number active requests: 9
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 13
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;2460,setup;0.0,rr;0.0,rv;0.0,build;0.0015501976013183594,opt;0.0029625892639160156,all;0.004512786865234375
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 2460 : opt duration 0.004512786865234375 | res cfv -898543.7499439962
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 10 | plans_ 10
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 3 | plans_ 3
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 2460 for AM: -898543.7499439962
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 2520:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 13 | number revealed requests 13 | number active requests: 13
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 65
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;2520,setup;0.0,rr;0.0,rv;0.1745917797088623,build;0.04517054557800293,opt;0.00455021858215332,all;0.22431254386901855
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 2520 : opt duration 0.22431254386901855 | res cfv -1297649.4242807669
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 38 | plans_ 38
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 21 | plans_ 22
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 6 | plans_ 6
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 2520 for AM: -1297649.4242807669
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 2580:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 10 | number revealed requests 10 | number active requests: 10
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 37
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;2580,setup;0.0,rr;0.0,rv;0.0,build;0.08692073822021484,opt;0.004672527313232422,all;0.09159326553344727
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 2580 : opt duration 0.09159326553344727 | res cfv -998141.9239775669
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 25 | plans_ 25
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 12 | plans_ 13
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 2580 for AM: -998141.9239775669
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 2640:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 11 | number revealed requests 11 | number active requests: 11
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 35
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;2640,setup;0.0,rr;0.0,rv;0.05793190002441406,build;0.013789653778076172,opt;0.004666328430175781,all;0.07638788223266602
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 2640 : opt duration 0.07638788223266602 | res cfv -1098058.0143351483
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 20 | plans_ 20
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 14 | plans_ 15
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 1 | plans_ 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 2640 for AM: -1098058.0143351483
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 2700:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 10 | number revealed requests 10 | number active requests: 10
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 24
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;2700,setup;0.0,rr;0.0,rv;0.06604766845703125,build;0.009149789810180664,opt;0.003117799758911133,all;0.07831525802612305
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 2700 : opt duration 0.07831525802612305 | res cfv -998104.2037723381
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 20 | plans_ 20
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 4 | plans_ 4
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 2700 for AM: -998104.2037723381
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 2760:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 14 | number revealed requests 14 | number active requests: 14
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 53
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;2760,setup;0.0,rr;0.0,rv;0.11821317672729492,build;0.06114840507507324,opt;0.004197120666503906,all;0.18355870246887207
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 2760 : opt duration 0.18355870246887207 | res cfv -1397346.3473378653
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 26 | plans_ 26
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 26 | plans_ 28
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 1 | plans_ 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 2760 for AM: -1397346.3473378653
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 2820:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 12 | number revealed requests 12 | number active requests: 12
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 29
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;2820,setup;0.0,rr;0.0,rv;0.0,build;0.03100895881652832,opt;0.0031402111053466797,all;0.034149169921875
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 2820 : opt duration 0.034149169921875 | res cfv -1197681.657969278
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 18 | plans_ 18
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 11 | plans_ 13
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 2820 for AM: -1197681.657969278
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 2880:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 9 | number revealed requests 9 | number active requests: 9
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 13
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;2880,setup;0.0010089874267578125,rr;0.0,rv;0.0,build;0.02869439125061035,opt;0.003030061721801758,all;0.03273344039916992
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 2880 : opt duration 0.03273344039916992 | res cfv -898270.7570777053
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 11 | plans_ 11
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 2 | plans_ 3
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 2880 for AM: -898270.7570777053
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 2940:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 11 | number revealed requests 11 | number active requests: 11
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 26
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;2940,setup;0.0005033016204833984,rr;0.0,rv;0.06355643272399902,build;0.017749309539794922,opt;0.0035390853881835938,all;0.08534812927246094
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 2940 : opt duration 0.08534812927246094 | res cfv -1098043.536499471
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 17 | plans_ 17
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 8 | plans_ 8
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 1 | plans_ 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 2940 for AM: -1098043.536499471
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 3000:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 9 | number revealed requests 9 | number active requests: 9
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 29
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;3000,setup;0.0,rr;0.0,rv;0.028943538665771484,build;0.0076138973236083984,opt;0.005620241165161133,all;0.042177677154541016
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 3000 : opt duration 0.042177677154541016 | res cfv -898239.0656967234
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 16 | plans_ 16
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 11 | plans_ 12
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 2 | plans_ 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 3000 for AM: -898239.0656967234
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 3060:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 9 | number revealed requests 9 | number active requests: 9
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 62
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;3060,setup;0.0005080699920654297,rr;0.0,rv;0.09502720832824707,build;0.04092979431152344,opt;0.004763603210449219,all;0.14122867584228516
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 3060 : opt duration 0.14122867584228516 | res cfv -898344.8435266614
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 38 | plans_ 38
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 24 | plans_ 25
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 3060 for AM: -898344.8435266614
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 3120:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 9 | number revealed requests 9 | number active requests: 9
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 30
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;3120,setup;0.0,rr;0.0,rv;0.0623166561126709,build;0.022549152374267578,opt;0.004677295684814453,all;0.08954310417175293
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 3120 : opt duration 0.08954310417175293 | res cfv -898173.7501380703
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 24 | plans_ 24
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 6 | plans_ 6
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 3120 for AM: -898173.7501380703
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 3180:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 10 | number revealed requests 10 | number active requests: 10
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 26
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;3180,setup;0.0,rr;0.0,rv;0.06523609161376953,build;0.01794600486755371,opt;0.003134012222290039,all;0.08631610870361328
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 3180 : opt duration 0.08631610870361328 | res cfv -998164.0437286621
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 20 | plans_ 20
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 6 | plans_ 6
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 3180 for AM: -998164.0437286621
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 3240:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 12 | number revealed requests 12 | number active requests: 12
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 33
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;3240,setup;0.0,rr;0.0,rv;0.06324028968811035,build;0.013654232025146484,opt;0.003150463104248047,all;0.08004498481750488
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 3240 : opt duration 0.08004498481750488 | res cfv -1197810.830212348
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 21 | plans_ 21
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 12 | plans_ 13
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 3240 for AM: -1197810.830212348
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 3300:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 10 | number revealed requests 10 | number active requests: 10
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 17
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;3300,setup;0.0,rr;0.0,rv;0.0,build;0.044823408126831055,opt;0.002635955810546875,all;0.04745936393737793
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 3300 : opt duration 0.04745936393737793 | res cfv -998172.0640317566
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 13 | plans_ 13
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 4 | plans_ 5
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 3300 for AM: -998172.0640317566
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 3360:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 9 | number revealed requests 9 | number active requests: 9
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 31
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;3360,setup;0.0,rr;0.0,rv;0.06029677391052246,build;0.0533146858215332,opt;0.003064393997192383,all;0.11667585372924805
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 3360 : opt duration 0.11667585372924805 | res cfv -898078.7980220963
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 22 | plans_ 22
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 9 | plans_ 9
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 3360 for AM: -898078.7980220963
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 3420:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 9 | number revealed requests 9 | number active requests: 9
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 34
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;3420,setup;0.0,rr;0.0,rv;0.0393216609954834,build;0.06488800048828125,opt;0.0031478404998779297,all;0.10735750198364258
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 3420 : opt duration 0.10735750198364258 | res cfv -898160.2010221726
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 22 | plans_ 22
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 12 | plans_ 12
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 3420 for AM: -898160.2010221726
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 3480:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 10 | number revealed requests 10 | number active requests: 10
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 42
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;3480,setup;0.0,rr;0.0,rv;0.1051173210144043,build;0.024519681930541992,opt;0.0032758712768554688,all;0.13291287422180176
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 3480 : opt duration 0.13291287422180176 | res cfv -997861.240929289
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 27 | plans_ 27
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 15 | plans_ 16
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 3480 for AM: -997861.240929289
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 3540:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 11 | number revealed requests 11 | number active requests: 11
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 37
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;3540,setup;0.0,rr;0.0,rv;0.10181570053100586,build;0.03314828872680664,opt;0.003124713897705078,all;0.13808870315551758
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 3540 : opt duration 0.13808870315551758 | res cfv -1097719.1126180894
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 23 | plans_ 23
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 14 | plans_ 15
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 3540 for AM: -1097719.1126180894
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 3600:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 11 | number revealed requests 11 | number active requests: 11
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 15
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;3600,setup;0.0,rr;0.0,rv;0.0,build;0.0030465126037597656,opt;0.003069162368774414,all;0.00611567497253418
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 3600 : opt duration 0.00611567497253418 | res cfv -1097866.3549991134
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 11 | plans_ 11
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 4 | plans_ 4
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 3600 for AM: -1097866.3549991134
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 3660:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 13 | number revealed requests 13 | number active requests: 13
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 38
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;3660,setup;0.0,rr;0.0,rv;0.08907818794250488,build;0.11336684226989746,opt;0.0031261444091796875,all;0.20557117462158203
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 3660 : opt duration 0.20557117462158203 | res cfv -1297747.3416465472
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 19 | plans_ 19
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 19 | plans_ 19
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 3660 for AM: -1297747.3416465472
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 3720:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 12 | number revealed requests 12 | number active requests: 12
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 25
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;3720,setup;0.0,rr;0.0,rv;0.03923988342285156,build;0.019661664962768555,opt;0.003027677536010742,all;0.06192922592163086
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 3720 : opt duration 0.06192922592163086 | res cfv -1198008.284988926
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 14 | plans_ 14
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 11 | plans_ 11
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 3720 for AM: -1198008.284988926
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 3780:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 11 | number revealed requests 11 | number active requests: 11
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 25
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;3780,setup;0.0,rr;0.0,rv;0.052315473556518555,build;0.019303083419799805,opt;0.003553628921508789,all;0.07517218589782715
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 3780 : opt duration 0.07517218589782715 | res cfv -1098226.5074980753
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 15 | plans_ 15
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 10 | plans_ 10
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 3780 for AM: -1098226.5074980753
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 3840:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 10 | number revealed requests 10 | number active requests: 10
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 37
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;3840,setup;0.0005061626434326172,rr;0.0,rv;0.07411503791809082,build;0.049796342849731445,opt;0.004048824310302734,all;0.12846636772155762
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 3840 : opt duration 0.12846636772155762 | res cfv -998379.299896754
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 22 | plans_ 22
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 14 | plans_ 16
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 1 | plans_ 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 3840 for AM: -998379.299896754
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 3900:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 8 | number revealed requests 8 | number active requests: 8
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 16
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;3900,setup;0.0015745162963867188,rr;0.0,rv;0.022867918014526367,build;0.00624394416809082,opt;0.0015749931335449219,all;0.03226137161254883
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 3900 : opt duration 0.03226137161254883 | res cfv -798718.7395313545
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 12 | plans_ 12
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 4 | plans_ 5
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 3900 for AM: -798718.7395313545
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 3960:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 7 | number revealed requests 7 | number active requests: 7
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 6
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;3960,setup;0.0,rr;0.0,rv;0.0,build;0.0019571781158447266,opt;0.0020303726196289062,all;0.003987550735473633
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 3960 : opt duration 0.003987550735473633 | res cfv -698895.5584352957
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 5 | plans_ 5
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 1 | plans_ 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 3960 for AM: -698895.5584352957
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 4020:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 8 | number revealed requests 8 | number active requests: 8
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 29
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;4020,setup;0.0,rr;0.0,rv;0.05596518516540527,build;0.009905815124511719,opt;0.004781246185302734,all;0.07065224647521973
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 4020 : opt duration 0.07065224647521973 | res cfv -798857.3371106978
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 18 | plans_ 18
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 9 | plans_ 12
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 2 | plans_ 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 4020 for AM: -798857.3371106978
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 4080:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 7 | number revealed requests 7 | number active requests: 7
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 17
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;4080,setup;0.0,rr;0.0,rv;0.03101825714111328,build;0.004054546356201172,opt;0.0015726089477539062,all;0.03664541244506836
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 4080 : opt duration 0.03664541244506836 | res cfv -699005.630712522
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 12 | plans_ 12
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 5 | plans_ 5
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 4080 for AM: -699005.630712522
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 4140:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 7 | number revealed requests 7 | number active requests: 7
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 28
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;4140,setup;0.0,rr;0.0,rv;0.05430197715759277,build;0.009819984436035156,opt;0.005976676940917969,all;0.0700986385345459
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 4140 : opt duration 0.0700986385345459 | res cfv -699206.9963544852
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 19 | plans_ 19
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 8 | plans_ 9
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 1 | plans_ 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 4140 for AM: -699206.9963544852
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 4200:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 6 | number revealed requests 6 | number active requests: 6
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 24
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;4200,setup;0.0,rr;0.0,rv;0.07057046890258789,build;0.00420832633972168,opt;0.003181934356689453,all;0.07796072959899902
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 4200 : opt duration 0.07796072959899902 | res cfv -599197.9932284541
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 20 | plans_ 20
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 4 | plans_ 5
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 4200 for AM: -599197.9932284541
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 4260:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 6 | number revealed requests 6 | number active requests: 6
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 15
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;4260,setup;0.0015778541564941406,rr;0.0,rv;0.03568077087402344,build;0.003159046173095703,opt;0.0031223297119140625,all;0.043540000915527344
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 4260 : opt duration 0.043540000915527344 | res cfv -599024.158172587
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 12 | plans_ 12
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 3 | plans_ 4
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 4260 for AM: -599024.158172587
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 4320:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 6 | number revealed requests 6 | number active requests: 6
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 26
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;4320,setup;0.0,rr;0.0,rv;0.030126094818115234,build;0.007462263107299805,opt;0.0035495758056640625,all;0.0411379337310791
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 4320 : opt duration 0.0411379337310791 | res cfv -598966.8452903209
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 17 | plans_ 17
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 9 | plans_ 11
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 4320 for AM: -598966.8452903209
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 4380:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 4 | number revealed requests 4 | number active requests: 4
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 4
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;4380,setup;0.0,rr;0.0,rv;0.0,build;0.0010058879852294922,opt;0.0015511512756347656,all;0.002557039260864258
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 4380 : opt duration 0.002557039260864258 | res cfv -399282.85577772703
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 4 | plans_ 4
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 4380 for AM: -399282.85577772703
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 4440:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 6 | number revealed requests 6 | number active requests: 6
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 25
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;4440,setup;0.0,rr;0.0,rv;0.06343865394592285,build;0.005087375640869141,opt;0.003038644790649414,all;0.0715646743774414
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 4440 : opt duration 0.0715646743774414 | res cfv -599005.0133762993
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 20 | plans_ 20
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 5 | plans_ 6
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 4440 for AM: -599005.0133762993
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 4500:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 5 | number revealed requests 5 | number active requests: 5
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 5
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;4500,setup;0.0010063648223876953,rr;0.0,rv;0.0,build;0.0005071163177490234,opt;0.0025250911712646484,all;0.004038572311401367
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 4500 : opt duration 0.004038572311401367 | res cfv -499177.4442599083
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 5 | plans_ 5
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 4500 for AM: -499177.4442599083
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 4560:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 4 | number revealed requests 4 | number active requests: 4
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 4
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;4560,setup;0.0,rr;0.0,rv;0.0,build;0.0,opt;0.003023386001586914,all;0.003023386001586914
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 4560 : opt duration 0.003023386001586914 | res cfv -399353.80283586186
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 4 | plans_ 4
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 4560 for AM: -399353.80283586186
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 4620:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 6 | number revealed requests 6 | number active requests: 6
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 18
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;4620,setup;0.0,rr;0.0,rv;0.07139015197753906,build;0.006143331527709961,opt;0.0030336380004882812,all;0.0805671215057373
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 4620 : opt duration 0.0805671215057373 | res cfv -598887.6770700802
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 18 | plans_ 18
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 4620 for AM: -598887.6770700802
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 4680:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 9 | number revealed requests 9 | number active requests: 9
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 59
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;4680,setup;0.0010175704956054688,rr;0.0,rv;0.12059950828552246,build;0.07661104202270508,opt;0.004815816879272461,all;0.20304393768310547
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 4680 : opt duration 0.20304393768310547 | res cfv -898557.7054716535
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 39 | plans_ 39
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 20 | plans_ 24
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 4680 for AM: -898557.7054716535
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 4740:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 8 | number revealed requests 8 | number active requests: 8
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 32
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;4740,setup;0.0,rr;0.0,rv;0.03881716728210449,build;0.09016156196594238,opt;0.004073381423950195,all;0.13305211067199707
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 4740 : opt duration 0.13305211067199707 | res cfv -798737.2708372343
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 25 | plans_ 25
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 7 | plans_ 8
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 4740 for AM: -798737.2708372343
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 4800:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 9 | number revealed requests 9 | number active requests: 9
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 33
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;4800,setup;0.0005218982696533203,rr;0.0,rv;0.07118654251098633,build;0.013539791107177734,opt;0.0035047531127929688,all;0.08875298500061035
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 4800 : opt duration 0.08875298500061035 | res cfv -898839.2386043654
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 21 | plans_ 21
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 12 | plans_ 14
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 4800 for AM: -898839.2386043654
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 4860:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 8 | number revealed requests 8 | number active requests: 8
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 13
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;4860,setup;0.0010066032409667969,rr;0.0,rv;0.030690670013427734,build;0.003023862838745117,opt;0.0030317306518554688,all;0.03775286674499512
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 4860 : opt duration 0.03775286674499512 | res cfv -798747.5243568958
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 11 | plans_ 11
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 2 | plans_ 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 4860 for AM: -798747.5243568958
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 4920:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 8 | number revealed requests 8 | number active requests: 8
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 14
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;4920,setup;0.0010066032409667969,rr;0.0,rv;0.024914979934692383,build;0.0034224987030029297,opt;0.0031499862670898438,all;0.03249406814575195
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 4920 : opt duration 0.03249406814575195 | res cfv -798793.1763079313
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 11 | plans_ 11
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 3 | plans_ 3
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 4920 for AM: -798793.1763079313
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 4980:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 7 | number revealed requests 7 | number active requests: 7
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 15
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;4980,setup;0.0,rr;0.0,rv;0.04027247428894043,build;0.003026723861694336,opt;0.003028392791748047,all;0.04632759094238281
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 4980 : opt duration 0.04632759094238281 | res cfv -698828.4336550878
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 11 | plans_ 11
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 4 | plans_ 4
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 4980 for AM: -698828.4336550878
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 5040:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 7 | number revealed requests 7 | number active requests: 7
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 26
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;5040,setup;0.0005047321319580078,rr;0.0,rv;0.07248950004577637,build;0.009072542190551758,opt;0.003038167953491211,all;0.08510494232177734
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 5040 : opt duration 0.08510494232177734 | res cfv -698912.8606515599
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 17 | plans_ 17
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 9 | plans_ 9
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 5040 for AM: -698912.8606515599
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 5100:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 8 | number revealed requests 8 | number active requests: 8
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 29
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;5100,setup;0.0,rr;0.0,rv;0.10005378723144531,build;0.01859307289123535,opt;0.0050716400146484375,all;0.1237185001373291
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 5100 : opt duration 0.1237185001373291 | res cfv -798447.0861635329
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 24 | plans_ 24
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 5 | plans_ 6
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 5100 for AM: -798447.0861635329
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 5160:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 9 | number revealed requests 9 | number active requests: 9
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 35
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;5160,setup;0.0,rr;0.0,rv;0.0671999454498291,build;0.028849363327026367,opt;0.0034797191619873047,all;0.09952902793884277
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 5160 : opt duration 0.09952902793884277 | res cfv -898452.1863030803
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 22 | plans_ 22
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 12 | plans_ 12
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 1 | plans_ 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 5160 for AM: -898452.1863030803
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 5220:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 9 | number revealed requests 9 | number active requests: 9
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 26
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;5220,setup;0.0,rr;0.0,rv;0.04022216796875,build;0.022396087646484375,opt;0.003534555435180664,all;0.06615281105041504
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 5220 : opt duration 0.06615281105041504 | res cfv -898380.743041604
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 15 | plans_ 15
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 10 | plans_ 10
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 1 | plans_ 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 5220 for AM: -898380.743041604
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 5280:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 4
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 10 | number revealed requests 10 | number active requests: 10
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 44
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;5280,setup;0.0,rr;0.0,rv;0.06378817558288574,build;0.0267183780670166,opt;0.003535747528076172,all;0.09404230117797852
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 5280 : opt duration 0.09404230117797852 | res cfv -998303.6927759205
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 25 | plans_ 25
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 19 | plans_ 20
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 5280 for AM: -998303.6927759205
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 5340:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 10 | number revealed requests 10 | number active requests: 10
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 23
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;5340,setup;0.001546621322631836,rr;0.0,rv;0.03624320030212402,build;0.020433664321899414,opt;0.003256082534790039,all;0.06147956848144531
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 5340 : opt duration 0.06147956848144531 | res cfv -998308.7126994696
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 14 | plans_ 14
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 9 | plans_ 9
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 5340 for AM: -998308.7126994696
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 5400:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 9 | number revealed requests 9 | number active requests: 9
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 27
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;5400,setup;0.0005052089691162109,rr;0.0,rv;0.037750959396362305,build;0.034769296646118164,opt;0.0030541419982910156,all;0.0760796070098877
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 5400 : opt duration 0.0760796070098877 | res cfv -898546.3128211726
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 16 | plans_ 16
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 11 | plans_ 11
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 5400 for AM: -898546.3128211726
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 5460:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 10 | number revealed requests 10 | number active requests: 10
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 43
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;5460,setup;0.0005044937133789062,rr;0.0,rv;0.06544041633605957,build;0.05879783630371094,opt;0.003170013427734375,all;0.1279127597808838
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 5460 : opt duration 0.1279127597808838 | res cfv -998408.1125636516
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 26 | plans_ 26
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 16 | plans_ 16
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 1 | plans_ 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 5460 for AM: -998408.1125636516
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 5520:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 7 | number revealed requests 7 | number active requests: 7
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 28
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;5520,setup;0.0,rr;0.0,rv;0.027042150497436523,build;0.0207216739654541,opt;0.0031647682189941406,all;0.050928592681884766
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 5520 : opt duration 0.050928592681884766 | res cfv -698939.4878221618
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 22 | plans_ 22
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 6 | plans_ 7
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 5520 for AM: -698939.4878221618
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 5580:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 8 | number revealed requests 8 | number active requests: 8
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 25
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;5580,setup;0.0,rr;0.0,rv;0.0561983585357666,build;0.009599924087524414,opt;0.0030717849731445312,all;0.06887006759643555
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 5580 : opt duration 0.06887006759643555 | res cfv -798858.0235433883
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 19 | plans_ 19
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 6 | plans_ 6
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 5580 for AM: -798858.0235433883
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 5640:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 10 | number revealed requests 10 | number active requests: 10
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 29
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;5640,setup;0.001016855239868164,rr;0.0,rv;0.03934907913208008,build;0.010902643203735352,opt;0.0031409263610839844,all;0.05440950393676758
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 5640 : opt duration 0.05440950393676758 | res cfv -998582.5018369516
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 17 | plans_ 17
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 12 | plans_ 13
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 5640 for AM: -998582.5018369516
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 5700:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 7 | number revealed requests 7 | number active requests: 7
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 16
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;5700,setup;0.0,rr;0.0,rv;0.03508353233337402,build;0.004065275192260742,opt;0.0030524730682373047,all;0.04220128059387207
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 5700 : opt duration 0.04220128059387207 | res cfv -698931.7203434473
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 12 | plans_ 12
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 4 | plans_ 4
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 5700 for AM: -698931.7203434473
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 5760:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 11 | number revealed requests 11 | number active requests: 11
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 47
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;5760,setup;0.0,rr;0.0,rv;0.1551191806793213,build;0.0265960693359375,opt;0.003695964813232422,all;0.1854112148284912
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 5760 : opt duration 0.1854112148284912 | res cfv -1098212.218372416
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 31 | plans_ 31
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 16 | plans_ 16
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 5760 for AM: -1098212.218372416
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 5820:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 10 | number revealed requests 10 | number active requests: 10
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 25
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;5820,setup;0.0,rr;0.0,rv;0.0,build;0.012224674224853516,opt;0.004678249359130859,all;0.016902923583984375
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 5820 : opt duration 0.016902923583984375 | res cfv -998387.2088169733
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 18 | plans_ 18
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 7 | plans_ 7
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 5820 for AM: -998387.2088169733
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 5880:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 10 | number revealed requests 10 | number active requests: 10
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 24
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;5880,setup;0.001590728759765625,rr;0.0,rv;0.07774925231933594,build;0.009470462799072266,opt;0.003153085708618164,all;0.09196352958679199
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 5880 : opt duration 0.09196352958679199 | res cfv -998136.9769675657
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 17 | plans_ 17
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 7 | plans_ 7
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 5880 for AM: -998136.9769675657
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 5940:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 9 | number revealed requests 9 | number active requests: 9
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 29
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;5940,setup;0.0005092620849609375,rr;0.0,rv;0.03745126724243164,build;0.03195357322692871,opt;0.004057407379150391,all;0.07397150993347168
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 5940 : opt duration 0.07397150993347168 | res cfv -898401.0653154458
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 25 | plans_ 25
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 4 | plans_ 4
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 5940 for AM: -898401.0653154458
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 6000:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 8 | number revealed requests 8 | number active requests: 8
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 17
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;6000,setup;0.0010066032409667969,rr;0.0,rv;0.0,build;0.024724483489990234,opt;0.0030570030212402344,all;0.028788089752197266
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 6000 : opt duration 0.028788089752197266 | res cfv -798583.1036313897
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 13 | plans_ 13
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 4 | plans_ 4
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 6000 for AM: -798583.1036313897
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 6060:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 6 | number revealed requests 6 | number active requests: 6
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 16
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;6060,setup;0.0,rr;0.0,rv;0.038071632385253906,build;0.01209568977355957,opt;0.0031785964965820312,all;0.05334591865539551
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 6060 : opt duration 0.05334591865539551 | res cfv -598800.9439314986
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 13 | plans_ 13
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 3 | plans_ 3
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 6060 for AM: -598800.9439314986
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 6120:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 5 | number revealed requests 5 | number active requests: 5
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 5
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;6120,setup;0.0005733966827392578,rr;0.0,rv;0.0,build;0.0,opt;0.0028641223907470703,all;0.003437519073486328
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 6120 : opt duration 0.003437519073486328 | res cfv -498969.1591144383
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 5 | plans_ 5
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 6120 for AM: -498969.1591144383
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 6180:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 7 | number revealed requests 7 | number active requests: 7
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 23
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;6180,setup;0.0,rr;0.0,rv;0.0740969181060791,build;0.007740020751953125,opt;0.0032579898834228516,all;0.08509492874145508
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 6180 : opt duration 0.08509492874145508 | res cfv -698615.653560913
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 19 | plans_ 19
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 4 | plans_ 4
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 6180 for AM: -698615.653560913
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 6240:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 10 | number revealed requests 10 | number active requests: 10
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 39
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;6240,setup;0.0015552043914794922,rr;0.0,rv;0.10731220245361328,build;0.04444694519042969,opt;0.003666400909423828,all;0.1569807529449463
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 6240 : opt duration 0.1569807529449463 | res cfv -998115.7315033104
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 26 | plans_ 26
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 12 | plans_ 14
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 1 | plans_ 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 6240 for AM: -998115.7315033104
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 6300:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 8 | number revealed requests 8 | number active requests: 8
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 17
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;6300,setup;0.0,rr;0.0,rv;0.0,build;0.03897905349731445,opt;0.0032126903533935547,all;0.04219174385070801
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 6300 : opt duration 0.04219174385070801 | res cfv -798482.0634237411
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 14 | plans_ 14
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 3 | plans_ 4
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 6300 for AM: -798482.0634237411
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 6360:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 6 | number revealed requests 6 | number active requests: 6
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 15
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;6360,setup;0.0,rr;0.0,rv;0.029098987579345703,build;0.0029904842376708984,opt;0.002573728561401367,all;0.03466320037841797
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 6360 : opt duration 0.03466320037841797 | res cfv -598714.665491232
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 12 | plans_ 12
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 3 | plans_ 3
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 6360 for AM: -598714.665491232
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 6420:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 9 | number revealed requests 9 | number active requests: 9
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 47
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;6420,setup;0.0010101795196533203,rr;0.0,rv;0.12369680404663086,build;0.026423931121826172,opt;0.003148317337036133,all;0.15427923202514648
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 6420 : opt duration 0.15427923202514648 | res cfv -898544.0578683132
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 31 | plans_ 31
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 14 | plans_ 15
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 2 | plans_ 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 6420 for AM: -898544.0578683132
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 6480:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 10 | number revealed requests 10 | number active requests: 10
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 28
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;6480,setup;0.0,rr;0.0,rv;0.07374835014343262,build;0.013054370880126953,opt;0.004951953887939453,all;0.09175467491149902
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 6480 : opt duration 0.09175467491149902 | res cfv -998373.2138183523
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 19 | plans_ 19
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 9 | plans_ 9
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 6480 for AM: -998373.2138183523
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 6540:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 11 | number revealed requests 11 | number active requests: 11
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 21
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;6540,setup;0.0,rr;0.0,rv;0.07044219970703125,build;0.015743255615234375,opt;0.0031692981719970703,all;0.0893547534942627
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 6540 : opt duration 0.0893547534942627 | res cfv -1098200.7652860174
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 14 | plans_ 14
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 7 | plans_ 7
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 6540 for AM: -1098200.7652860174
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 6600:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 12 | number revealed requests 12 | number active requests: 12
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 22
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;6600,setup;0.0,rr;0.0,rv;0.02516341209411621,build;0.017309188842773438,opt;0.0031948089599609375,all;0.045667409896850586
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 6600 : opt duration 0.045667409896850586 | res cfv -1198035.8405338414
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 12 | plans_ 12
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 9 | plans_ 10
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 1 | plans_ 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 6600 for AM: -1198035.8405338414
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 6660:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 8 | number revealed requests 8 | number active requests: 8
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 23
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;6660,setup;0.0,rr;0.0,rv;0.027431964874267578,build;0.015200138092041016,opt;0.003056764602661133,all;0.04568886756896973
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 6660 : opt duration 0.04568886756896973 | res cfv -798548.603795585
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 17 | plans_ 17
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 6 | plans_ 7
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 6660 for AM: -798548.603795585
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 6720:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 8 | number revealed requests 8 | number active requests: 8
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 22
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;6720,setup;0.0010266304016113281,rr;0.0,rv;0.07503247261047363,build;0.007120609283447266,opt;0.0030333995819091797,all;0.0862131118774414
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 6720 : opt duration 0.0862131118774414 | res cfv -798528.6039311755
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 18 | plans_ 18
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 4 | plans_ 5
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 6720 for AM: -798528.6039311755
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 6780:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 9 | number revealed requests 9 | number active requests: 9
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 28
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;6780,setup;0.0005035400390625,rr;0.0,rv;0.04718303680419922,build;0.0254213809967041,opt;0.0035691261291503906,all;0.07667708396911621
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 6780 : opt duration 0.07667708396911621 | res cfv -898541.2748112198
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 19 | plans_ 19
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 8 | plans_ 9
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 1 | plans_ 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 6780 for AM: -898541.2748112198
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 6840:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 10 | number revealed requests 10 | number active requests: 10
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 18
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;6840,setup;0.0005052089691162109,rr;0.0,rv;0.03959393501281738,build;0.0074460506439208984,opt;0.0032706260681152344,all;0.05081582069396973
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 6840 : opt duration 0.05081582069396973 | res cfv -998389.7609721001
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 8 | plans_ 8
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 8 | plans_ 8
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 2 | plans_ 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 6840 for AM: -998389.7609721001
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 6900:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 8 | number revealed requests 8 | number active requests: 8
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 13
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;6900,setup;0.0,rr;0.0,rv;0.0,build;0.0015480518341064453,opt;0.0031347274780273438,all;0.004682779312133789
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 6900 : opt duration 0.004682779312133789 | res cfv -798722.2314584561
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 8 | plans_ 8
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 5 | plans_ 5
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 6900 for AM: -798722.2314584561
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 6960:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 5 | number revealed requests 5 | number active requests: 5
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 19
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;6960,setup;0.0016171932220458984,rr;0.0,rv;0.037375688552856445,build;0.015526294708251953,opt;0.0031325817108154297,all;0.05765175819396973
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 6960 : opt duration 0.05765175819396973 | res cfv -499005.3295222532
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 15 | plans_ 15
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 4 | plans_ 4
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 6960 for AM: -499005.3295222532
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 7020:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 6 | number revealed requests 6 | number active requests: 6
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 16
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;7020,setup;0.0,rr;0.0,rv;0.037841081619262695,build;0.003139972686767578,opt;0.0018057823181152344,all;0.04278683662414551
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 7020 : opt duration 0.04278683662414551 | res cfv -598833.6945220949
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 12 | plans_ 12
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 4 | plans_ 4
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 7020 for AM: -598833.6945220949
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 7080:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 4 | number revealed requests 4 | number active requests: 4
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 4
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;7080,setup;0.0,rr;0.0,rv;0.0,build;0.0,opt;0.003177642822265625,all;0.003177642822265625
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 7080 : opt duration 0.003177642822265625 | res cfv -399172.7740671057
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 4 | plans_ 4
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 7080 for AM: -399172.7740671057
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-=========
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIME 7140:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-solution status 2
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number solutions 1
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number opt requests 6 | number revealed requests 6 | number active requests: 6
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-number rtv_objs: 25
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-OPT TIMES:sim_time;7140,setup;0.0005030632019042969,rr;0.0,rv;0.07155251502990723,build;0.004567623138427734,opt;0.0030517578125,all;0.07967495918273926
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Opt stats at sim time 7140 : opt duration 0.07967495918273926 | res cfv -599035.2660570431
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Number of rtv_keys in trees:
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 1 : 20 | plans_ 20
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 2 : 5 | plans_ 5
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 3 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-N 4 : 0 | plans_ 0
+23864-src.fleetctrl.pooling.batch.AlonsoMora.AlonsoMoraAssignment-INFO-Objective value at time 7140 for AM: -599035.2660570431
+23864-src.FleetSimulationBase-INFO-Saving final simulation state.
+23864-src.FleetSimulationBase-INFO-record_remaining_assignments()
+23864-src.FleetSimulationBase-INFO-	 time 7200, remaining tasks 10
+23864-src.FleetSimulationBase-INFO-	 time 7260, remaining tasks 6
+23864-src.FleetSimulationBase-INFO-	 time 7320, remaining tasks 3
+23864-src.FleetSimulationBase-INFO-	 time 7380, remaining tasks 1
+23864-src.FleetSimulationBase-INFO-	 time 7440, remaining tasks 0
+23864-src.FleetSimulationBase-INFO-Scenario example_pool_repo_AM_sc_1 finished:
+      initialization : 0:00:01 h
+          simulation : 0:00:28 h
+          evaluation : 0:00:00 h
+
+23864-src.FleetSimulationBase-INFO-General initialization of scenario example_charge_pool_irsonly_sc_1...

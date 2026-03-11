@@ -1,0 +1,7 @@
+vtype_name_full,unmanned_bike_collector
+maximum_passengers,2
+daily_fix_cost [cent],2500
+per_km_cost [cent],25
+battery_size [kWh],50
+range [km],10000
+source,

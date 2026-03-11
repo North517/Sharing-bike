@@ -1,0 +1,49 @@
+,MoD_0,MoD_1
+operator_id,0.0,1.0
+number users,55.0,45.0
+number travelers,55.0,45.0
+modal split,0.55,0.45
+modal split rq,0.55,0.45
+reservation users,0.0,0.0
+reservation pax,0.0,0.0
+served reservation users [%],100.0,100.0
+served reservation pax [%],100.0,100.0
+online users,55.0,45.0
+online pax,55.0,45.0
+served online users [%],55.00000000000001,45.0
+served online pax [%],55.00000000000001,45.0
+% created offers,100.0,100.0
+utility,,
+travel time,206.0094897703728,204.14263326493287
+travel distance,,
+waiting time,95.99378551414739,69.82201420950638
+waiting time from ept,95.9937855141465,69.82201420950716
+waiting time (median),90.84462607912974,50.70453469624135
+waiting time (90% quantile),208.95898280262662,172.31854423676663
+detour time,6.6293932675336364,7.362627199999245
+rel detour,4.056411080243624,3.252791499783779
+% fleet utilization,43.830842300859516,32.832710380794985
+rides per veh rev hours,12.54824162914192,13.705843799701073
+rides per veh rev hours rq,12.54824162914192,13.705843799701073
+total vkm,130.32604675363746,95.83862910254342
+occupancy,0.7528018996772222,0.8176265183620108
+occupancy rq,0.7528018996772222,0.8176265183620108
+% empty vkm,28.15549089038578,26.14881927985459
+% repositioning vkm,0.0,0.0
+customer direct distance [km],96.79529857356074,78.33492663770068
+saved distance [%],-34.6408851196369,-22.344697590383195
+trip distance per fleet distance,0.7427164483592313,0.81736276250243
+trip distance per fleet distance (no reloc),0.7427164483592313,0.81736276250243
+avg driving velocity [km/h],36.830461157153344,37.06812462937562
+avg trip velocity [km/h],0.030754370962869093,0.03069811548322253
+vehicle revenue hours [Fzg h],4.383084230085951,3.2832710380794983
+total toll,0.0,0.0
+mod revenue,10185.0,8321.0
+mod fix costs,12500.0,12500.0
+mod var costs,3258.0,2396.0
+total CO2 emissions [t],7.298258618203698e-05,5.3669632297424316e-05
+total external emission costs,1.0,1.0
+parking cost,,
+toll,0.0,0.0
+customer in vehicle distance,1783.8126467920138,1741.3378808377922
+shared rides [%],20.0,22.22222222222222

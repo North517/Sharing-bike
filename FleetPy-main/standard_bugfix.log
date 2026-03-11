@@ -1,0 +1,344 @@
+Scenario example_pool_irsonly_sc_1 has mismatch with assertions:/n                                                                 MoD_0  Assertion
+operator_id                                                        0.0        NaN
+number users                                                      93.0       88.0
+number travelers                                                  93.0        NaN
+modal split                                                       0.93        NaN
+modal split rq                                                    0.93        NaN
+reservation users                                                  0.0        NaN
+reservation pax                                                    0.0        NaN
+served reservation users [%]                                     100.0        NaN
+served reservation pax [%]                                       100.0        NaN
+online users                                                      93.0        NaN
+online pax                                                        93.0        NaN
+served online users [%]                                           93.0        NaN
+served online pax [%]                                             93.0        NaN
+% created offers                                                  93.0        NaN
+utility                                                            NaN        NaN
+travel time                                                 206.766372        NaN
+travel distance                                                    NaN        NaN
+waiting time                                                151.996372        NaN
+waiting time from ept                                       151.996372        NaN
+waiting time (median)                                        156.92599        NaN
+waiting time (90% quantile)                                 274.545307        NaN
+detour time                                                  11.293453        NaN
+rel detour                                                     5.80035        NaN
+% fleet utilization                                          74.578577        NaN
+rides per veh rev hours                                      12.470069        NaN
+rides per veh rev hours rq                                   12.470069        NaN
+total vkm                                                   227.063107        NaN
+occupancy                                                     0.723653        NaN
+occupancy rq                                                  0.723653        NaN
+% empty vkm                                                  34.433132        NaN
+% repositioning vkm                                                0.0        NaN
+customer direct distance [km]                               161.574543        NaN
+saved distance [%]                                          -40.531487        NaN
+trip distance per fleet distance                              0.711584        NaN
+trip distance per fleet distance (no reloc)                   0.711584        NaN
+avg driving velocity [km/h]                                  36.734186        NaN
+avg trip velocity [km/h]                                      0.030249        NaN
+vehicle revenue hours [Fzg h]                                 7.457858        NaN
+total toll                                                         0.0        NaN
+mod revenue                                                    17089.0        NaN
+mod fix costs                                                  12500.0        NaN
+mod var costs                                                   5677.0        NaN
+total CO2 emissions [t]                                       0.000127        NaN
+total external emission costs                                      2.0        NaN
+parking cost                                                       NaN        NaN
+toll                                                               0.0        NaN
+customer in vehicle distance                               1766.827712        NaN
+shared rides [%]                                             32.258065        NaN
+scenario_name                                example_pool_irsonly_sc_1        NaN/n--------------------------------------------------------------------------------/nScenario example_pool_sc_1 has mismatch with assertions:/n                                                         MoD_0  Assertion
+operator_id                                                0.0        NaN
+number users                                              93.0       91.0
+number travelers                                          93.0        NaN
+modal split                                               0.93        NaN
+modal split rq                                            0.93        NaN
+reservation users                                          0.0        NaN
+reservation pax                                            0.0        NaN
+served reservation users [%]                             100.0        NaN
+served reservation pax [%]                               100.0        NaN
+online users                                              93.0        NaN
+online pax                                                93.0        NaN
+served online users [%]                                   93.0        NaN
+served online pax [%]                                     93.0        NaN
+% created offers                                          93.0        NaN
+utility                                                    NaN        NaN
+travel time                                          204.71867        NaN
+travel distance                                            NaN        NaN
+waiting time                                         137.24368        NaN
+waiting time from ept                                137.24368        NaN
+waiting time (median)                               133.269613        NaN
+waiting time (90% quantile)                         259.817063        NaN
+detour time                                           8.956693        NaN
+rel detour                                            4.545207        NaN
+% fleet utilization                                  72.709364        NaN
+rides per veh rev hours                               12.79065        NaN
+rides per veh rev hours rq                            12.79065        NaN
+total vkm                                           219.756278        NaN
+occupancy                                             0.743956        NaN
+occupancy rq                                          0.743956        NaN
+% empty vkm                                          33.684767        NaN
+% repositioning vkm                                        0.0        NaN
+customer direct distance [km]                       161.655273        NaN
+saved distance [%]                                  -35.941299        NaN
+trip distance per fleet distance                      0.735612        NaN
+trip distance per fleet distance (no reloc)           0.735612        NaN
+avg driving velocity [km/h]                          36.688524        NaN
+avg trip velocity [km/h]                              0.030567        NaN
+vehicle revenue hours [Fzg h]                         7.270936        NaN
+total toll                                                 0.0        NaN
+mod revenue                                            17098.0        NaN
+mod fix costs                                          12500.0        NaN
+mod var costs                                           5494.0        NaN
+total CO2 emissions [t]                               0.000123        NaN
+total external emission costs                              2.0        NaN
+parking cost                                               NaN        NaN
+toll                                                       0.0        NaN
+customer in vehicle distance                       1757.946459        NaN
+shared rides [%]                                     32.258065        NaN
+scenario_name                                example_pool_sc_1        NaN/n--------------------------------------------------------------------------------/nScenario example_pool_irsbatch_sc_1 has mismatch with assertions:/n                                                                  MoD_0  Assertion
+operator_id                                                         0.0        NaN
+number users                                                       93.0       90.0
+number travelers                                                   93.0        NaN
+modal split                                                        0.93        NaN
+modal split rq                                                     0.93        NaN
+reservation users                                                   0.0        NaN
+reservation pax                                                     0.0        NaN
+served reservation users [%]                                      100.0        NaN
+served reservation pax [%]                                        100.0        NaN
+online users                                                       93.0        NaN
+online pax                                                         93.0        NaN
+served online users [%]                                            93.0        NaN
+served online pax [%]                                              93.0        NaN
+% created offers                                                   93.0        NaN
+utility                                                             NaN        NaN
+travel time                                                  207.286774        NaN
+travel distance                                                     NaN        NaN
+waiting time                                                 135.268961        NaN
+waiting time from ept                                        135.268961        NaN
+waiting time (median)                                         132.58665        NaN
+waiting time (90% quantile)                                  263.539828        NaN
+detour time                                                   10.520403        NaN
+rel detour                                                     5.191521        NaN
+% fleet utilization                                           72.169267        NaN
+rides per veh rev hours                                       12.886372        NaN
+rides per veh rev hours rq                                    12.886372        NaN
+total vkm                                                    217.737841        NaN
+occupancy                                                      0.759756        NaN
+occupancy rq                                                   0.759756        NaN
+% empty vkm                                                   33.502966        NaN
+% repositioning vkm                                                 0.0        NaN
+customer direct distance [km]                                162.869529        NaN
+saved distance [%]                                           -33.688507        NaN
+trip distance per fleet distance                               0.748007        NaN
+trip distance per fleet distance (no reloc)                    0.748007        NaN
+avg driving velocity [km/h]                                   36.755774        NaN
+avg trip velocity [km/h]                                       0.030415        NaN
+vehicle revenue hours [Fzg h]                                  7.216927        NaN
+total toll                                                          0.0        NaN
+mod revenue                                                     17219.0        NaN
+mod fix costs                                                   12500.0        NaN
+mod var costs                                                    5444.0        NaN
+total CO2 emissions [t]                                        0.000122        NaN
+total external emission costs                                       2.0        NaN
+parking cost                                                        NaN        NaN
+toll                                                                0.0        NaN
+customer in vehicle distance                                1778.791023        NaN
+shared rides [%]                                              31.182796        NaN
+scenario_name                                example_pool_irsbatch_sc_1        NaN/n--------------------------------------------------------------------------------/nScenario example_pool_norvheuristics_sc_2 results match assertions/n--------------------------------------------------------------------------------/nScenario example_pool_rvheuristics_sc_2 has mismatch with assertions:/n                                                                      MoD_0  Assertion
+operator_id                                                             0.0        NaN
+number users                                                          184.0      191.0
+number travelers                                                      184.0        NaN
+modal split                                                            0.92        NaN
+modal split rq                                                         0.92        NaN
+reservation users                                                       0.0        NaN
+reservation pax                                                         0.0        NaN
+served reservation users [%]                                          100.0        NaN
+served reservation pax [%]                                            100.0        NaN
+online users                                                          184.0        NaN
+online pax                                                            184.0        NaN
+served online users [%]                                                92.0        NaN
+served online pax [%]                                                  92.0        NaN
+% created offers                                                       92.0        NaN
+utility                                                                 NaN        NaN
+travel time                                                      217.226757        NaN
+travel distance                                                         NaN        NaN
+waiting time                                                       103.7961        NaN
+waiting time from ept                                              103.7961        NaN
+waiting time (median)                                             89.049155        NaN
+waiting time (90% quantile)                                      215.984077        NaN
+detour time                                                       11.386904        NaN
+rel detour                                                         5.617821        NaN
+% fleet utilization                                               80.124959        NaN
+rides per veh rev hours                                            12.75785        NaN
+rides per veh rev hours rq                                         12.75785        NaN
+total vkm                                                        425.230888        NaN
+occupancy                                                          0.793899        NaN
+occupancy rq                                                       0.793899        NaN
+% empty vkm                                                       27.225813        NaN
+% repositioning vkm                                                     0.0        NaN
+customer direct distance [km]                                    327.009224        NaN
+saved distance [%]                                               -30.036359        NaN
+trip distance per fleet distance                                   0.769016        NaN
+trip distance per fleet distance (no reloc)                        0.769016        NaN
+avg driving velocity [km/h]                                       35.946445        NaN
+avg trip velocity [km/h]                                           0.029453        NaN
+vehicle revenue hours [Fzg h]                                     14.422493        NaN
+total toll                                                              0.0        NaN
+mod revenue                                                         34349.0        NaN
+mod fix costs                                                       22500.0        NaN
+mod var costs                                                       10631.0        NaN
+total CO2 emissions [t]                                            0.000238        NaN
+total external emission costs                                           3.0        NaN
+parking cost                                                            NaN        NaN
+toll                                                                    0.0        NaN
+customer in vehicle distance                                    1834.730518        NaN
+shared rides [%]                                                  26.630435        NaN
+scenario_name                                example_pool_rvheuristics_sc_2        NaN/n--------------------------------------------------------------------------------/nScenario example_pool_repo_Pavone_sc_1 has mismatch with assertions:/n                                                                     MoD_0  Assertion
+operator_id                                                            0.0        NaN
+number users                                                         199.0      198.0
+number travelers                                                     199.0        NaN
+modal split                                                          0.995        NaN
+modal split rq                                                       0.995        NaN
+reservation users                                                      0.0        NaN
+reservation pax                                                        0.0        NaN
+served reservation users [%]                                         100.0        NaN
+served reservation pax [%]                                           100.0        NaN
+online users                                                         199.0        NaN
+online pax                                                           199.0        NaN
+served online users [%]                                               99.5        NaN
+served online pax [%]                                                 99.5        NaN
+% created offers                                                      99.5        NaN
+utility                                                                NaN        NaN
+travel time                                                     213.088763        NaN
+travel distance                                                        NaN        NaN
+waiting time                                                     75.639286        NaN
+waiting time from ept                                            75.639286        NaN
+waiting time (median)                                            59.787389        NaN
+waiting time (90% quantile)                                     168.016805        NaN
+detour time                                                       7.176082        NaN
+rel detour                                                        4.125073        NaN
+% fleet utilization                                              65.705912        NaN
+rides per veh rev hours                                          13.583925        NaN
+rides per veh rev hours rq                                       13.583925        NaN
+total vkm                                                       458.571815        NaN
+occupancy                                                         0.782781        NaN
+occupancy rq                                                      0.782781        NaN
+% empty vkm                                                      27.363149        NaN
+% repositioning vkm                                                8.25239        NaN
+customer direct distance [km]                                   353.574003        NaN
+saved distance [%]                                              -29.696135        NaN
+trip distance per fleet distance                                  0.771033        NaN
+trip distance per fleet distance (no reloc)                       0.840385        NaN
+avg driving velocity [km/h]                                      35.761703        NaN
+avg trip velocity [km/h]                                          0.030017        NaN
+vehicle revenue hours [Fzg h]                                    14.649669        NaN
+total toll                                                             0.0        NaN
+mod revenue                                                        37081.0        NaN
+mod fix costs                                                      30000.0        NaN
+mod var costs                                                      11464.0        NaN
+total CO2 emissions [t]                                           0.000257        NaN
+total external emission costs                                          4.0        NaN
+parking cost                                                           NaN        NaN
+toll                                                                   0.0        NaN
+customer in vehicle distance                                   1803.824978        NaN
+shared rides [%]                                                 20.603015        NaN
+scenario_name                                example_pool_repo_Pavone_sc_1        NaN/n--------------------------------------------------------------------------------/nScenario example_depot_ch_time_pool_irsopt_sc_1 has mismatch with assertions:/n                                                                              MoD_0  Assertion
+operator_id                                                                     0.0        NaN
+number users                                                                   28.0      199.0
+number travelers                                                               28.0        NaN
+modal split                                                                    0.28        NaN
+modal split rq                                                                 0.28        NaN
+reservation users                                                               0.0        NaN
+reservation pax                                                                 0.0        NaN
+served reservation users [%]                                                  100.0        NaN
+served reservation pax [%]                                                    100.0        NaN
+online users                                                                   28.0        NaN
+online pax                                                                     28.0        NaN
+served online users [%]                                                        28.0        NaN
+served online pax [%]                                                          28.0        NaN
+% created offers                                                               28.0        NaN
+utility                                                                         NaN        NaN
+travel time                                                              221.786136        NaN
+travel distance                                                                 NaN        NaN
+waiting time                                                             203.059074        NaN
+waiting time from ept                                                    203.059074        NaN
+waiting time (median)                                                    203.244383        NaN
+waiting time (90% quantile)                                              339.601946        NaN
+detour time                                                               13.513099        NaN
+rel detour                                                                 5.577011        NaN
+% fleet utilization                                                       83.775624        NaN
+rides per veh rev hours                                                   10.649946        NaN
+rides per veh rev hours rq                                                10.649946        NaN
+total vkm                                                                106.970968        NaN
+occupancy                                                                  0.493307        NaN
+occupancy rq                                                               0.493307        NaN
+% empty vkm                                                               56.163829        NaN
+% repositioning vkm                                                             0.0        NaN
+customer direct distance [km]                                             49.723378        NaN
+saved distance [%]                                                      -115.132141        NaN
+trip distance per fleet distance                                           0.464831        NaN
+trip distance per fleet distance (no reloc)                                0.464831        NaN
+avg driving velocity [km/h]                                               36.012659        NaN
+avg trip velocity [km/h]                                                   0.028825        NaN
+vehicle revenue hours [Fzg h]                                              2.629121        NaN
+total toll                                                                      0.0        NaN
+mod revenue                                                                  5199.0        NaN
+mod fix costs                                                               12500.0        NaN
+mod var costs                                                                2674.0        NaN
+total CO2 emissions [t]                                                     0.00599        NaN
+total external emission costs                                                  87.0        NaN
+parking cost                                                                    NaN        NaN
+toll                                                                            0.0        NaN
+customer in vehicle distance                                            1884.625401        NaN
+shared rides [%]                                                          28.571429        NaN
+scenario_name                                example_depot_ch_time_pool_irsopt_sc_1        NaN/n--------------------------------------------------------------------------------/nScenario example_depot_ch_time_pool_irsopt_sc_1 has mismatch with assertions:/n                                                                              MoD_0  Assertion
+operator_id                                                                     0.0        NaN
+number users                                                                   28.0      199.0
+number travelers                                                               28.0        NaN
+modal split                                                                    0.28        NaN
+modal split rq                                                                 0.28        NaN
+reservation users                                                               0.0        NaN
+reservation pax                                                                 0.0        NaN
+served reservation users [%]                                                  100.0        NaN
+served reservation pax [%]                                                    100.0        NaN
+online users                                                                   28.0        NaN
+online pax                                                                     28.0        NaN
+served online users [%]                                                        28.0        NaN
+served online pax [%]                                                          28.0        NaN
+% created offers                                                               28.0        NaN
+utility                                                                         NaN        NaN
+travel time                                                              221.786136        NaN
+travel distance                                                                 NaN        NaN
+waiting time                                                             203.059074        NaN
+waiting time from ept                                                    203.059074        NaN
+waiting time (median)                                                    203.244383        NaN
+waiting time (90% quantile)                                              339.601946        NaN
+detour time                                                               13.513099        NaN
+rel detour                                                                 5.577011        NaN
+% fleet utilization                                                       83.775624        NaN
+rides per veh rev hours                                                   10.649946        NaN
+rides per veh rev hours rq                                                10.649946        NaN
+total vkm                                                                106.970968        NaN
+occupancy                                                                  0.493307        NaN
+occupancy rq                                                               0.493307        NaN
+% empty vkm                                                               56.163829        NaN
+% repositioning vkm                                                             0.0        NaN
+customer direct distance [km]                                             49.723378        NaN
+saved distance [%]                                                      -115.132141        NaN
+trip distance per fleet distance                                           0.464831        NaN
+trip distance per fleet distance (no reloc)                                0.464831        NaN
+avg driving velocity [km/h]                                               36.012659        NaN
+avg trip velocity [km/h]                                                   0.028825        NaN
+vehicle revenue hours [Fzg h]                                              2.629121        NaN
+total toll                                                                      0.0        NaN
+mod revenue                                                                  5199.0        NaN
+mod fix costs                                                               12500.0        NaN
+mod var costs                                                                2674.0        NaN
+total CO2 emissions [t]                                                     0.00599        NaN
+total external emission costs                                                  87.0        NaN
+parking cost                                                                    NaN        NaN
+toll                                                                            0.0        NaN
+customer in vehicle distance                                            1884.625401        NaN
+shared rides [%]                                                          28.571429        NaN
+scenario_name                                example_depot_ch_time_pool_irsopt_sc_1        NaN/n--------------------------------------------------------------------------------/n

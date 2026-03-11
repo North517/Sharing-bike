@@ -1,0 +1,39 @@
+2026-03-12 03:52:45,969-31816-src.FleetSimulationBase-INFO-Initialization of network and routing engine...
+2026-03-12 03:52:46,179-31816-src.routing.NetworkBasic-INFO-... no network dynamics file given -> read folder structure
+2026-03-12 03:52:46,179-31816-src.routing.NetworkBasic-INFO-Loading nodes from E:\Sharing bike\FleetPy-main\FleetPy-main\data\networks\example_network\base\nodes.csv ...
+2026-03-12 03:52:46,337-31816-src.routing.NetworkBasic-INFO-Loading edges from E:\Sharing bike\FleetPy-main\FleetPy-main\data\networks\example_network\base\edges.csv ...
+2026-03-12 03:52:47,038-31816-src.routing.NetworkBasic-INFO-... 7617 nodes loaded!
+2026-03-12 03:52:47,038-31816-src.FleetSimulationBase-INFO-Initialization of line-based public transportation...
+2026-03-12 03:52:47,038-31816-src.FleetSimulationBase-INFO-Initialization of travelers...
+2026-03-12 03:52:47,065-31816-src.demand.demand-INFO-init(): 0/50 requests removed (rq_time not in simulation time)
+2026-03-12 03:52:47,065-31816-src.demand.demand-INFO-init(): 0/50 requests removed (start == end)
+2026-03-12 03:52:47,066-31816-src.demand.bike_rebalancing_demand-INFO-Loaded 50 bike rebalancing requests.
+2026-03-12 03:52:47,082-31816-src.FleetSimulationBase-INFO-Initialization of MoD fleets...
+2026-03-12 03:52:47,134-31816-src.fleetctrl.FleetControlBase-INFO-Scenario bike_rebalancing_sc_1
+Operator 0 control strategy: PoolingInsertionHeuristicOnly
+	 control function: {'func_key': 'bike_rebalancing_objective'}
+Operator 0 additional strategies:
+	 RV Heuristics: {}
+	 Stop-Insert Heuristics: {}
+	 Charging: None
+	 On-Street Parking: True
+	 Repositioning: None
+	 Dynamic Pricing: None
+	 Dynamic Fleet Sizing: TimeBasedFS
+
+2026-03-12 03:52:47,138-31816-src.FleetSimulationBase-INFO-Simulation environment specific initializations...
+2026-03-12 03:52:47,145-31816-src.fleetctrl.fleetsizing.TimeBasedFS-INFO-Loaded nr-of-active-vehicles curve from E:\Sharing bike\FleetPy-main\FleetPy-main\data\fleetctrl\elastic_fleet_size\example_active_fleetsize.csv.
+2026-03-12 03:52:47,145-31816-src.FleetSimulationBase-INFO-Creating or loading initial vehicle states...
+2026-03-12 03:52:47,149-31816-src.FleetSimulationBase-INFO-Initialization of scenario bike_rebalancing_sc_1 successful.
+2026-03-12 03:52:47,149-31816-src.FleetSimulationBase-INFO-No broker type specified, using default broker: BrokerBasic.
+2026-03-12 03:52:47,161-31816-src.fleetctrl.fleetsizing.DynamicFleetSizingBase-INFO-to deactivate: 0
+2026-03-12 03:52:47,190-31816-src.fleetctrl.fleetsizing.DynamicFleetSizingBase-INFO-to deactivate: 0
+2026-03-12 03:52:47,212-31816-src.fleetctrl.fleetsizing.DynamicFleetSizingBase-INFO-to deactivate: 0
+2026-03-12 03:52:47,235-31816-src.fleetctrl.fleetsizing.DynamicFleetSizingBase-INFO-to deactivate: 0
+2026-03-12 03:52:47,258-31816-src.fleetctrl.fleetsizing.DynamicFleetSizingBase-INFO-to deactivate: 0
+2026-03-12 03:52:47,281-31816-src.fleetctrl.fleetsizing.DynamicFleetSizingBase-INFO-to deactivate: 0
+2026-03-12 03:52:47,310-31816-src.fleetctrl.PoolingIRSOnly-INFO-Request 19 - Origin Position: (293, None, None), Destination Position: (2980, None, None)
+2026-03-12 03:52:47,321-31816-src.fleetctrl.fleetsizing.DynamicFleetSizingBase-INFO-to deactivate: 0
+2026-03-12 03:52:47,356-31816-src.fleetctrl.PoolingIRSOnly-INFO-Request 19 - Origin Position: (293, None, None), Destination Position: (2980, None, None)
+2026-03-12 03:52:47,367-31816-src.fleetctrl.planning.VehiclePlan-WARNING-update_tt_and_check_plan(): try to remove a rid that is not on board!
+2026-03-12 03:52:47,369-31816-src.fleetctrl.planning.VehiclePlan-WARNING-veh plan for vid 1 feasible? True : ['PS: (293, None, None) state BOARDING locked False bd {-1: [], 1: [19, 19]} earl dep 360 latest arr 660 eta 550.3032148541452', 'PS: (2980, None, None) state BOARDING locked False bd {1: [], -1: [19, 19]} earl dep -1 latest arr None eta None'] | pax info {19: [np.float64(550.3032148541452), np.float64(807.3624121184876), np.float64(807.3624121184876)]}
