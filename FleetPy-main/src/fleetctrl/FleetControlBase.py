@@ -106,7 +106,7 @@ class FleetControlBase(metaclass=ABCMeta):
         #self.zones: ZoneSystem = zone_system
         self.dir_names = dir_names
         #
-        self.sim_vehicles: List[SimulationVehicle] = list_vehicles
+        self.sim_vehicles: Dict[int, SimulationVehicle] = {veh_obj.vid : veh_obj for veh_obj in list_vehicles}
         self.nr_vehicles = len(self.sim_vehicles)
         sim_start_time = scenario_parameters[G_SIM_START_TIME]
         self.sim_time = sim_start_time
@@ -126,7 +126,7 @@ class FleetControlBase(metaclass=ABCMeta):
         # Vehicle Plans, Request-Assignment and Availability
         # --------------------------------------------------
         self.veh_plans : Dict[int, VehiclePlan] = {}
-        for veh_obj in self.sim_vehicles:
+        for veh_obj in self.sim_vehicles.values():
             vid = veh_obj.vid
             self.veh_plans[vid] = VehiclePlan(veh_obj, sim_start_time, routing_engine, [])
         self.rid_to_assigned_vid = {}

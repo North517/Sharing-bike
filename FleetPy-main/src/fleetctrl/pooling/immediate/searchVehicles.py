@@ -14,18 +14,18 @@ def veh_search_for_immediate_request(sim_time, prq, fleetctrl, list_excluded_vid
     :return: list of vehicle objects considered for assignment, routing_results_dict ( (o_pos, d_pos) -> (cfv, tt, dis))
     :rtype: tuple of list of SimulationVehicle, dict
     """
+    veh_locations_to_vid = fleetctrl.pos_veh_dict
     if sim_time != fleetctrl.pos_veh_dict_time or not fleetctrl.pos_veh_dict:
         veh_locations_to_vid = {}
-        for vid, veh_obj in enumerate(fleetctrl.sim_vehicles):
-            # do not consider inactive vehicles
-            if veh_obj.status == 5 or vid in list_excluded_vids:
-                continue
-            try:
-                veh_locations_to_vid[veh_obj.pos].append(vid)
-            except:
-                veh_locations_to_vid[veh_obj.pos] = [vid]
-        fleetctrl.pos_veh_dict_time = sim_time
-        fleetctrl.pos_veh_dict = veh_locations_to_vid
+    for vid, veh_obj in fleetctrl.sim_vehicles.items():
+        if veh_obj.status == 5 or vid in list_excluded_vids:
+            continue
+        try:
+            veh_locations_to_vid[veh_obj.pos].append(vid)
+        except:
+            veh_locations_to_vid[veh_obj.pos] = [vid]
+    fleetctrl.pos_veh_dict_time = sim_time
+    fleetctrl.pos_veh_dict = veh_locations_to_vid
 
     # stop criteria: search radius and possibly max_routes
     prq_o_stop_pos, prq_t_pu_earliest, prq_t_pu_latest = prq.get_o_stop_info()

@@ -99,7 +99,7 @@ def create_vehicle_type_db(vehicle_data_dir):
                 veh_type_db[veh_type_name][k] = float(v)
             except:
                 veh_type_db[veh_type_name][k] = v
-        veh_type_db[veh_type_name][G_VTYPE_NAME] = veh_type_data.name
+        veh_type_db[veh_type_name][G_VTYPE_NAME] = veh_type_name
     return veh_type_db
 
 def avg_in_vehicle_distance(op_df):

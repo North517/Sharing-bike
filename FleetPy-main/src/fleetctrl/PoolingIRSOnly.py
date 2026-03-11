@@ -9,6 +9,8 @@ from src.fleetctrl.pooling.immediate.insertion import insertion_with_heuristics
 from src.misc.globals import *
 
 LOG = logging.getLogger(__name__)
+LOG.setLevel(logging.DEBUG)
+LOG.addHandler(logging.StreamHandler())
 LARGE_INT = 100000
 
 INPUT_PARAMETERS_PoolingInsertionHeuristicOnly = {
@@ -104,6 +106,9 @@ class PoolingInsertionHeuristicOnly(FleetControlBase):
                           add_constant_detour_time=self.add_cdt, min_detour_time_window=self.min_dtw,
                           boarding_time=self.const_bt)
 
+        # Added debug logs
+        LOG.info(f"Request {prq.get_rid_struct()} - Origin Position: {prq.o_pos}, Destination Position: {prq.d_pos}")
+
         rid_struct = rq.get_rid_struct()
         self.rq_dict[rid_struct] = prq
 
@@ -119,13 +124,18 @@ class PoolingInsertionHeuristicOnly(FleetControlBase):
             LOG.debug(f"reservation offer for rid {rid_struct} : {offer}")
         else:
             list_tuples = insertion_with_heuristics(sim_time, prq, self, force_feasible_assignment=True)
+            LOG.debug(f"insertion_with_heuristics for rid {rid_struct} returned {len(list_tuples)} feasible insertions.")
             if len(list_tuples) > 0:
+                # Log details of each feasible insertion
+                for i, (vid_option, vehplan_option, delta_cfv_option) in enumerate(list_tuples):
+                    LOG.debug(f"  Insertion {i+1} for rid {rid_struct}: Vehicle {vid_option}, delta_cfv {delta_cfv_option}")
                 (vid, vehplan, delta_cfv) = min(list_tuples, key=lambda x:x[2])
+                LOG.debug(f"  Selected best insertion for rid {rid_struct}: Vehicle {vid}, delta_cfv {delta_cfv}")
                 self.tmp_assignment[rid_struct] = vehplan
                 offer = self._create_user_offer(prq, sim_time, vehplan)
                 LOG.debug(f"new offer for rid {rid_struct} : {offer}")
             else:
-                LOG.debug(f"rejection for rid {rid_struct}")
+                LOG.debug(f"rejection for rid {rid_struct} - no feasible insertions found.")
                 self._create_rejection(prq, sim_time)
                 
         if self.repo and not prq.get_reservation_flag():

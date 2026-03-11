@@ -124,7 +124,10 @@ class ConstantConfig(dict):
         cfg = cls()
         constant_series = pd.read_csv(file_path, index_col=0, comment="#").squeeze("columns")
         for k, v in constant_series.items():
-            cfg[k] = decode_config_str(v)
+            if k == "op_fleet_composition": # Special handling for this parameter
+                cfg[k] = v
+            else:
+                cfg[k] = decode_config_str(v)
         return cfg
 
     @classmethod
@@ -173,7 +176,11 @@ class ScenarioConfig(list):
         cfgs = cls()
         df = pd.read_csv(file_path, comment="#")
         for col in df.columns:
-            df[col] = df[col].apply(decode_config_str)
+            if col == "op_fleet_composition": # Special handling for this parameter
+                # Do not apply decode_config_str for op_fleet_composition
+                pass
+            else:
+                df[col] = df[col].apply(decode_config_str)
         for i, row in df.iterrows():
             cfgs.append(ConstantConfig(row))
         return cfgs

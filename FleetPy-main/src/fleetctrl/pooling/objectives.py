@@ -340,13 +340,10 @@ def return_pooling_objective_function(vr_control_func_dict:dict)->Callable[[int,
             # LOG.debug(f" -> obj eval: sum_dist {sum_dist} * distance_cost {distance_cost} + sum_user_times {sum_user_times} * traveler_vot {traveler_vot} - assignment_reward {assignment_reward}")
             return sum_dist * distance_cost + sum_user_times * traveler_vot - assignment_reward
 
-    elif func_key == "distance_and_user_times_man_SoD":
-        traveler_vot = vr_control_func_dict["vot"]
-        distance_cost = vr_control_func_dict["dc"]
-        fixed_reward_coeff = vr_control_func_dict["fr"]
-
+    elif func_key == "bike_rebalancing_objective":
         def control_f(simulation_time:float, veh_obj:SimulationVehicle, veh_plan:VehiclePlan, rq_dict:Dict[Any,PlanRequest], routing_engine:NetworkBase)->float:
-            """This function combines the total driving costs and the value of customer time.
+            """This function evaluates the efficiency of bike rebalancing.
+            The objective is to minimize empty vehicle kilometers and maximize bike collection efficiency.
 
             :param simulation_time: current simulation time
             :param veh_obj: simulation vehicle object
@@ -355,10 +352,7 @@ def return_pooling_objective_function(vr_control_func_dict:dict)->Callable[[int,
             :param routing_engine: for routing queries
             :return: objective function value
             """
-            assignment_reward = len(veh_plan.pax_info) * LARGE_INT
-            fixed_reward = 0
-
-            # distance term
+            # Cost for distance traveled
             sum_dist = 0
             last_pos = veh_obj.pos
             for ps in veh_plan.list_plan_stops:
@@ -366,244 +360,72 @@ def return_pooling_objective_function(vr_control_func_dict:dict)->Callable[[int,
                 if pos != last_pos:
                     sum_dist += routing_engine.return_travel_costs_1to1(last_pos, pos)[2]
                     last_pos = pos
-                # add fixed reward for number of requests served in the fixed route portion
-                # if ps.direct_earliest_end_time is not None:
-                if ps.is_fixed_stop():
-                    this_fixed_reward = (fixed_reward_coeff *
-                                         (len(ps.get_list_boarding_rids()) + len(ps.get_list_alighting_rids())))
-                    fixed_reward += this_fixed_reward
-                    # if this_fixed_reward>0:
-                    #     LOG.debug(f"veh_plan {veh_plan.vid} has fixed reward {this_fixed_reward} for ps {ps} with nos of boarding "
-                    #           f"{len(ps.get_list_boarding_rids())} and alighting {len(ps.get_list_alighting_rids())}"
-                    #           )
+            
+            current_load = len(veh_obj.pax)
+            max_capacity = veh_obj.max_pax
 
-            # value of time term (treat waiting and in-vehicle time the same)
-            sum_user_times = 0
-            for rid, boarding_info_list in veh_plan.pax_info.items():
-                rq_time = rq_dict[rid].rq_time
-                drop_off_time = boarding_info_list[1]
-                sum_user_times += (drop_off_time - rq_time)
-            # vehicle costs are taken from simulation vehicle (cent per meter)
-            # value of travel time is scenario input (cent per second)
+            # Reward for successfully rebalancing bikes
+            num_picked_up_bikes = 0
+            num_dropped_off_bikes = 0
+            
+            # A set to keep track of requests that are picked up and then dropped off within this plan
+            rebalanced_requests = set()
+            picked_up_only_requests = set()
 
-            obj = sum_dist * distance_cost + sum_user_times * traveler_vot - assignment_reward - fixed_reward
-            return obj
-
-
-    elif func_key == "distance_and_user_times_with_walk":
-        traveler_vot = vr_control_func_dict["vot"]
-        assignment_reward_per_rq = MAX_DISTANCE * MAX_BASE_DISTANCE_COST + MAX_DELAY * traveler_vot
-        assignment_reward_per_rq = 10 ** np.ceil(np.log10(assignment_reward_per_rq))
-        LOG.info(f" -> assignment_reward_per_rq for objective function: {assignment_reward_per_rq}")
-
-        def control_f(simulation_time:float, veh_obj:SimulationVehicle, veh_plan:VehiclePlan, rq_dict:Dict[Any,PlanRequest], routing_engine:NetworkBase)->float:
-            """This function combines the total driving costs and the value of customer time.
-
-            :param simulation_time: current simulation time
-            :param veh_obj: simulation vehicle object
-            :param veh_plan: vehicle plan in question
-            :param rq_dict: rq -> Plan request dictionary
-            :param routing_engine: for routing queries
-            :return: objective function value
-            """
-            assignment_reward = len(veh_plan.pax_info) * assignment_reward_per_rq
-            # distance term
-            sum_dist = 0
-            last_pos = veh_obj.pos
             for ps in veh_plan.list_plan_stops:
-                pos = ps.get_pos()
-                if pos != last_pos:
-                    sum_dist += routing_engine.return_travel_costs_1to1(last_pos, pos)[2]
-                    last_pos = pos
-            # value of time term (treat waiting and in-vehicle time the same)
-            sum_user_times = 0
-            for rid, boarding_info_list in veh_plan.pax_info.items():
-                rq_time = rq_dict[rid].rq_time
-                walking_time_end = rq_dict[rid].walking_time_end    #walking time start allready included in interval rq-time -> drop_off_time
-                drop_off_time = boarding_info_list[1]
-                sum_user_times += (drop_off_time - rq_time) + walking_time_end
-            # vehicle costs are taken from simulation vehicle (cent per meter)
-            # value of travel time is scenario input (cent per second)
-            return sum_dist * veh_obj.distance_cost + sum_user_times * traveler_vot - assignment_reward
+                # Get boarding and alighting request IDs
+                boarding_rids = ps.get_list_boarding_rids()
+                alighting_rids = ps.get_list_alighting_rids()
 
-    elif func_key == "distance_and_user_vehicle_times":
-        traveler_vot = vr_control_func_dict["vot"]
-        traveler_vot = vr_control_func_dict["vot"]
-        assignment_reward_per_rq = MAX_DISTANCE * MAX_BASE_DISTANCE_COST + MAX_DELAY * traveler_vot
-        assignment_reward_per_rq = 10 ** np.ceil(np.log10(assignment_reward_per_rq))
-        LOG.info(f" -> assignment_reward_per_rq for objective function: {assignment_reward_per_rq}")
+                for rid in boarding_rids:
+                    if rid in rq_dict: # Ensure it's a request we care about
+                        num_picked_up_bikes += 1
+                        picked_up_only_requests.add(rid)
+                
+                for rid in alighting_rids:
+                    if rid in rq_dict: # Ensure it's a request we care about
+                        num_dropped_off_bikes += 1
+                        if rid in picked_up_only_requests:
+                            rebalanced_requests.add(rid)
+                            picked_up_only_requests.remove(rid)
+            
+            # We want to reward fully completed rebalancing tasks
+            reward_per_rebalanced_bike = 5000 # Example reward for completing a full rebalancing cycle (pickup + dropoff)
+            penalty_for_uncompleted_pickup = 1000 # Example penalty for picking up but not dropping off in this plan
+            
+            # The objective function should be minimized.
+            # So, distance is a positive cost.
+            # Rewards are negative costs.
+            # Penalties are positive costs.
 
-        def control_f(simulation_time:float, veh_obj:SimulationVehicle, veh_plan:VehiclePlan, rq_dict:Dict[Any,PlanRequest], routing_engine:NetworkBase)->float:
-            """This function combines the total driving costs, the value of customer time and vehicle waiting time.
+            # Capacity considerations
+            capacity_bonus = 0
+            capacity_penalty = 0
 
-            :param simulation_time: current simulation time
-            :param veh_obj: simulation vehicle object
-            :param veh_plan: vehicle plan in question
-            :param rq_dict: rq -> Plan request dictionary
-            :param routing_engine: for routing queries
-            :return: objective function value
-            """
-            assignment_reward = len(veh_plan.pax_info) * assignment_reward_per_rq
-            # distance term
-            sum_dist = 0
-            sum_veh_wait = 0
-            last_pos = veh_obj.pos
-            for ps in veh_plan.list_plan_stops:
-                # penalize VehiclePlan if it is not planned through and raise warning
-                arrival_time, departure_time = ps.get_planned_arrival_and_departure_time()
-                pos = ps.get_pos()
-                if arrival_time is None:
-                    assignment_reward = -len(veh_plan.pax_info) * LARGE_INT
-                else:
-                    # compute vehicle stop time if departure is already planned
-                    if departure_time is not None:
-                        veh_wait_time = departure_time - arrival_time
-                        if veh_wait_time > 0:
-                            sum_veh_wait += veh_wait_time
-                if pos != last_pos:
-                    sum_dist += routing_engine.return_travel_costs_1to1(last_pos, pos)[2]
-                    last_pos = pos
-            # value of time term (treat waiting and in-vehicle time the same)
-            sum_user_times = 0
-            for rid, boarding_info_list in veh_plan.pax_info.items():
-                rq_time = rq_dict[rid].rq_time
-                drop_off_time = boarding_info_list[1]
-                sum_user_times += (drop_off_time - rq_time)
-            # vehicle costs are taken from simulation vehicle (cent per meter)
-            # value of travel time is scenario input (cent per second)
-            return sum_dist * veh_obj.distance_cost + (sum_user_times + sum_veh_wait) * traveler_vot - assignment_reward
-
-    elif func_key == "sys_time_and_detour_time":
-        detour_weight = vr_control_func_dict["dtw"]
-        assignment_reward_per_rq = MAX_DELAY * 10
-        assignment_reward_per_rq = 10 ** np.ceil(np.log10(assignment_reward_per_rq))
-        LOG.info(f" -> assignment_reward_per_rq for objective function: {assignment_reward_per_rq}")
-
-        def control_f(simulation_time:float, veh_obj:SimulationVehicle, veh_plan:VehiclePlan, rq_dict:Dict[Any,PlanRequest], routing_engine:NetworkBase)->float:
-            """This function is used to minimize system time and detour time
-            the parameter dtw can be used to weight the detour time part dtw == 0 means pure minimizaion of system time
-            dtw == 1 means sytem_time + detour time/customer
-    
-            :param simulation_time: current simulation time
-            :param veh_obj: simulation vehicle object
-            :param veh_plan: vehicle plan in question
-            :param rq_dict: rq -> Plan request dictionary
-            :param routing_engine: for routing queries
-            :return: objective function value
-            """
-            assignment_reward = len(veh_plan.pax_info) * assignment_reward_per_rq
-            # end time (for request assignment purposes) defined by arrival at last stop
-            if veh_plan.list_plan_stops:
-                end_time = veh_plan.list_plan_stops[-1].get_planned_arrival_and_departure_time()[0]
-            else:
-                end_time = simulation_time
-            sys_time = end_time - simulation_time
-            s_det = 0
-            for rid, boarding_info_list in veh_plan.pax_info.items():
-                det = boarding_info_list[1] - boarding_info_list[0] - rq_dict[rid].init_direct_tt
-                s_det += det
-            if len(veh_plan.pax_info) > 0:
-                return sys_time + s_det*detour_weight - assignment_reward
-            else:
-                return sys_time - assignment_reward
-    
-    elif func_key == "IRS_study_standard":
-        LOG.warning(f"This objective might be deprecated. Please check the implementation.")
-        def control_f(simulation_time:float, veh_obj:SimulationVehicle, veh_plan:VehiclePlan, rq_dict:Dict[Any,PlanRequest], routing_engine:NetworkBase)->float:
-            """This function tries to minimize the waiting time of unlocked users.
-
-            :param simulation_time: current simulation time
-            :param veh_obj: simulation vehicle object
-            :param veh_plan: vehicle plan in question
-            :param rq_dict: rq -> Plan request dictionary
-            :param routing_engine: for routing queries
-            :return: objective function value
-            """
-            sum_user_wait_times = 0
-            assignment_reward = 0
-            sum_dist = 0
-            last_pos = veh_obj.pos
-            for ps in veh_plan.list_plan_stops:
-                pos = ps.get_pos()
-                if pos != last_pos and len(ps.get_list_boarding_rids()):
-                    sum_dist += routing_engine.return_travel_costs_1to1(last_pos, pos)[2]
-                    last_pos = pos
-            for rid, boarding_info_list in veh_plan.pax_info.items():
-                prq = rq_dict[rid]
-                if prq.pu_time is None:
-                    rq_time = rq_dict[rid].rq_time
-                    pick_up_time = boarding_info_list[0]
-                    sum_user_wait_times += (pick_up_time - rq_time)
-                    if prq.is_locked():
-                        assignment_reward += LARGE_INT*10000
-                    elif prq.status < G_PRQS_LOCKED:
-                        assignment_reward += float(LARGE_INT)
-                        # TODO # Cplex only allows floats. Therefore this workaround.
-                        #  For some reason LARGE_INT*10000 does not seem to be a problem though...
-                    else:
-                        assignment_reward += LARGE_INT*100
-            # 4 is the empirically found parameter to weigh saved dist against saved waiting time
-            return sum_dist + sum_user_wait_times - assignment_reward
-
-    elif func_key == "soft_time_windows":
-        LOG.warning(f"This objective might be deprecated. Please check the implementation.")
-        soft_tw_rewards = {"locked": LARGE_INT * 1000, "in time window": LARGE_INT + 100}
-        def control_f(simulation_time:float, veh_obj:SimulationVehicle, veh_plan:VehiclePlan, rq_dict:Dict[Any,PlanRequest], routing_engine:NetworkBase)->float:
-            """This function tries to minimize the waiting time of unlocked users. It penalizes assignments that imply
-            pickups outside of the respective requests' time windows.
-
-            :param simulation_time: current simulation time
-            :param veh_obj: simulation vehicle object
-            :param veh_plan: vehicle plan in question
-            :param rq_dict: rq -> Plan request dictionary
-            :param routing_engine: for routing queries
-            :return: objective function value
-            """
-            sum_user_wait_times = 0
-            assignment_reward = 0
-            sum_dist = 0
-            last_pos = veh_obj.pos
-            for ps in veh_plan.list_plan_stops:
-                pos = ps.get_pos()
-                if pos != last_pos:
-                    sum_dist += routing_engine.return_travel_costs_1to1(last_pos, pos)[2]
-                    last_pos = pos
-            for rid, boarding_info_list in veh_plan.pax_info.items():
-                prq = rq_dict[rid]
-                if prq.pu_time is None:
-                    rq_time = rq_dict[rid].rq_time
-                    pick_up_time = boarding_info_list[0]
-                    _, t_pu_earliest, t_pu_latest = rq_dict[rid].get_soft_o_stop_info()
-                    sum_user_wait_times += (pick_up_time - rq_time)
-                    if prq.is_locked():
-                        assignment_reward += soft_tw_rewards["locked"]
-                    elif t_pu_earliest <= pick_up_time <= t_pu_latest:
-                        assignment_reward += soft_tw_rewards["in time window"]
-                    else:
-                        assignment_reward += LARGE_INT
-            return sum_dist + sum_user_wait_times - assignment_reward
+            # If the vehicle is at maximum capacity and tries to pick up more bikes
+            if current_load == max_capacity and num_picked_up_bikes > 0:
+                capacity_penalty += num_picked_up_bikes * 10000 # Heavy penalty for overloading
+            # If the vehicle is empty and picks up a bike
+            elif current_load == 0 and num_picked_up_bikes > 0:
+                capacity_bonus += num_picked_up_bikes * 500 # Bonus for starting to pick up when empty
+            # If the vehicle has bikes and drops them off
+            if current_load > 0 and num_dropped_off_bikes > 0:
+                capacity_bonus += num_dropped_off_bikes * 500 # Bonus for offloading bikes
+            
+            objective_value = sum_dist \
+                            - (len(rebalanced_requests) * reward_per_rebalanced_bike) \
+                            + (len(picked_up_only_requests) * penalty_for_uncompleted_pickup) \
+                            - capacity_bonus \
+                            + capacity_penalty
+                                    
+            # Add a large penalty if no bikes are rebalanced but distance is covered
+            # This encourages the drone to actually rebalance bikes if it moves
+            if len(rebalanced_requests) == 0 and sum_dist > 0:
+                objective_value += 10000 
+                            
+            return objective_value
 
     else:
-        raise IOError(f"Did not find valid request assignment control objective string."
-                      f" Please check the input parameter {G_OP_VR_CTRL_F}!")
-        
-    def embedded_control_f(simulation_time:float, veh_obj:SimulationVehicle, veh_plan:VehiclePlan, rq_dict:Dict[Any,PlanRequest], routing_engine:NetworkBase)->float:
-        """This function is the embedded objective function which is returned to the calling function.
+        raise NotImplementedError(f"pooling objective function {func_key} not implemented! Please check the input parameter {G_OP_VR_CTRL_F}!")
 
-        :param simulation_time: current simulation time
-        :param veh_obj: simulation vehicle object
-        :param veh_plan: vehicle plan in question
-        :param rq_dict: rq -> Plan request dictionary
-        :param routing_engine: for routing queries
-        :return: objective function value
-        """
-        try:
-            return control_f(simulation_time, veh_obj, veh_plan, rq_dict, routing_engine)
-        except Exception as e:
-            LOG.error(f"Error in computing control objective function: {e}")
-            LOG.error(f" -> simulation_time: {simulation_time}")
-            LOG.error(f" -> veh_obj: {veh_obj}")
-            LOG.error(f" -> veh_plan: {veh_plan}")
-            raise e
-
-    return embedded_control_f
+    return control_f

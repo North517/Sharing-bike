@@ -334,6 +334,8 @@ class NetworkBasic(NetworkBase):
 
     def return_positions_lon_lat(self, position_tuple_list: list) -> list:
         pos_list = [self.return_position_coordinates(pos) for pos in position_tuple_list]
+        if not pos_list:  # Handle empty list case
+            return []
         x, y = list(zip(*pos_list))
         proj_transformer = Transformer.from_proj(self.crs, 'epsg:4326')
         lats, lons = proj_transformer.transform(x, y)

@@ -12,7 +12,7 @@ from typing import Callable, List, Dict, Any, Tuple
 
 import logging
 LOG = logging.getLogger(__name__)
-
+LOG.setLevel(logging.DEBUG)
                     
 def simple_insert(routing_engine : NetworkBase, sim_time : int, veh_obj : SimulationVehicle, orig_veh_plan : VehiclePlan, 
                   new_prq_obj : PlanRequest, std_bt : int, add_bt : int,
@@ -59,6 +59,7 @@ def simple_insert(routing_engine : NetworkBase, sim_time : int, veh_obj : Simula
         # only allow combination of boarding tasks if the existing one is not locked (has not started)
         if not org_plan_copy.list_plan_stops[i].is_locked() and not org_plan_copy.list_plan_stops[i].is_locked_end() and prq_o_stop_pos == org_plan_copy.list_plan_stops[i].get_pos():
             old_pstop = org_plan_copy.list_plan_stops[i]
+            LOG.debug(f"simple_insert (pickup branch) - BEFORE modification: pstop_id={i}, old_pstop={old_pstop}, boarding_rids={old_pstop.get_list_boarding_rids()}, alighting_rids={old_pstop.get_list_alighting_rids()}, new_rid_struct={new_rid_struct}")
             new_boarding_list = old_pstop.get_list_boarding_rids() + [new_rid_struct]
             new_boarding_dict = {-1:old_pstop.get_list_alighting_rids(), 1:new_boarding_list}
             ept_dict, lpt_dict, mtt_dict, lat_dict = old_pstop.get_boarding_time_constraint_dicts()
@@ -143,6 +144,7 @@ def simple_insert(routing_engine : NetworkBase, sim_time : int, veh_obj : Simula
                 break
             if d_stop_pos == org_plan_copy.list_plan_stops[j].get_pos() and not org_plan_copy.list_plan_stops[j].is_locked_end():
                 old_pstop = org_plan_copy.list_plan_stops[j]
+                LOG.debug(f"simple_insert (dropoff branch) - BEFORE modification: pstop_id={j}, old_pstop={old_pstop}, boarding_rids={old_pstop.get_list_boarding_rids()}, alighting_rids={old_pstop.get_list_alighting_rids()}, new_rid_struct={new_rid_struct}")
                 # combine with last stop if it is at the same location (combine constraints)
                 new_alighting_list = old_pstop.get_list_alighting_rids() + [new_rid_struct]
                 new_boarding_dict = {1:old_pstop.get_list_boarding_rids(), -1:new_alighting_list}

@@ -12,6 +12,13 @@ from tqdm import tqdm
 import typing as tp
 from pathlib import Path
 from multiprocessing import Manager
+import json
+
+logging.VERBOSE = 5
+logging.addLevelName(logging.VERBOSE, "VERBOSE")
+logging.Logger.verbose = lambda inst, msg, *args, **kwargs: inst.log(logging.VERBOSE, msg, *args, **kwargs)
+logging.LoggerAdapter.verbose = lambda inst, msg, *args, **kwargs: inst.log(logging.VERBOSE, msg, *args, **kwargs)
+logging.verbose = lambda msg, *args, **kwargs: logging.log(logging.VERBOSE, msg, *args, **kwargs)
 
 # additional module imports (> requirements)
 # ------------------------------------------
@@ -35,9 +42,36 @@ if tp.TYPE_CHECKING:
 # ----------------
 # set log level to logging.DEBUG or logging.INFO for single simulations
 from src.misc.globals import *
-DEFAULT_LOG_LEVEL = logging.INFO
+DEFAULT_LOG_LEVEL = logging.DEBUG
+
+# Configure root logger before any other loggers are created
+log_file_path = os.path.join("E:\\Sharing bike\\FleetPy-main\\FleetPy-main\\output", "00_simulation.log") # Default path
+
+# Remove all existing handlers from the root logger
+for handler in logging.root.handlers[:]:
+    logging.root.removeHandler(handler)
+
+# Set the root logger level to DEBUG by default to capture all messages
+logging.root.setLevel(logging.DEBUG)
+
+# Create a formatter
+formatter = logging.Formatter('%(asctime)s-%(process)d-%(name)s-%(levelname)s-%(message)s')
+
+# Create a file handler
+file_handler = logging.FileHandler(log_file_path)
+file_handler.setLevel(logging.DEBUG) # File handler captures all debug messages
+file_handler.setFormatter(formatter)
+logging.root.addHandler(file_handler)
+
+# Create a stream handler (console output)
+stream_handler = logging.StreamHandler()
+stream_handler.setLevel(logging.INFO) # Console shows INFO and above by default
+stream_handler.setFormatter(formatter)
+logging.root.addHandler(stream_handler)
+
 LOG = logging.getLogger(__name__)
-BUFFER_SIZE = 10
+LOG.propagate = False # Prevent messages from being handled by root logger again (double output)
+LOG.setLevel(logging.DEBUG) # This specific logger always outputs DEBUG messages
 PROGRESS_LOOP = "demand"
 PROGRESS_LOOP_VEHICLE_STATUS = [VRL_STATES.IDLE,VRL_STATES.CHARGING,VRL_STATES.REPOSITION]
 # check for computation on LRZ cluster
@@ -126,8 +160,66 @@ class FleetSimulationBase:
         # config
         self.scenario_name = scenario_parameters[G_SCENARIO_NAME]
         print("-"*80 + f"\nSimulation of scenario {self.scenario_name}")
-        LOG.info(f"General initialization of scenario {self.scenario_name}...")
+
+        if scenario_parameters.get("show_progress_bar", True) == False:
+            global PROGRESS_LOOP
+            PROGRESS_LOOP = "off"
         
+        self.n_op = scenario_parameters[G_NR_OPERATORS]
+        self.n_ch_op = scenario_parameters.get(G_NR_CH_OPERATORS, 0)
+        
+        # build list of operator dictionaries  # TODO: this could be eliminated with a new YAML-based config system
+        self.list_op_dicts: tp.Dict[str,str] = build_operator_attribute_dicts(scenario_parameters, self.n_op,
+                                                                              prefix="op_")
+        self.list_ch_op_dicts: tp.Dict[str,str] = build_operator_attribute_dicts(scenario_parameters, self.n_ch_op,
+                                                                                 prefix="ch_op_")
+        
+        self.dir_names = self.get_directory_dict(scenario_parameters, self.list_op_dicts)
+        # empty output directory
+        if not self.skip_output:
+            create_or_empty_dir(self.dir_names[G_DIR_OUTPUT])
+
+        # --- Configure Logging --- #
+        # Remove all existing handlers from the root logger
+        for handler in logging.root.handlers[:]:
+            logging.root.removeHandler(handler)
+
+        # Determine log level from scenario parameters
+        log_level_str = scenario_parameters.get(G_LOG_LEVEL, "info").lower()
+        if log_level_str == "verbose":
+            log_level = logging.VERBOSE
+        elif log_level_str == "debug":
+            log_level = logging.DEBUG
+        elif log_level_str == "info":
+            log_level = logging.INFO
+        elif log_level_str == "warning":
+            log_level = logging.WARNING
+        elif log_level_str == "error":
+            log_level = logging.ERROR
+        else:
+            log_level = logging.INFO # Default to INFO
+        logging.root.setLevel(log_level)
+
+        # Create a formatter
+        formatter = logging.Formatter('%(asctime)s-%(process)d-%(name)s-%(levelname)s-%(message)s')
+
+        # Create file handler
+        log_file_path = os.path.join(self.get_directory_dict(scenario_parameters, [])[G_DIR_OUTPUT], "00_simulation.log")
+        file_handler = logging.FileHandler(log_file_path)
+        file_handler.setLevel(log_level)
+        file_handler.setFormatter(formatter)
+        logging.root.addHandler(file_handler)
+
+        # Create stream handler (console output)
+        stream_handler = logging.StreamHandler()
+        stream_handler.setLevel(log_level if log_level <= logging.INFO else logging.INFO) # Console shows scenario level or INFO
+        stream_handler.setFormatter(formatter)
+        logging.root.addHandler(stream_handler)
+
+        LOG.info(f"General initialization of scenario {self.scenario_name}...")
+        LOG.debug(f"Log level set to {logging.getLevelName(log_level)} (root and handlers). Log file: {log_file_path}")
+        # --- End Configure Logging --- #
+
         if scenario_parameters.get("show_progress_bar", True) == False:
             global PROGRESS_LOOP
             PROGRESS_LOOP = "off"
@@ -165,6 +257,7 @@ class FleetSimulationBase:
         self._shared_dict: dict = {}
         self._plot_class_instance: tp.Optional[PyPlot] = None
         self.realtime_plot_flag = self.scenario_parameters.get(G_SIM_REALTIME_PLOT_FLAG, 0)
+        self.simulation_data_history = [] # For web visualization
         self.skip_output = True if scenario_parameters.get(G_SKIP_OUTPUT, 0) > 0 else False
 
         # take care of random seeds at beginning of simulations
@@ -180,40 +273,9 @@ class FleetSimulationBase:
 
         if self.skip_output:
             LOG.disabled = True
-        else:
-            # remove old log handlers (otherwise sequential simulations only log to first simulation)
-            for handler in logging.root.handlers[:]:
-                logging.root.removeHandler(handler)
-            # start new log file
-            logging.VERBOSE = 5
-            logging.addLevelName(logging.VERBOSE, "VERBOSE")
-            logging.Logger.verbose = lambda inst, msg, *args, **kwargs: inst.log(logging.VERBOSE, msg, *args, **kwargs)
-            logging.LoggerAdapter.verbose = lambda inst, msg, *args, **kwargs: inst.log(logging.VERBOSE, msg, *args, **kwargs)
-            logging.verbose = lambda msg, *args, **kwargs: logging.log(logging.VERBOSE, msg, *args, **kwargs)
-            if self.scenario_parameters.get("log_level", "info"):
-                level_str = self.scenario_parameters["log_level"]
-                if level_str == "verbose":
-                    log_level = logging.VERBOSE
-                elif level_str == "debug":
-                    log_level = logging.DEBUG
-                elif level_str == "info":
-                    log_level = logging.INFO
-                elif level_str == "warning":
-                    log_level = logging.WARNING
-                else:
-                    log_level = DEFAULT_LOG_LEVEL
-            else:
-                log_level = DEFAULT_LOG_LEVEL
-                pd.set_option("mode.chained_assignment", None)
-            self.log_file = os.path.join(self.dir_names[G_DIR_OUTPUT], f"00_simulation.log")
-            if log_level < logging.INFO:
-                streams = [logging.FileHandler(self.log_file), logging.StreamHandler()]
-            else:
-                print("Only minimum output to console -> see log-file")
-                streams = [logging.FileHandler(self.log_file)]
-            # TODO # log of subsequent simulations is saved in first simulation log
-            logging.basicConfig(handlers=streams,
-                                level=log_level, format='%(process)d-%(name)s-%(levelname)s-%(message)s')
+
+
+
 
         # set up output files
         self.user_stat_f = os.path.join(self.dir_names[G_DIR_OUTPUT], f"1_user-stats.csv")
@@ -274,9 +336,7 @@ class FleetSimulationBase:
         self._load_charging_modules()
 
         # attributes for fleet controller and vehicles
-        self.sim_vehicles: tp.Dict[tp.Tuple[int, int], SimulationVehicle] = {}
-        self.sorted_sim_vehicle_keys: tp.List[tp.Tuple[int, int]] = sorted(self.sim_vehicles.keys())
-        self.vehicle_update_order: tp.Dict[tp.Tuple[int, int], int] = {vid : 1 for vid in self.sim_vehicles.keys()} #value defines the order in whichvehicles are updated (i.e. charging first)
+        self.sim_vehicles: tp.Dict[tp.Tuple[int, int], SimulationVehicle] = {} #value defines the order in whichvehicles are updated (i.e. charging first)
         self.operators: tp.List[FleetControlBase] = []
         self.op_output = {}
         self._load_fleetctr_vehicles()
@@ -305,7 +365,11 @@ class FleetSimulationBase:
         # demand module
         LOG.info("Initialization of travelers...")
         if self.scenario_parameters[G_SIM_ENV] != "MobiTopp":
-            self.demand = Demand(self.scenario_parameters, self.user_stat_f, self.routing_engine, self.zones)
+            demand_class_name = self.scenario_parameters.get("demand_class", "Demand")
+            demand_module_name = self.scenario_parameters.get("demand_module", "demand")
+            demand_module = importlib.import_module(f"src.demand.{demand_module_name}")
+            DemandClass = getattr(demand_module, demand_class_name)
+            self.demand = DemandClass(self.scenario_parameters, self.user_stat_f, self.routing_engine, self.zones)
             self.demand.load_demand_file(self.scenario_parameters[G_SIM_START_TIME],
                                          self.scenario_parameters[G_SIM_END_TIME], self.dir_names[G_DIR_DEMAND],
                                          self.scenario_parameters[G_RQ_FILE], self.scenario_parameters[G_RANDOM_SEED],
@@ -371,23 +435,27 @@ class FleetSimulationBase:
             op_specific_dirs = self.dir_names.get(f"op_{op_id}", {})
             op_dir_names.update(op_specific_dirs)
             self.op_output[op_id] = []  # shared list among vehicles
-            if not (operator_module_name == "LinebasedFleetControl"
-                    or operator_module_name == "SemiOnDemandBatchAssignmentFleetcontrol"
-                    or operator_module_name == "SoDZonalBatchAssignmentFleetcontrol"
-            ):
-                fleet_composition_dict = operator_attributes[G_OP_FLEET]
-                list_vehicles = []
-                vid = 0
-                for veh_type, nr_veh in fleet_composition_dict.items():
-                    for _ in range(nr_veh):
-                        veh_type_list.append([op_id, vid, veh_type])
-                        tmp_veh_obj = SimulationVehicle(op_id, vid, self.dir_names[G_DIR_VEH], veh_type,
-                                                        self.routing_engine, self.demand.rq_db,
-                                                        self.op_output[op_id], route_output_flag,
-                                                        replay_flag)
+            list_vehicles = []
+            # load vehicles for this operator
+            fleet_composition_str = operator_attributes.get("op_fleet_composition")
+            if fleet_composition_str:
+                for comp in fleet_composition_str.split(";"):
+                    veh_type, num_veh = comp.split(":")
+                    num_veh = int(num_veh)
+                    veh_file = os.path.join(self.dir_names[G_DIR_VEH], f"{veh_type}.csv")
+                    # Load vehicle type definition file
+                    veh_type_df = pd.read_csv(veh_file)
+                    # Load vehicle instances file
+                    veh_instances_file = os.path.join(self.dir_names[G_DIR_VEH], f"{veh_type}_instances.csv")
+                    veh_df = pd.read_csv(veh_instances_file)
+                    for i in range(num_veh):
+                        veh_id_in_file = veh_df.loc[i, "veh_id"]
+                        tmp_veh_obj = SimulationVehicle(op_id, veh_id_in_file, self.dir_names[G_DIR_VEH], veh_type, self.routing_engine, self.demand.rq_db, self.op_output[op_id], route_output_flag, replay_flag)
                         list_vehicles.append(tmp_veh_obj)
-                        self.sim_vehicles[(op_id, vid)] = tmp_veh_obj
-                        vid += 1
+                        self.sim_vehicles[(op_id, veh_id_in_file)] = tmp_veh_obj
+            
+
+
                 OpClass: FleetControlBase = load_fleet_control_module(operator_module_name)
                 self.operators.append(OpClass(op_id, operator_attributes, list_vehicles, self.routing_engine, self.zones,
                                             self.scenario_parameters, op_dir_names, self.charging_operator_dict["op"].get(op_id, None), list(self.charging_operator_dict["pub"].values())))
@@ -452,6 +520,7 @@ class FleetSimulationBase:
         veh_type_df = pd.DataFrame(veh_type_list, columns=[G_V_OP_ID, G_V_VID, G_V_TYPE])
         if not self.skip_output:
             veh_type_df.to_csv(veh_type_f, index=False)
+        self.sorted_sim_vehicle_keys: tp.List[tp.Tuple[int, int]] = sorted(self.sim_vehicles.keys())
         self.vehicle_update_order: tp.Dict[tp.Tuple[int, int], int] = {vid : 1 for vid in self.sim_vehicles.keys()}
 
     def _load_broker_module(self):
@@ -782,7 +851,8 @@ class FleetSimulationBase:
             if PROGRESS_LOOP == "off":
                 for sim_time in range(self.start_time, self.end_time, self.time_step):
                     self.step(sim_time)
-                    self._update_realtime_plots_dict(sim_time)
+                    veh_ids, veh_status, veh_positions, misplaced_bike_rids, misplaced_bike_coords, parking_spot_ids, parking_spot_coords = self._get_current_simulation_state()
+                    self._collect_web_visualization_data(sim_time, veh_ids, veh_status, veh_positions, misplaced_bike_rids, misplaced_bike_coords, parking_spot_ids, parking_spot_coords)
             elif PROGRESS_LOOP == "demand":
                 # loop over time with progress bar scaling according to future demand
                 all_requests = sum([len(x) for x in self.demand.future_requests.values()])
@@ -791,6 +861,9 @@ class FleetSimulationBase:
                     for sim_time in range(self.start_time, self.end_time, self.time_step):
                         remaining_requests = sum([len(x) for x in self.demand.future_requests.values()])
                         self.step(sim_time)
+                        # Data collection for web visualization
+                        veh_ids, veh_status, veh_positions, misplaced_bike_rids, misplaced_bike_coords, parking_spot_ids, parking_spot_coords = self._get_current_simulation_state(sim_time)
+                        self._collect_web_visualization_data(sim_time, veh_ids, veh_status, veh_positions, misplaced_bike_rids, misplaced_bike_coords, parking_spot_ids, parking_spot_coords)
                         cur_perc = int(100 * (1 - remaining_requests/all_requests))
                         pbar.update(cur_perc - pbar.n)
                         vehicle_counts = self.count_fleet_status()
@@ -804,6 +877,9 @@ class FleetSimulationBase:
                 for sim_time in tqdm(range(self.start_time, self.end_time, self.time_step), position=tqdm_position,
                                      desc=self.scenario_parameters.get(G_SCENARIO_NAME)):
                     self.step(sim_time)
+                    # Data collection for web visualization
+                    veh_ids, veh_status, veh_positions, misplaced_bike_rids, misplaced_bike_coords, parking_spot_ids, parking_spot_coords = self._get_current_simulation_state(sim_time)
+                    self._collect_web_visualization_data(sim_time, veh_ids, veh_status, veh_positions, misplaced_bike_rids, misplaced_bike_coords, parking_spot_ids, parking_spot_coords)
                     self._update_realtime_plots_dict(sim_time)
 
             # record stats
@@ -845,13 +921,16 @@ class FleetSimulationBase:
                 self._manager = Manager()
                 self._shared_dict = self._manager.dict()
                 self._plot_class_instance = PyPlot(self.dir_names["network"], self._shared_dict, plot_extent=lons+lats)
+                LOG.debug(f"Starting PyPlot instance for realtime_plot_flag=1")
                 self._plot_class_instance.start()
             else:
                 plot_dir = Path(self.dir_names["output"], "real_time_plots")
                 if plot_dir.exists() is False:
-                    plot_dir.mkdir()
+                    os.makedirs(str(plot_dir), exist_ok=True)
                 self._plot_class_instance = PyPlot(self.dir_names["network"], self._shared_dict,
                                                    plot_extent=lons + lats, plot_folder=str(plot_dir))
+                LOG.debug(f"Starting PyPlot instance for realtime_plot_flag=2, plot_dir={plot_dir}")
+                self._plot_class_instance.start()
 
     def _end_realtime_plot(self):
         """ Closes the process for real time plots """
@@ -860,25 +939,97 @@ class FleetSimulationBase:
             self._plot_class_instance.join()
             self._manager.shutdown()
 
+        # Export simulation_data_history to JSON
+        if self.simulation_data_history:
+            json_output_path = Path(self.dir_names["output"]) / "simulation_data.json"
+            with open(json_output_path, "w") as f:
+                json.dump(self.simulation_data_history, f, indent=4)
+            LOG.info(f"Simulation data exported to {json_output_path}")
+
     def _update_realtime_plots_dict(self, sim_time):
         """ This method updates the shared dict with the realtime plot process """
         if self.realtime_plot_flag in {1, 2}:
-            veh_ids = list(self.sim_vehicles.keys())
-            possible_states = self.scenario_parameters.get(G_SIM_REALTIME_PLOT_VEHICLE_STATUS,
-                                                           [status.value for status in VRL_STATES])
-            G_VEHICLE_STATUS_DICT = VRL_STATES.G_VEHICLE_STATUS_DICT()
-            possible_states = [G_VEHICLE_STATUS_DICT[x] for x in possible_states]
-            veh_status = [self.sim_vehicles[veh].status for veh in veh_ids]
-            veh_status = [state.display_name for state in veh_status]
-            veh_positions = [self.sim_vehicles[veh].pos for veh in veh_ids]
-            veh_positions = self.routing_engine.return_positions_lon_lat(veh_positions)
+            veh_ids, veh_status, veh_positions, misplaced_bike_rids, misplaced_bike_coords, parking_spot_ids, parking_spot_coords = self._get_current_simulation_state(sim_time)
+            
+            veh_coords_for_plot = []
+            for i in range(len(veh_ids)):
+                veh_coords_for_plot.append(self.routing_engine.return_position_lon_lat(self.sim_vehicles[veh_ids[i]].pos))
             df = pd.DataFrame({"status": veh_status,
-                               "coordinates": veh_positions})
+                               "coordinates": veh_coords_for_plot})
             self._shared_dict.update({"veh_coord_status_df": df,
-                                      "possible_status": possible_states,
+                                      "possible_status": self.scenario_parameters.get(G_SIM_REALTIME_PLOT_VEHICLE_STATUS, [status.value for status in VRL_STATES]),
                                       "simulation_time": f"simulation time: {datetime.timedelta(seconds=sim_time)}"})
+
+            misplaced_bikes_df = pd.DataFrame({"rid": misplaced_bike_rids, "coordinates": misplaced_bike_coords})
+            self._shared_dict.update({"misplaced_bikes_df": misplaced_bikes_df})
+
+            parking_spots_df = pd.DataFrame({"depot_id": parking_spot_ids, "coordinates": parking_spot_coords})
+            self._shared_dict.update({"parking_spots_df": parking_spots_df})
+
             if self.realtime_plot_flag == 2:
                 self._plot_class_instance.save_single_plot(str(sim_time))
+
+    def _get_current_simulation_state(self, sim_time):
+        veh_ids = []
+        veh_status = []
+        veh_positions = []
+        for veh_id in self.sorted_sim_vehicle_keys:
+            veh_obj = self.sim_vehicles[veh_id]
+            veh_ids.append(veh_id)
+            veh_status.append(veh_obj.status)
+            veh_positions.append(self.routing_engine.return_positions_lon_lat([veh_obj.pos])[0])
+
+        misplaced_bikes = self.demand.get_undecided_travelers(sim_time)
+        misplaced_bike_positions = []
+        misplaced_bike_rids = []
+        for rid, request in misplaced_bikes:
+            misplaced_bike_positions.append(request.o_pos)
+            misplaced_bike_rids.append(rid)
+        misplaced_bike_coords = self.routing_engine.return_positions_lon_lat(misplaced_bike_positions)
+
+        parking_spot_positions = []
+        parking_spot_ids = []
+        if "op" in self.charging_operator_dict and len(self.charging_operator_dict["op"]) > 0:
+            first_op_id = list(self.charging_operator_dict["op"].keys())[0]
+            operator_charging_infra = self.charging_operator_dict["op"][first_op_id]
+            
+            for depot_id, depot_obj in operator_charging_infra.depot_by_id.items():
+                parking_spot_positions.append(depot_obj.pos)
+                parking_spot_ids.append(depot_id)
+        parking_spot_coords = self.routing_engine.return_positions_lon_lat(parking_spot_positions)
+        return veh_ids, veh_status, veh_positions, misplaced_bike_rids, misplaced_bike_coords, parking_spot_ids, parking_spot_coords
+
+    def _collect_web_visualization_data(self, sim_time, veh_ids, veh_status, veh_positions, misplaced_bike_rids, misplaced_bike_coords, parking_spot_ids, parking_spot_coords):
+        # Collect data for web visualization
+        current_sim_data = {
+            "time": sim_time,
+            "vehicles": [
+                {
+                    "id": f"{veh_ids[i][0]}-{veh_ids[i][1]}",
+                    "status": int(veh_status[i].value),
+                    "lon": veh_positions[i][0],
+                    "lat": veh_positions[i][1]
+                }
+                for i in range(len(veh_ids))
+            ],
+            "misplaced_bikes": [
+                {
+                    "id": int(misplaced_bike_rids[i]),
+                    "lon": misplaced_bike_coords[i][0],
+                    "lat": misplaced_bike_coords[i][1]
+                }
+                for i in range(len(misplaced_bike_rids))
+            ],
+            "parking_spots": [
+                {
+                    "id": int(parking_spot_ids[i]),
+                    "lon": parking_spot_coords[i][0],
+                    "lat": parking_spot_coords[i][1]
+                }
+                for i in range(len(parking_spot_ids))
+            ]
+        }
+        self.simulation_data_history.append(current_sim_data)
 
     def count_fleet_status(self) -> dict:
         """ This method counts the number of vehicles in each of the vehicle statuses

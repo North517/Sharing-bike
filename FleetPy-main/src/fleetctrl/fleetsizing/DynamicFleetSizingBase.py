@@ -187,7 +187,8 @@ class DynamicFleetSizingBase(ABC):
         list_next_prio = []     # list of (number_vrl, veh_obj) where no charging or repositioning tasks are assigned
         list_other = []         # list of other veh_obj that are not considered inactive yet
         LOG.info("to deactivate: {}".format(number_deactivate))
-        for veh_obj in list_veh_obj:
+        for veh_id in self.fleetctrl.sim_vehicles:
+            veh_obj = self.fleetctrl.sim_vehicles[veh_id]
             # stop if enough vehicles are chosen
             if number_deactivate == 0:
                 break

@@ -32,6 +32,7 @@ G_SIM_REALTIME_PLOT_EXTENTS = "realtime_plot_extents"
 G_NR_OPERATORS = "nr_mod_operators"
 G_NR_CH_OPERATORS = "nr_charging_operators"
 G_LOG_GUROBI = "log_gurobi" # optional; if True gurobi output file written -> default False
+G_LOG_LEVEL = "log_level" # optional; default is INFO, can be set to DEBUG, INFO, WARNING, ERROR
 
 # general optional input
 G_ZONE_SYSTEM_NAME = "zone_system_name"

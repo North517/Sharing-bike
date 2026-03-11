@@ -225,6 +225,14 @@ class Demand:
         """
         return list(self.undecided_rq.items())
 
+    def remove_undecided_request(self, rid):
+        """Removes a request from the undecided pool."""
+        if rid in self.undecided_rq:
+            del self.undecided_rq[rid]
+            LOG.debug(f"Removed request {rid} from undecided pool.")
+        else:
+            LOG.warning(f"Attempted to remove non-existent request {rid} from undecided pool.")
+
     def record_boarding(self, rid, vid, op_id, simulation_time, pu_pos=None, t_access=None):
         """This method should be called whenever a customer boards a vehicle.
 

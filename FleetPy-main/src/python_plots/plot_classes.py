@@ -3,9 +3,12 @@ from multiprocessing import Process
 import numpy as np
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.gridspec as gridspec
 import typing as tp
 from pathlib import Path
+import logging
 import contextily as ctx
 from pyproj import Transformer
 from datetime import datetime, timedelta
@@ -279,6 +282,25 @@ class PyPlot(Process):
                 lons, lats = list(zip(*coords))
                 x, y = self.convert_lat_lon(lats, lons)
             axes[3].scatter(x, y, s=VEHICLE_POINT_SIZE, label=possible_status[i],color = color_list[i])
+        
+        # Plot misplaced bikes
+        if "misplaced_bikes_df" in self.shared_dict:
+            misplaced_bikes_df = self.shared_dict["misplaced_bikes_df"]
+            if not misplaced_bikes_df.empty:
+                misplaced_bike_coords = misplaced_bikes_df["coordinates"].to_list()
+                mb_lons, mb_lats = list(zip(*misplaced_bike_coords))
+                mb_x, mb_y = self.convert_lat_lon(mb_lats, mb_lons)
+                axes[3].scatter(mb_x, mb_y, s=VEHICLE_POINT_SIZE * 2, marker='X', color='red', label='Misplaced Bikes', zorder=VEHICLE_POINT_SIZE+1)
+
+        # Plot parking spots
+        if "parking_spots_df" in self.shared_dict:
+            parking_spots_df = self.shared_dict["parking_spots_df"]
+            if not parking_spots_df.empty:
+                parking_spot_coords = parking_spots_df["coordinates"].to_list()
+                ps_lons, ps_lats = list(zip(*parking_spot_coords))
+                ps_x, ps_y = self.convert_lat_lon(ps_lats, ps_lons)
+                axes[3].scatter(ps_x, ps_y, s=VEHICLE_POINT_SIZE * 3, marker='^', color='green', label='Parking Spots', zorder=VEHICLE_POINT_SIZE+2)
+
         axes[3].legend(loc="lower left")
         axes[3].axis('off')
         rounded_simulation_time = self.shared_dict["simulation_time"] - timedelta(microseconds=self.shared_dict["simulation_time"].microsecond)
@@ -297,7 +319,8 @@ class PyPlot(Process):
             file_name = "plot_{}.png".format(datetime_stamp.strftime("%d-%b-%Y %H-%M-%S"))
         else:
             file_name = "plot_{}.png".format(datetime_stamp)
-        plt.savefig(str(self.plot_folder.joinpath(file_name)), bbox_inches = 'tight')
+        full_plot_path = str(self.plot_folder.joinpath(file_name))
+        plt.savefig(full_plot_path, bbox_inches = 'tight')
 
     def __animate(self, i):
         [ax.clear() for ax in self.axes]

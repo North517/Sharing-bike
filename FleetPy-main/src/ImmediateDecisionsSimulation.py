@@ -1,44 +1,23 @@
-# -------------------------------------------------------------------------------------------------------------------- #
-# standard distribution imports
-# -----------------------------
 import logging
 import importlib
 import os
 import json
 
-# additional module imports (> requirements)
-# ------------------------------------------
-# from IPython import embed
-
-# src imports
-# -----------
-
 from src.FleetSimulationBase import FleetSimulationBase
 
-# -------------------------------------------------------------------------------------------------------------------- #
-# global variables
-# ----------------
 from src.misc.globals import *
 LOG = logging.getLogger(__name__)
 
 INPUT_PARAMETERS_ImmediateDecisionsSimulation = {
     "doc" : "in this simulation each request immediatly decides for or against an offer",
     "inherit" : "FleetSimulationBase",
-    "input_parameters_mandatory": [],   # TODO requires G_AR_MAX_DEC_T == 0 (specify somehow?)
+    "input_parameters_mandatory": [],
     "input_parameters_optional": [],
     "mandatory_modules": [], 
     "optional_modules": []
 }
 
 
-# -------------------------------------------------------------------------------------------------------------------- #
-# functions
-# ---------
-
-
-# -------------------------------------------------------------------------------------------------------------------- #
-# main
-# ----
 class ImmediateDecisionsSimulation(FleetSimulationBase):
     """
     Init main simulation module. Check the documentation for a flowchart of this particular simulation environment.
@@ -84,14 +63,38 @@ class ImmediateDecisionsSimulation(FleetSimulationBase):
         last_time = sim_time - self.time_step
         if last_time < self.start_time:
             last_time = None
-        list_new_traveler_rid_obj = self.demand.get_new_travelers(sim_time, since=last_time)
-        # 3)
-        for rid, rq_obj in list_undecided_travelers + list_new_traveler_rid_obj:
+        
+        # New traveler processing with debug log
+        processed_new_travelers = []
+        for rid, rq_obj in self.demand.get_new_travelers(sim_time, since=last_time):
+            LOG.debug(f"ImmediateDecisionsSimulation.step: New traveler from demand module: rid={rid} (rq_obj={rq_obj}).")
+            processed_new_travelers.append((rid, rq_obj))
+
+        # 3) Process newly active travelers first
+        for rid, rq_obj in processed_new_travelers:
+            LOG.debug(f"ImmediateDecisionsSimulation.step: Processing NEWLY ACTIVE traveler: rid={rid}.")
             self.broker.inform_request(rid, rq_obj, sim_time)
             amod_offers = self.broker.collect_offers(rid)
             for op_id, amod_offer in amod_offers.items():
                 rq_obj.receive_offer(op_id, amod_offer, sim_time)
             self._rid_chooses_offer(rid, rq_obj, sim_time)
+            # After a new request has been processed, remove it from the undecided pool
+            self.demand.remove_undecided_request(rid)
+
+        # Then process previously undecided travelers (that were not just activated)
+        for rid, rq_obj in list_undecided_travelers:
+            # Check if it's still in the undecided pool (i.e., not processed yet by _rid_chooses_offer)
+            if rid not in self.demand.undecided_rq: 
+                LOG.debug(f"ImmediateDecisionsSimulation.step: Skipping previously undecided request {rid} because it was already processed or removed.")
+                continue
+            LOG.debug(f"ImmediateDecisionsSimulation.step: Processing PREVIOUSLY UNDECIDED traveler: rid={rid}.")
+            self.broker.inform_request(rid, rq_obj, sim_time)
+            amod_offers = self.broker.collect_offers(rid)
+            for op_id, amod_offer in amod_offers.items():
+                rq_obj.receive_offer(op_id, amod_offer, sim_time)
+            self._rid_chooses_offer(rid, rq_obj, sim_time)
+            # After an undecided request has been processed, remove it from the undecided pool
+            self.demand.remove_undecided_request(rid)
         # 4)
         self._check_waiting_request_cancellations(sim_time)
         # 5)
