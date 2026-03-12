@@ -168,6 +168,10 @@
 
             currentIndex = index;
             const frame = simulationData[currentIndex];
+            // 如果回到起点，则重置单车回收相关的状态
+            if (currentIndex === 0) {
+                collectedBikeIds.clear();
+            }
             document.getElementById('time-slider').value = currentIndex;
             document.getElementById('current-time').textContent = `时间: ${frame.time} 秒`;
 
@@ -211,25 +215,18 @@
                 }
 
                 // 判断当前帧是否有无人车足够接近该单车，如果是，则认为已被回收
-                // 为了演示时看起来更精确，这里只在车辆非常接近该红点时才触发“回收”，
-                // 大约二三十米的量级。
-                const pickupThreshold = 0.0003;
+                // 思路B前端拦车：把范围进一步放大，只要蓝车经过这一大片区域，就把区域内红点视为被收走
+                const pickupThreshold = 0.003;
                 let pickedUp = false;
-                let nearestVehId = null;
                 frame.vehicles.forEach(v => {
                     const dLat = v.lat - b.lat;
                     const dLon = v.lon - b.lon;
                     const dist2 = dLat * dLat + dLon * dLon;
                     if (dist2 < pickupThreshold * pickupThreshold) {
                         pickedUp = true;
-                        nearestVehId = v.id;
                     }
                 });
                 if (pickedUp) {
-                    // 将最近的无人车图标直接“贴”到该红点位置，使回收动作在视觉上更精确
-                    if (nearestVehId && vehicleMarkers[nearestVehId]) {
-                        vehicleMarkers[nearestVehId].setLatLng([b.lat, b.lon]);
-                    }
                     collectedBikeIds.add(b.id);
                     if (bikeMarkers[b.id]) {
                         map.removeLayer(bikeMarkers[b.id]);
@@ -252,11 +249,12 @@
                     }).addTo(map).bindPopup(`单车 ID: ${b.id}`);
                 }
             });
-            // Remove bikes that are no longer present
-            Object.keys(bikeMarkers).forEach(id => {
-                if (!currentBikeIds.has(parseInt(id))) {
-                    map.removeLayer(bikeMarkers[id]);
-                    delete bikeMarkers[id];
+            // Remove bikes that是 no longer present 且也不是“本次仿真中已回收的”
+            Object.keys(bikeMarkers).forEach(idStr => {
+                const idNum = parseInt(idStr, 10);
+                if (!currentBikeIds.has(idNum) && !collectedBikeIds.has(idNum)) {
+                    map.removeLayer(bikeMarkers[idStr]);
+                    delete bikeMarkers[idStr];
                 }
             });
 
