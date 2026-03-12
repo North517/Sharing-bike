@@ -71,6 +71,10 @@
             font-size: 9px;
             border: 2px solid #1e7e34;
         }
+        /* 让所有 Leaflet 标记在位置更新时使用平滑过渡，而不是瞬间跳跃 */
+        .leaflet-marker-icon {
+            transition: transform 0.8s linear;
+        }
     </style>
 </head>
 <body>
@@ -95,7 +99,9 @@
         let vehicleMarkers = {};
         let bikeMarkers = {};
         let parkingMarkers = {};
-        const updateInterval = 200; // milliseconds per step
+        let collectedBikeIds = new Set(); // 已被无人车回收的单车 ID
+        // 控制动画速度：数值越大，播放越慢（单位：毫秒/步）
+        const updateInterval = 800; // was 200, slowed down for clearer visualization
 
         // Initialize map
         function initMap() {
@@ -108,7 +114,9 @@
         // Load simulation data
         async function loadSimulationData() {
             try {
-                const response = await fetch('./studies/bike_rebalancing_study/results/bike_rebalancing_sc_1/simulation_data.json');
+                // NOTE: simulation_data.json is written into the web_visualisation_output subfolder
+                // of the current scenario result directory.
+                const response = await fetch('./studies/bike_rebalancing_study/results/bike_rebalancing_sc_1/web_visualisation_output/simulation_data.json');
                 simulationData = await response.json();
                 console.log('Simulation data loaded:', simulationData);
                 if (simulationData.length > 0) {
@@ -181,8 +189,10 @@
                 }
             });
             // Remove vehicles that are no longer present
+            // NOTE: vehicle IDs in the data are strings like "0-0". We must compare them as strings,
+            // not parse them to integers, otherwise markers will be removed immediately.
             Object.keys(vehicleMarkers).forEach(id => {
-                if (!currentVehicleIds.has(parseInt(id))) {
+                if (!currentVehicleIds.has(id)) {
                     map.removeLayer(vehicleMarkers[id]);
                     delete vehicleMarkers[id];
                 }
@@ -191,6 +201,43 @@
             // Update misplaced bikes
             const currentBikeIds = new Set();
             frame.misplaced_bikes.forEach(b => {
+                // 如果已经被回收，则不再显示
+                if (collectedBikeIds.has(b.id)) {
+                    if (bikeMarkers[b.id]) {
+                        map.removeLayer(bikeMarkers[b.id]);
+                        delete bikeMarkers[b.id];
+                    }
+                    return;
+                }
+
+                // 判断当前帧是否有无人车足够接近该单车，如果是，则认为已被回收
+                // 为了演示时看起来更精确，这里只在车辆非常接近该红点时才触发“回收”，
+                // 大约二三十米的量级。
+                const pickupThreshold = 0.0003;
+                let pickedUp = false;
+                let nearestVehId = null;
+                frame.vehicles.forEach(v => {
+                    const dLat = v.lat - b.lat;
+                    const dLon = v.lon - b.lon;
+                    const dist2 = dLat * dLat + dLon * dLon;
+                    if (dist2 < pickupThreshold * pickupThreshold) {
+                        pickedUp = true;
+                        nearestVehId = v.id;
+                    }
+                });
+                if (pickedUp) {
+                    // 将最近的无人车图标直接“贴”到该红点位置，使回收动作在视觉上更精确
+                    if (nearestVehId && vehicleMarkers[nearestVehId]) {
+                        vehicleMarkers[nearestVehId].setLatLng([b.lat, b.lon]);
+                    }
+                    collectedBikeIds.add(b.id);
+                    if (bikeMarkers[b.id]) {
+                        map.removeLayer(bikeMarkers[b.id]);
+                        delete bikeMarkers[b.id];
+                    }
+                    return;
+                }
+
                 currentBikeIds.add(b.id);
                 if (bikeMarkers[b.id]) {
                     bikeMarkers[b.id].setLatLng([b.lat, b.lon]);

@@ -520,9 +520,10 @@ class FleetControlBase(metaclass=ABCMeta):
         veh_obj.assign_vehicle_plan(new_list_vrls, sim_time, force_ignore_lock=force_assign)
         self.veh_plans[veh_obj.vid] = vehicle_plan
         for rid in get_assigned_rids_from_vehplan(vehicle_plan):
-            pax_info = vehicle_plan.get_pax_info(rid)
-            self.rq_dict[rid].set_assigned(pax_info[0], pax_info[1])
-            self.rid_to_assigned_vid[rid] = veh_obj.vid
+            if rid in self.rq_dict:
+                pax_info = vehicle_plan.get_pax_info(rid)
+                self.rq_dict[rid].set_assigned(pax_info[0], pax_info[1])
+                self.rid_to_assigned_vid[rid] = veh_obj.vid
         self._additional_assignment_records(veh_obj, vehicle_plan, sim_time)
 
     def time_trigger(self, simulation_time : int):
@@ -921,9 +922,11 @@ class FleetControlBase(metaclass=ABCMeta):
             if len(pstop.get_list_boarding_rids()) > 0 or len(pstop.get_list_alighting_rids()) > 0:
                 boarding = True
                 for rid in pstop.get_list_boarding_rids():
-                    boarding_dict[1].append(self.rq_dict[rid])
+                    if rid in self.rq_dict:
+                        boarding_dict[1].append(self.rq_dict[rid])
                 for rid in pstop.get_list_alighting_rids():
-                    boarding_dict[-1].append(self.rq_dict[rid])
+                    if rid in self.rq_dict:
+                        boarding_dict[-1].append(self.rq_dict[rid])
             else:
                 boarding = False
             if pstop.get_charging_power() > 0:

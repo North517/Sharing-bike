@@ -3,6 +3,7 @@ from __future__ import annotations
 import importlib
 
 import typing as tp
+from src.misc.globals import *
 if tp.TYPE_CHECKING:
     from src.FleetSimulationBase import FleetSimulationBase
     from src.routing.NetworkBase import NetworkBase
@@ -353,6 +354,7 @@ def load_ride_pooling_batch_optimizer(op_batch_optimizer_string) -> BatchAssignm
     # get ridepooling batch optimizer class
     return load_module(rbo_dict, op_batch_optimizer_string, "Ridepooling batch optimizer module")
 
+
 def load_forecast_model(fc_model_string) -> ForecastZoneSystemBase:
     """ this function loads the demand forecast model used for example within the repositioning moduel
     :param op_batch_optimizer_string: string determining the optimizer
@@ -362,3 +364,34 @@ def load_forecast_model(fc_model_string) -> ForecastZoneSystemBase:
     fc_dict = get_src_forecast_models()
     # get ridepooling batch optimizer class
     return load_module(fc_dict, fc_model_string, "Demand forecast module")
+
+def build_operator_attribute_dicts(parameters, n_op, prefix="op_"):
+    """
+    Extracts elements of parameters dict whose keys begin with prefix and generates a list of dicts.
+    The values of the relevant elements of parameters must be either single values or a list of length n_op, or else
+    an exception will be raised.
+
+    :param parameters: dict (or dict-like config object) containing a superset of operator parameters
+    :type parameters: dict
+    :param n_op: number of operators expected
+    :type n_op: int
+    :param prefix: prefix by which to filter out operator parameters
+    :type prefix: str
+    """
+    list_op_dicts = [dict() for i in range(n_op)]  # initialize list of empty dicts
+    for k in [x for x in parameters if x.startswith(prefix)]:
+        # if only a single value is given, use it for all operators
+        if type(parameters[k]) in [str, int, float, bool, type(None), dict]:
+            for di in list_op_dicts:
+                di[k] = parameters[k]
+        # if a list of values is given and the length matches the number of operators, use them respectively
+        elif len(parameters[k]) == n_op:
+            for i, op in enumerate(list_op_dicts):
+                op[k] = parameters[k][i]
+        elif k == G_OP_REPO_TH_DEF: # TODO # lists as inputs for op
+            for di in list_op_dicts:
+                di[k] = parameters[k]
+        # if parameter has invalid number of values, raise exception
+        else:
+            raise ValueError("Number of values for parameter", k, "equals neither n_op nor 1.", type(parameters[k]))
+    return list_op_dicts

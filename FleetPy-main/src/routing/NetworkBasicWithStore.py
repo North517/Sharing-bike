@@ -92,15 +92,25 @@ class NetworkBasicWithStore(NetworkBasic):
         destination_overhead = (0.0, 0.0, 0.0)
         if destination_position[1] is not None:
             destination_overhead = self.get_section_overhead(destination_position, from_start=True)
-        if self.travel_time_infos.get( (origin_node, destination_node) ) is not None:
+        if self.travel_time_infos.get((origin_node, destination_node)) is not None:
             s = self.travel_time_infos[(origin_node, destination_node)]
-            if s[0] == np.inf: # TODO # seems to be a bug. Do you know what's the problem here?
-                LOG.warning(f"in return_travel_costs_1to1, travel_time_infos from nodes {origin_node} to {destination_node}"
-                         f"yields s={s}")
+            if s[0] == np.inf:
+                # This situation was observed frequently in the bike rebalancing demo scenario.
+                # To keep the demo running, we try to recompute the route; if it still fails,
+                # we fall back to a simple straight-line (euclidean) approximation.
+                LOG.warning(f"in return_travel_costs_1to1, travel_time_infos from nodes {origin_node} to {destination_node} "
+                            f"yields s={s}")
                 R = Router(self, origin_node, destination_nodes=[destination_node], mode='bidirectional',
                            customized_section_cost_function=customized_section_cost_function)
                 s = R.compute(return_route=False)[0][1]
                 LOG.warning(f"after recalculation of the routes, s={s}")
+                if s[0] == np.inf:
+                    LOG.warning(f"Router still returned inf for {origin_node} -> {destination_node}; "
+                                f"fall back to euclidean approximation.")
+                    s = self._compute_euclidean_fallback(origin_node, destination_node)
+                    # store fallback in database to avoid repeated work
+                    if customized_section_cost_function is None:
+                        self._add_to_database(origin_node, destination_node, s[0], s[1], s[2])
         else:
             if self._current_tt_factor is None:
                 R = Router(self, origin_node, destination_nodes=[destination_node], mode='bidirectional', customized_section_cost_function=customized_section_cost_function)
@@ -109,6 +119,11 @@ class NetworkBasicWithStore(NetworkBasic):
                 R = Router(self, origin_node, destination_nodes=[destination_node], mode='bidirectional', customized_section_cost_function=customized_section_cost_function)
                 s = R.compute(return_route=False)[0][1]
                 s = (s[0] * self._current_tt_factor, s[1] * self._current_tt_factor, s[2])
+            # If routing still failed (inf), also fall back to euclidean approximation
+            if s[0] == np.inf:
+                LOG.warning(f"Router returned inf for fresh computation {origin_node} -> {destination_node}; "
+                            f"fall back to euclidean approximation.")
+                s = self._compute_euclidean_fallback(origin_node, destination_node)
             if customized_section_cost_function is None:
                 self._add_to_database(origin_node, destination_node, s[0], s[1], s[2])
         return (s[0] + origin_overhead[0] + destination_overhead[0], s[1] + origin_overhead[1] + destination_overhead[1], s[2] + origin_overhead[2] + destination_overhead[2])

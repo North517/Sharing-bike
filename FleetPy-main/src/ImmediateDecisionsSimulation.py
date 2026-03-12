@@ -35,81 +35,100 @@ class ImmediateDecisionsSimulation(FleetSimulationBase):
                                    f"{self.__class__.__name__} environment!")
 
     def add_init(self, scenario_parameters):
-        """
-        Simulation specific additional init.
-        :param scenario_parameters: row of pandas data-frame; entries are saved as x["key"]
-        """
         super().add_init(scenario_parameters)
 
     def step(self, sim_time):
-        """This method determines the simulation flow in a time step.
-            # 1) update fleets and network
-            # 2) get new travelers, add to undecided request
-            # 3) sequential processes for each undecided request: request -> offer -> user-decision
-            # 4) periodically for waiting requests: run decision process -> possibly leave system (cancellation)
-            # 5) periodically operator: call ride pooling optimization, repositioning, charging management
-            # 6) trigger charging infra 
-
-        :param sim_time: new simulation time
-        :return: None
-        """
-        # 1)
         self.update_sim_state_fleets(sim_time - self.time_step, sim_time)
         new_travel_times = self.routing_engine.update_network(sim_time)
         if new_travel_times:
             self.broker.inform_network_travel_time_update(sim_time)
-        # 2)
+
         list_undecided_travelers = list(self.demand.get_undecided_travelers(sim_time))
         last_time = sim_time - self.time_step
         if last_time < self.start_time:
             last_time = None
         
-        # New traveler processing with debug log
         processed_new_travelers = []
         for rid, rq_obj in self.demand.get_new_travelers(sim_time, since=last_time):
-            LOG.debug(f"ImmediateDecisionsSimulation.step: New traveler from demand module: rid={rid} (rq_obj={rq_obj}).")
             processed_new_travelers.append((rid, rq_obj))
 
-        # 3) Process newly active travelers first
         for rid, rq_obj in processed_new_travelers:
-            LOG.debug(f"ImmediateDecisionsSimulation.step: Processing NEWLY ACTIVE traveler: rid={rid}.")
             self.broker.inform_request(rid, rq_obj, sim_time)
             amod_offers = self.broker.collect_offers(rid)
             for op_id, amod_offer in amod_offers.items():
                 rq_obj.receive_offer(op_id, amod_offer, sim_time)
             self._rid_chooses_offer(rid, rq_obj, sim_time)
-            # After a new request has been processed, remove it from the undecided pool
             self.demand.remove_undecided_request(rid)
 
-        # Then process previously undecided travelers (that were not just activated)
         for rid, rq_obj in list_undecided_travelers:
-            # Check if it's still in the undecided pool (i.e., not processed yet by _rid_chooses_offer)
-            if rid not in self.demand.undecided_rq: 
-                LOG.debug(f"ImmediateDecisionsSimulation.step: Skipping previously undecided request {rid} because it was already processed or removed.")
+            if rid not in self.demand.undecided_rq:
                 continue
-            LOG.debug(f"ImmediateDecisionsSimulation.step: Processing PREVIOUSLY UNDECIDED traveler: rid={rid}.")
             self.broker.inform_request(rid, rq_obj, sim_time)
             amod_offers = self.broker.collect_offers(rid)
             for op_id, amod_offer in amod_offers.items():
                 rq_obj.receive_offer(op_id, amod_offer, sim_time)
             self._rid_chooses_offer(rid, rq_obj, sim_time)
-            # After an undecided request has been processed, remove it from the undecided pool
             self.demand.remove_undecided_request(rid)
-        # 4)
+
         self._check_waiting_request_cancellations(sim_time)
-        # 5)
+
         for op in self.operators:
             op.time_trigger(sim_time)
-        # 6)
+
         for ch_op_dict in self.charging_operator_dict.values():
             for ch_op in ch_op_dict.values():
                 ch_op.time_trigger(sim_time)
-        # record at the end of each time step
+
         self.record_stats()
 
     def add_evaluate(self):
-        """Runs standard and simulation environment specific evaluations over simulation results."""
-        # output_dir = self.dir_names[G_DIR_OUTPUT]
-        # from src.evaluation.temporal import run_complete_temporal_evaluation
-        # run_complete_temporal_evaluation(output_dir, method="snapshot")
         pass
+
+    # ✅ 修复：缺失方法 1 → _rid_chooses_offer
+    def _rid_chooses_offer(self, rid, rq_obj, sim_time):
+        chosen_operator = rq_obj.choose_offer(self.scenario_parameters, sim_time)
+        if chosen_operator is None:
+            if rq_obj.leaves_system(sim_time):
+                self._user_leaves_system(rid, sim_time)
+            else:
+                self.demand.undecided_rq[rid] = rq_obj
+        elif chosen_operator == -1:
+            self._user_leaves_system(rid, sim_time)
+        else:
+            amode_confirmed_rids = self.broker.inform_user_booking(rid, rq_obj, sim_time, chosen_operator)
+            for rid, rq_obj in amode_confirmed_rids:
+                self.demand.waiting_rq[rid] = rq_obj
+            try:
+                del self.demand.undecided_rq[rid]
+            except KeyError:
+                pass
+
+    # ✅ 修复：缺失方法 2 → _user_leaves_system
+    def _user_leaves_system(self, rid, sim_time):
+        self.broker.inform_user_leaving_system(rid, sim_time)
+        self.demand.record_user(rid)
+        try:
+            del self.demand.rq_db[rid]
+            del self.demand.undecided_rq[rid]
+        except KeyError:
+            pass
+
+    # ✅ 修复：修正请求对象属性调用
+    def _check_waiting_request_cancellations(self, sim_time):
+        to_delete = []
+        for rid, rq_obj in self.demand.waiting_rq.items():
+            # 修正：使用属性而不是方法
+            chosen_op = rq_obj.chosen_operator_id
+            # 修正：使用属性而不是方法
+            in_veh = rq_obj.service_vid
+            if in_veh is None and chosen_op is not None:
+                if rq_obj.cancels_booking(sim_time):
+                    self.broker.inform_waiting_request_cancellations(chosen_op, rid, sim_time)
+                    self.demand.record_user(rid)
+                    to_delete.append(rid)
+        for rid in to_delete:
+            try:
+                del self.demand.rq_db[rid]
+                del self.demand.waiting_rq[rid]
+            except KeyError:
+                pass

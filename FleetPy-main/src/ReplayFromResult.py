@@ -14,7 +14,7 @@ from src.python_plots.plot_classes import PyPlot
 from multiprocessing import Manager
 from abc import ABCMeta, abstractmethod
 
-from src.FleetSimulationBase import build_operator_attribute_dicts
+from src.misc.init_modules import build_operator_attribute_dicts
 from src.misc.globals import *
 PORT = 4200
 EPSG_WGS = 4326
@@ -116,7 +116,7 @@ def prep_output(gdf_row):
 
 class State:
     def __init__(self, vid_str, time, pos, end_time, end_pos, soc, pax,parcels,
-                 passengers,moving, status, trajectory_str = None):
+                 passengers,moving, status, route = None, times = None):
         self.vid_str = vid_str
         self.time = time
         if type(pos) == str:
@@ -135,10 +135,9 @@ class State:
         else:
             self.end_pos = end_pos
         self.trajectory = []
-        if trajectory_str is not None and not pd.isnull(trajectory_str):
-            for tmp_str in trajectory_str.split(";"):
-                tmp_str2 = tmp_str.split(":")
-                self.trajectory.append((int(tmp_str2[0]), float(tmp_str2[1])))
+        if route and times:
+            for node, t in zip(route, times):
+                self.trajectory.append((node, t))
 
     def to_dict(self):
         # TODO # make definition of transferred attributes here

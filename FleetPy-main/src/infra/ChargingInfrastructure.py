@@ -3,10 +3,13 @@
 # -----------------------------
 from __future__ import annotations
 import logging
+LOG = logging.getLogger(__name__)
 import typing as tp
 import time
 from pathlib import Path
 from collections import defaultdict
+
+from src.misc.globals import VRL_STATES
 
 import numpy as np
 import pandas as pd
@@ -76,10 +79,19 @@ class ChargingSocket:
         return is_attached
 
     def detach(self):
-        assert self.attached_vehicle is not None, f"no vehicle to detach from socket {self.id}"
-        self.attached_vehicle = None
-        self.initial_soc = None
-        self.connect_time = None
+        if self.attached_vehicle is None:
+            LOG.warning(f"no vehicle to detach from socket {self.id} when detach() is called")
+        else:
+            LOG.debug(f"Attached vehicle type in detach(): {type(self.attached_vehicle)}")
+            if hasattr(self.attached_vehicle, 'status'):
+                self.attached_vehicle.status = VRL_STATES.IDLE
+            else:
+                LOG.warning(f"Attached vehicle {self.attached_vehicle} does not have 'status' attribute!")
+            self.attached_vehicle = None
+            self.initial_soc = None
+            self.start_time = None
+            self.end_time = None
+            self.connect_time = None
 
     def charge_vehicle(self, delta_time):
         """ Linear charging of the attached vehicle
@@ -148,7 +160,7 @@ class ChargingStation:
         """ Returns the currently running and scheduled charging processes
 
         :returns: - Dict of currently running charging processes with socket_id as key
-                  - Dict of scheduled charging processes with socket_id as key
+                  - Dict of scheduled charging processes with socket_id
         """
         return self._current_processes.copy(), self._socket_bookings.copy()
 
@@ -190,10 +202,12 @@ class ChargingStation:
 
     def end_charging_process(self, sim_time, booking: ChargingProcess):
         socket = self._sockets[booking.socket_id]
-        assert socket.attached_vehicle.vid == booking.veh.vid
+        if socket.attached_vehicle is not None:
+            assert socket.attached_vehicle.vid == booking.veh.vid
         self.__append_to_history(sim_time, booking.veh, "detach", socket)
         socket.detach()
-        del self._vid_socket_dict[booking.veh.vid]
+        if booking.veh.vid in self._vid_socket_dict:
+            del self._vid_socket_dict[booking.veh.vid]
         self._current_processes[socket.id] = None
 
     def cancel_booking(self, sim_time, booking: ChargingProcess):
@@ -223,7 +237,6 @@ class ChargingStation:
         attached_socked = self._vid_socket_dict[vid]
         full_charge_duration = attached_socked.calculate_charge_duration(attached_socked.attached_vehicle, attached_socked.attached_vehicle.soc, end_soc)
         LOG.debug(" -> full charge duration at time {}: {}".format(sim_time, full_charge_duration))
-        # test for next bookings
         if len(self._socket_bookings.get(attached_socked.id, [])) > 0:
             next_start_time = min(self._socket_bookings[attached_socked.id], key=lambda x:x.start_time).start_time
             assert next_start_time - sim_time > 0, f"uncancelled bookings in charging station {self.id} at time {sim_time} with schedule { [str(c) for c in self._socket_bookings[attached_socked.id] ]}!"
@@ -274,7 +287,6 @@ class ChargingStation:
             found_free_slot = False
             max_power = self._sockets[socket_id].max_socket_power
             for planned_booking in socket_schedule:
-                # check whether charging process can be finished before next booking
                 possible_end_time = possible_start_time + socket_charge_duration
                 pb_start_time, pb_et, pb_id = planned_booking
                 if possible_end_time <= pb_start_time:
@@ -291,9 +303,7 @@ class ChargingStation:
                     break
             LOG.debug(f"possible slots for station {self.id} at socket {socket_id}:")
             LOG.debug(f"    -> {list_station_offers}")
-        # TODO # check methodology to stop
         if len(list_station_offers) > max_offers_per_station:
-            # only keep offer with earliest start
             list_station_offers = sorted(list_station_offers, key=lambda x: x[2])[:max_offers_per_station]
         return list_station_offers
     
@@ -342,9 +352,12 @@ class ChargingStation:
             self.station_history["current_soc"].append(round(vehicle.soc, 3))
             self.station_history["socket_id"].append("" if socket is None else socket.id)
             self.station_history["socket_power"].append("" if socket is None else socket.max_socket_power)
-            self.station_history["initial_soc"].append("" if socket is None else round(socket.initial_soc, 3))
+            self.station_history["initial_soc"].append("" if socket is None else (round(socket.initial_soc, 3) if socket.initial_soc is not None else ""))
             self.station_history["transferred_power"].append("" if socket is None else socket.transferred_power)
-            self.station_history["connection_duration"].append("" if socket is None else sim_time - socket.connect_time)
+            if socket is not None and socket.connect_time is not None:
+                self.station_history["connection_duration"].append(sim_time - socket.connect_time)
+            else:
+                self.station_history["connection_duration"].append("")
             if len(self.station_history) > 0:
                 self.write_history_to_file()
 
@@ -410,12 +423,10 @@ class Depot(ChargingStation):
         """
         if keep_free_for_short_term != 0:
             raise NotImplementedError("keep free for short term is not implemented yet!")
-        # check for vehicles that require charging
         list_consider_charging: List[SimulationVehicle] = []
         for veh_obj in self.deactivated_vehicles:
             if veh_obj.soc == 1.0 or veh_obj.status != VRL_STATES.OUT_OF_SERVICE:
                 continue
-            # check whether veh_obj already has vcl
             consider_charging = True
             for vrl in veh_obj.assigned_route:
                 if vrl.status == VRL_STATES.CHARGING:
@@ -439,30 +450,21 @@ class Depot(ChargingStation):
                 assert fleetctrl.veh_plans[veh_obj.vid].list_plan_stops[-1].get_state() == G_PLANSTOP_STATES.INACTIVE
                 if start_time == simulation_time:
                     LOG.debug(" -> start now")
-                    # finish current status 5 task
                     veh_obj.end_current_leg(simulation_time)
-                    # modify veh-plan: insert charging before list position -1
                     fleetctrl.veh_plans[veh_obj.vid].add_plan_stop(ch_ps, veh_obj, simulation_time,
                                                                     fleetctrl.routing_engine,
                                                                     return_copy=False, position=-1)
                     fleetctrl.lock_current_vehicle_plan(veh_obj.vid)
-                    # assign vehicle plan
                     fleetctrl.assign_vehicle_plan(veh_obj, fleetctrl.veh_plans[veh_obj.vid], simulation_time, assigned_charging_task=(charging_task_id, ch_process))
                 else:
                     LOG.debug(" -> start later")
-                    # modify veh-plan:
-                    # finish current inactive task
                     _, inactive_vrl = veh_obj.end_current_leg(simulation_time)
                     fleetctrl.receive_status_update(veh_obj.vid, simulation_time, [inactive_vrl])
-                    # add new inactivate task with corresponding duration
                     inactive_ps_1 = RoutingTargetPlanStop(self.pos, locked=True, duration=start_time - simulation_time, planstop_state=G_PLANSTOP_STATES.INACTIVE)
-                    # add inactivate task after charging
                     inactive_ps_2 = RoutingTargetPlanStop(self.pos, locked=True, duration=LARGE_INT, planstop_state=G_PLANSTOP_STATES.INACTIVE)
-                    # new veh plan
                     new_veh_plan = VehiclePlan(veh_obj, simulation_time, fleetctrl.routing_engine, [inactive_ps_1, ch_ps, inactive_ps_2])
                     
                     fleetctrl.lock_current_vehicle_plan(veh_obj.vid)
-                    # assign vehicle plan
                     fleetctrl.assign_vehicle_plan(veh_obj, new_veh_plan, simulation_time, assigned_charging_task=(charging_task_id, ch_process))
 
 class PublicChargingInfrastructureOperator:
@@ -572,7 +574,6 @@ class PublicChargingInfrastructureOperator:
             LOG.debug(f"possible charge offers from station {station_id} for veh {vehicle.vid} with tt {tt} : {planned_start_time} -> {estimated_arrival_time}")
             LOG.debug(f"{list_station_offers}")
             list_offers.extend(list_station_offers)
-            # TODO # check methodology to stop
             if len(list_station_offers) > 0:
                 c += 1
                 if c == max_number_charging_stations:

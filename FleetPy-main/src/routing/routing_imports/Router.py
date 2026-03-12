@@ -1,5 +1,10 @@
 import logging
 LOG = logging.getLogger(__name__)
+LOG.setLevel(logging.DEBUG)
+ch = logging.StreamHandler()
+formatter = logging.Formatter('%(asctime)s-%(name)s-%(levelname)s-%(message)s')
+ch.setFormatter(formatter)
+LOG.addHandler(ch)
 
 try:
     from . import PriorityQueue_python3 as PQ
@@ -88,7 +93,8 @@ class Router():
         self.n_settled = 0
 
     def compute(self, return_route = True):
-        """computes routes for start -> destination_nodes
+        LOG.debug(f"[{self.nw.sim_time}] Router.compute: Entry. start={self.start}, destination_nodes={self.destination_nodes.keys()}")
+        """computes routes for start -> destination_nodes"
         if return_route == True:
             returns list of (route, (tt, dis))
             route: list of node indeces ([start, end] if no route found)
@@ -105,7 +111,24 @@ class Router():
                 self.dijkstraBackward()
             self.nw.current_dijkstra_number += 1
             
-            ret = self.createRoutes(return_route = return_route)
+            if self.number_destinations == 1:
+                start_node = self.start
+                end_node = list(self.destination_nodes.keys())[0]
+                LOG.debug(f"[{self.nw.sim_time}] Calling bidirectionalDijkstra for single destination: {start_node} to {end_node}")
+                LOG.debug(f"[{self.nw.sim_time}] Router.compute: Calling bidirectionalDijkstra for start={start_node} to dest={end_node}")
+                common_node = self.bidirectionalDijkstra(start_node, end_node)
+                LOG.debug(f"[{self.nw.sim_time}] Router.compute: bidirectionalDijkstra returned common_node={common_node} for start={start_node} to dest={end_node}")
+                if common_node:
+                    # createBidirectionalRoute returns (route, (tt, dis, cost_func_val))
+                    route_data = self.createBidirectionalRoute(common_node, end_node, return_route=return_route)
+                    ret = [route_data]
+                else:
+                    ret = [([start_node, end_node], (float("inf"), float("inf"), float("inf")))]
+            else:
+                list_tuple_origin_destination_nodes = []
+                for d_node in self.destination_nodes.keys():
+                    list_tuple_origin_destination_nodes.append((self.start, d_node))
+                ret = self.createRoutes(list_tuple_origin_destination_nodes, t_request=None, min_travel_time=0.0, return_route=return_route)
             
         elif self.mode == "bidirectional":
             out = self.computeBidirectional(return_route = return_route)
@@ -118,6 +141,7 @@ class Router():
         if ret[0][1][0] < 0:
             print(ret, self.mode)
             exit()
+        LOG.debug(f"[{self.nw.sim_time}] Router.compute: Returning {ret}")
         return ret
 
     def computeBidirectional(self, return_route = True):
@@ -136,7 +160,7 @@ class Router():
             self.dijkstra_number += 1
         return sols
 
-    def createRoutes(self, return_route = True):
+    def createRoutes(self, list_tuple_origin_destination_nodes, t_request = None, min_travel_time=0.0, return_route=True):
         """looks at solutions of standard dijkstras
         returns list of (route, (tt, dis)) for each destination
         tt, dis = -1, -1 if no route is found
@@ -180,6 +204,7 @@ class Router():
         return sol
 
     def createBidirectionalRoute(self, common_node, end, return_route = True):
+        LOG.debug(f"createBidirectionalRoute called for start={self.start}, end={end}")
         """looks at solutions of standard dijkstras
         input is common_node, where forward and backward dijkstra met
         returns  (route, (tt, dis))
@@ -245,7 +270,7 @@ class Router():
                     c_node = c_node.next
                 forward_path.append(c_node.node_index)
 
-            cost = ( common_node.cost[0] + common_node.cost_back[0], common_node.cost[1] + common_node.cost_back[1] )
+            cost = ( common_node.cost[0] + common_node.cost_back[0], common_node.cost[1] + common_node.cost_back[1], common_node.cost[2] + common_node.cost_back[2] )
             if not return_route:
                 forward_path = [end, self.start]
             return (forward_path, cost)
@@ -273,9 +298,10 @@ class Router():
 
         while True:
             if not frontier.hasElements():
+                LOG.debug(f"[{self.nw.sim_time}] bidirectionalDijkstra: Frontier is empty for backward search from {self.start} towards {list(self.destination_nodes.keys())[0]}")
                 break
-            
             current_node_obj, current_cost = frontier.popTaskPriority()
+            LOG.debug(f"[{self.nw.sim_time}] bidirectionalDijkstra: Popped node {current_node_obj.node_index} with cost {current_cost}")
             if current_node_obj.is_target_node:
                 destinations_reached += 1
                 current_node_obj.settled_back = self.dijkstra_number
@@ -289,6 +315,7 @@ class Router():
 
 
     def dijkstraForward(self):
+        LOG.debug(f"[{self.nw.sim_time}] dijkstraForward: Called with start={self.start}, destinations={self.destination_nodes.keys()}")
         """ forward dijkstra
         start node is self.start and ends if all destination nodes are settled or no more route available
         """
@@ -298,7 +325,12 @@ class Router():
         destinations_reached = 0
         destinations_to_reach = self.number_destinations
 
-        start_node = self.nw.nodes[self.start] #start_node object
+        try:
+            start_node = self.nw.nodes[self.start] #start_node object
+        except KeyError as e:
+            LOG.error(f"[{self.nw.sim_time}] dijkstraForward: KeyError during start_node initialization for self.start={self.start}. Error: {e}")
+            return # Exit if start node is not found
+
         start_node.settled = self.dijkstra_number   #settled attribute is set to dijkstra number for settled nodes
         start_node.cost_index = -self.dijkstra_number   #cost_index attribute is set for touched nodes
         start_node.cost = (0, 0, 0)    #cost (cfv, tt, dis) is set for touched nodes
@@ -308,70 +340,81 @@ class Router():
 
         while True:
             if not frontier.hasElements():
+                LOG.debug(f"[{self.nw.sim_time}] dijkstraForward: Frontier is empty. Start={self.start}, Destinations={self.destination_nodes.keys()}")
                 break
             
             current_node_obj, current_cost = frontier.popTaskPriority()
+            LOG.debug(f"[{self.nw.sim_time}] dijkstraForward: Popped node {current_node_obj.node_index} with cost {current_cost}")
+
             if current_node_obj.is_target_node:
                 destinations_reached += 1
                 current_node_obj.settled = self.dijkstra_number
+                LOG.debug(f"[{self.nw.sim_time}] dijkstraForward: Settled target node {current_node_obj.node_index}. Destinations reached: {destinations_reached}/{destinations_to_reach}")
                 if destinations_reached == destinations_to_reach:
+                    LOG.debug(f"[{self.nw.sim_time}] dijkstraForward: All target destinations reached. Start={self.start}")
                     break
             if self.time_radius is not None and current_cost > self.time_radius:
+                LOG.debug(f"[{self.nw.sim_time}] dijkstraForward: Time radius {self.time_radius} exceeded at cost {current_cost}. Start={self.start}, Destinations={self.destination_nodes.keys()}")
                 break
             self.dijkstraStepForwards(frontier, current_node_obj, current_cost)
 
     def bidirectionalDijkstra(self, start, end, frontier_in = None):
+        LOG.debug(f"[{self.nw.sim_time}] bidirectionalDijkstra: Called with start={start}, end={end}")
         """ bidirectional dijkstra from start to end
         frontier_in: not implemented yet, for keeping track of Priority Queue of start for one to many routing
         """
         #sets start and end nodes depending on forward flag an initializes PQs
-        if self.forward_flag:
-            if not frontier_in:
-                frontierForward = PQ.PriorityQueue()
+        try:
+            if self.forward_flag:
+                if not frontier_in:
+                    frontierForward = PQ.PriorityQueue()
 
-                start_node = self.nw.nodes[self.start]
-                start_node.settled = self.dijkstra_number
-                start_node.cost_index = -self.dijkstra_number
-                start_node.cost = (0, 0, 0)
-                start_node.prev = None
+                    start_node = self.nw.nodes[self.start]
+                    start_node.settled = self.dijkstra_number
+                    start_node.cost_index = -self.dijkstra_number
+                    start_node.cost = (0, 0, 0)
+                    start_node.prev = None
 
-                frontierForward.addTask(start_node, 0)
-            else:
-                frontierForward = frontier_in
+                    frontierForward.addTask(start_node, 0)
+                else:
+                    frontierForward = frontier_in
 
-            frontierBackward = PQ.PriorityQueue()
-
-            end_node = self.nw.nodes[end]
-            end_node.settled_back = self.dijkstra_number
-            end_node.cost_index_back = -self.dijkstra_number
-            end_node.cost_back = (0, 0, 0)
-            end_node.next = None
-
-            frontierBackward.addTask(end_node, 0)
-
-        else:
-            if not frontier_in:
                 frontierBackward = PQ.PriorityQueue()
 
-                start_node = self.nw.nodes[self.start]
-                start_node.settled_back = self.dijkstra_number
-                start_node.cost_index_back = -self.dijkstra_number
-                start_node.cost_back = (0, 0, 0)
-                start_node.next = None
+                end_node = self.nw.nodes[end]
+                end_node.settled_back = self.dijkstra_number
+                end_node.cost_index_back = -self.dijkstra_number
+                end_node.cost_back = (0, 0, 0)
+                end_node.next = None
 
-                frontierBackward.addTask(start_node, 0)
+                frontierBackward.addTask(end_node, 0)
+
             else:
-                frontierBackward = frontier_in
-                
-            frontierForward = PQ.PriorityQueue()
+                if not frontier_in:
+                    frontierBackward = PQ.PriorityQueue()
 
-            end_node = self.nw.nodes[end]
-            end_node.settled = self.dijkstra_number
-            end_node.cost_index = -self.dijkstra_number
-            end_node.cost = (0, 0, 0)
-            end_node.prev = None
+                    start_node = self.nw.nodes[self.start]
+                    start_node.settled_back = self.dijkstra_number
+                    start_node.cost_index_back = -self.dijkstra_number
+                    start_node.cost_back = (0, 0, 0)
+                    start_node.next = None
 
-            frontierForward.addTask(end_node, 0)
+                    frontierBackward.addTask(start_node, 0)
+                else:
+                    frontierBackward = frontier_in
+                    
+                frontierForward = PQ.PriorityQueue()
+
+                end_node = self.nw.nodes[end]
+                end_node.settled = self.dijkstra_number
+                end_node.cost_index = -self.dijkstra_number
+                end_node.cost = (0, 0, 0)
+                end_node.prev = None
+
+                frontierForward.addTask(end_node, 0)
+        except KeyError as e:
+            LOG.error(f"[{self.nw.sim_time}] bidirectionalDijkstra: KeyError during node initialization for start={start}, end={end}. Error: {e}")
+            return None
 
         current_forward_node_obj = None
         current_forward_cost = -1
@@ -399,8 +442,9 @@ class Router():
                     prt_str = f"start {start} -> end {end} | no ch"
                     raise AssertionError(prt_str)
                 else:
-                    LOG.warning("routebase no route found!")
+                    LOG.warning("routebase no route found for start {} -> end {} | no ch!".format(start, end))
                     LOG.warning("start {} -> end {} | no ch".format(start, end))
+                    LOG.debug(f"[{self.nw.sim_time}] bidirectionalDijkstra: Returning None because no forward or backward node found for {start} -> {end}")
                     return None
 
             if current_forward_cost < current_backward_cost:
@@ -422,7 +466,13 @@ class Router():
 
         # fastest route is not necessarily through common node
         # also nodes, that have been touched by both dijkstras need to be checked
+        LOG.debug(f"[{self.nw.sim_time}] bidirectionalDijkstra: Before final common node check. Common node: {common_node.node_index if common_node else 'None'}, Forward frontier elements: {len(frontierForward.entry_finder)}, Backward frontier elements: {len(frontierBackward.entry_finder)}")
+
+        if common_node and (common_node.cost is None or common_node.cost_back is None):
+            LOG.debug(f"[{self.nw.sim_time}] bidirectionalDijkstra: Common node {common_node.node_index} found, but costs are None. Cost: {common_node.cost}, Cost_back: {common_node.cost_back}")
+
         if common_node is None or common_node.cost is None or common_node.cost_back is None:
+            LOG.debug(f"[{self.nw.sim_time}] bidirectionalDijkstra: Returning None for start={start}, end={end}. Reason: common_node is {common_node}, common_node.cost is {common_node.cost}, common_node.cost_back is {common_node.cost_back}. Final frontiers: Forward elements: {len(frontierForward.entry_finder)}, Backward elements: {len(frontierBackward.entry_finder)}")
             return None
         poss_common_nodes = [(common_node , common_node.cost[0] + common_node.cost_back[0])]
         while frontierForward.hasElements():
@@ -437,6 +487,7 @@ class Router():
                     poss_common_nodes.append((x[0], x[1] + x[0].cost[0]))
         common_node = min(poss_common_nodes, key = lambda x:x[1])[0]
 
+        LOG.debug(f"[{self.nw.sim_time}] bidirectionalDijkstra: Returning common_node for {start} -> {end}. Node: {common_node.node_index if common_node else 'None'}, Cost: {common_node.cost if common_node else 'None'}, Cost_back: {common_node.cost_back if common_node else 'None'}")
         return common_node
 
     def bidirectionalContractionHierarchiesDijkstra(self, start, end, frontier_in = None):

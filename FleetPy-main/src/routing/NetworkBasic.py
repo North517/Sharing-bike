@@ -484,6 +484,7 @@ class NetworkBasic(NetworkBase):
                 s = R.compute(return_route=False)
                 s = [(entry[0], (entry[1][0] * self._current_tt_factor, entry[1][1] * self._current_tt_factor, entry[1][2])) for entry in s]
             for entry in s:
+                print(f"DEBUG: entry = {entry}, entry[1] = {entry[1]}, type(entry[1]) = {type(entry[1])}")
                 cfv, tt, dis = entry[1]
                 if cfv < 0 or cfv == float("inf"):
                     continue
@@ -937,5 +938,39 @@ class NetworkBasic(NetworkBase):
         depending on the class the function can be overwritten to store certain results in the database
         """
         pass
+
+    def _compute_euclidean_fallback(self, origin_node_index: int, destination_node_index: int,
+                                    avg_speed: float = 5.0):
+        """Fallback used when Router fails to find a path (returns inf).
+
+        Approximates travel time and distance by straight-line distance between node coordinates.
+        This is primarily intended to keep small demo scenarios running even if the detailed
+        routing fails for some OD pairs. For larger case studies, proper routing should be fixed
+        instead of relying on this heuristic.
+
+        :param origin_node_index: index of origin node
+        :param destination_node_index: index of destination node
+        :param avg_speed: assumed average speed in m/s for time estimation
+        :return: (cost_function_value, travel_time, travel_distance)
+        """
+        try:
+            x1, y1 = self.return_node_coordinates(origin_node_index)
+            x2, y2 = self.return_node_coordinates(destination_node_index)
+        except Exception as e:
+            LOG.warning(f"_compute_euclidean_fallback: failed to get coordinates for "
+                        f"{origin_node_index} -> {destination_node_index}: {e}")
+            # very conservative dummy values to avoid crashes
+            return float("inf"), float("inf"), float("inf")
+
+        dis = float(np.hypot(x2 - x1, y2 - y1))
+        if not np.isfinite(dis) or dis <= 0:
+            return float("inf"), float("inf"), float("inf")
+
+        if avg_speed is None or avg_speed <= 0:
+            avg_speed = 5.0  # ~18 km/h as a safe default
+        tt = dis / avg_speed
+
+        # use travel time as cost function value (same convention as standard router)
+        return tt, tt, dis
 
     

@@ -253,6 +253,7 @@ class SimulationVehicle:
             return [], []
 
     def end_current_leg(self, simulation_time:int)->tp.Tuple[tp.List[int], VehicleRouteLeg]:
+        LOG.debug(f"end_current_leg for veh {self.vid} at time {simulation_time}. Assigned route length: {len(self.assigned_route)}")
         """
         This method stops the current leg, creates the record dictionary, and shifts the list of legs in the
         assigned route. It returns a list of alighting passengers and the record dictionary.
@@ -380,6 +381,7 @@ class SimulationVehicle:
         # LOG.info(f"Vehicle {self.vid} after new assignment: {[str(x) for x in self.assigned_route]} at time {sim_time}")
 
     def update_veh_state(self, current_time:float, next_time:float)->tp.Tuple[tp.Dict[tp.Any, tp.Tuple[float, tuple]], tp.Dict[tp.Any, tp.Tuple[float, tuple]], tp.List[VehicleRouteLeg], tp.Dict[tp.Any, tp.Tuple[float, tuple]]]:
+        LOG.debug(f"update_veh_state for veh {self.vid} at time {current_time}. Pos: {self.pos}, Status: {self.status}, Remaining time: {self.cl_remaining_time}, Assigned route length: {len(self.assigned_route)}")
         """This method updates the current state of a simulation vehicle. This includes moving, boarding etc.
         The method updates the vehicle position, soc. Additionally, it triggers the end and start of VehicleRouteLegs.
         It returns a list of boarding request, alighting requests.
@@ -557,6 +559,8 @@ class SimulationVehicle:
         self.soc -= self.compute_soc_consumption(driven_distance)
         if passed_nodes:
             self.cl_driven_route.extend(passed_nodes)
+            if self.replay_flag: # Only add node times if replay_flag is True
+                self.cl_driven_route_times.extend(passed_node_times)
         for node in passed_nodes:
             self.cl_remaining_route.remove(node)
             tmp_toll_route = [last_node, node]

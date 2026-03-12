@@ -29,6 +29,9 @@ G_SIM_REPLAY_FLAG = "replay_flag"
 G_SIM_REALTIME_PLOT_FLAG = "realtime_plot"
 G_SIM_REALTIME_PLOT_VEHICLE_STATUS = "realtime_plot_veh_states"
 G_SIM_REALTIME_PLOT_EXTENTS = "realtime_plot_extents"
+G_SIM_REROUTING_THRESHOLD = "rerouting_threshold"
+G_WEB_VIS_TIME_STEP = "web_vis_time_step"
+G_DIR_WEB_VIS_OUTPUT = "web_visualisation_output"
 G_NR_OPERATORS = "nr_mod_operators"
 G_NR_CH_OPERATORS = "nr_charging_operators"
 G_LOG_GUROBI = "log_gurobi" # optional; if True gurobi output file written -> default False
@@ -742,6 +745,7 @@ def get_directory_dict(scenario_parameters, list_operator_dicts, abs_fleetpy_dir
         dirs[G_DIR_MAIN] = abs_fleetpy_dir
     dirs[G_DIR_DATA] = os.path.join(dirs[G_DIR_MAIN], "data")
     dirs[G_DIR_OUTPUT] = os.path.join(dirs[G_DIR_MAIN], "studies", study_name, "results", scenario_name)
+    dirs[G_DIR_WEB_VIS_OUTPUT] = os.path.join(dirs[G_DIR_OUTPUT], G_DIR_WEB_VIS_OUTPUT)
     dirs[G_DIR_NETWORK] = os.path.join(dirs[G_DIR_DATA], "networks", network_name)
     dirs[G_DIR_VEH] = os.path.join(dirs[G_DIR_DATA], "vehicles")
     dirs[G_DIR_FCTRL] = os.path.join(dirs[G_DIR_DATA], "fleetctrl")
