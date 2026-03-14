@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}数据分析 - 共享单车调度系统{% endblock %}
+
+{% block content %}
+<div class="container-fluid h-100 d-flex flex-column">
+    <h2 class="mb-4">数据分析</h2>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-header">总模拟时长</div>
+                <div class="card-body">
+                    <h5 class="card-title">未来将显示模拟总时长</h5>
+                    <p class="card-text">例如：24 小时</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-header">总事件数</div>
+                <div class="card-body">
+                    <h5 class="card-title">未来将显示总事件数量</h5>
+                    <p class="card-text">例如：12345 事件</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-header">平均车辆利用率</div>
+                <div class="card-body">
+                    <h5 class="card-title">未来将显示平均车辆利用率</h5>
+                    <p class="card-text">例如：85%</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header">车辆利用率趋势</div>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">未来将显示车辆利用率随时间变化的图表</h5>
+                    <p class="card-text">这里可以放置折线图 (例如 Chart.js, Plotly) 来展示车辆利用率的动态变化。</p>
+                    <div class="alert alert-secondary mt-auto" role="alert">图表占位</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header">自行车周转率</div>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">未来将显示自行车周转率相关数据</h5>
+                    <p class="card-text">例如：每辆自行车每日平均被使用次数。</p>
+                    <div class="alert alert-secondary mt-auto" role="alert">表格/图表占位</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">空闲时间分析</div>
+                <div class="card-body">
+                    <h5 class="card-title">未来将显示无人车空闲时间分布</h5>
+                    <p class="card-text">例如：饼图或柱状图，展示不同空闲时间段的无人车数量。</p>
+                    <div class="alert alert-secondary" role="alert">图表占位</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

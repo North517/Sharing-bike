@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}共享单车调度系统{% endblock %}</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevent overall page scrolling */
+        }
+        #app-wrapper {
+            display: flex;
+            height: 100%;
+        }
+        #sidebar {
+            width: 250px; /* Fixed width for sidebar */
+            background-color: #343a40; /* Dark background for sidebar */
+            color: white;
+            padding: 15px;
+            flex-shrink: 0; /* Prevent sidebar from shrinking */
+            overflow-y: auto; /* Allow sidebar content to scroll if too long */
+        }
+        #main-panel {
+            flex-grow: 1; /* Main content takes remaining space */
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* Prevent main panel from causing overflow */
+        }
+        #main-content {
+            flex-grow: 1; /* Content area fills remaining space */
+            overflow-y: auto; /* Allow content to scroll */
+            padding: 15px;
+        }
+        .sidebar-heading {
+            padding-bottom: 15px;
+            text-align: center;
+            font-size: 1.25rem;
+            border-bottom: 1px solid #495057;
+            margin-bottom: 15px;
+        }
+        .sidebar-nav .nav-link {
+            color: #adb5bd;
+            padding: 10px 15px;
+        }
+        .sidebar-nav .nav-link:hover {
+            color: white;
+            background-color: #495057;
+            border-radius: 5px;
+        }
+        .sidebar-nav .nav-link.active {
+            color: white;
+            background-color: #007bff;
+            border-radius: 5px;
+        }
+    </style>
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <div id="app-wrapper">
+        <nav id="sidebar" class="d-flex flex-column">
+            <div class="sidebar-heading">共享单车调度系统</div>
+            <ul class="nav flex-column sidebar-nav">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">
+                        <i class="fas fa-map-marked-alt mr-2"></i> 模拟可视化
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/data_analysis' %}active{% endif %}" href="/data_analysis">
+                        <i class="fas fa-chart-line mr-2"></i> 数据分析
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/configuration' %}active{% endif %}" href="/configuration">
+                        <i class="fas fa-cog mr-2"></i> 配置
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div id="main-panel">
+            <!-- Optional: A minimal top bar for main panel if needed -->
+            <!-- <nav class="navbar navbar-light bg-light">
+                <span class="navbar-brand mb-0 h1">{% block page_title %}{% endblock %}</span>
+            </nav> -->
+            <div id="main-content">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- FontAwesome for icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

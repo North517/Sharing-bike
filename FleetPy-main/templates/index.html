@@ -1,0 +1,275 @@
+{% extends 'base.html' %}
+
+{% block title %}模拟可视化 - 共享单车调度系统{% endblock %}
+
+{% block head %}
+    <style>
+        /* Map should fill the entire main-content area */
+        #map-container {
+            position: relative;
+            flex-grow: 1;
+            height: 100%;
+        }
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+        #controls {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
+            padding: 10px;
+            border-radius: 8px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 1px solid #ddd;
+        }
+        #time-slider {
+            width: 300px;
+            margin: 0 15px;
+        }
+        #current-time {
+            font-weight: bold;
+            margin-left: 10px;
+            min-width: 120px; /* Ensure time display has enough space */
+            text-align: center;
+        }
+        .info-box {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 8px;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 1px solid #ddd;
+            font-size: 0.9em;
+            min-width: 180px;
+        }
+        .info-box h5 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        .info-box p {
+            margin-bottom: 5px;
+        }
+        .leaflet-container {
+            background: #f8f9fa; /* Light background for map if tiles not loaded */
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div id="map-container">
+        <div id="map"></div>
+        <div id="controls">
+            <button id="play-pause-btn" class="btn btn-primary">播放</button>
+            <input type="range" id="time-slider" min="0" value="0">
+            <span id="current-time">00:00:00</span>
+        </div>
+        <div class="info-box">
+            <h5>模拟信息</h5>
+            <p>时间步: <span id="current-step">0</span></p>
+            <p>活动无人车: <span id="active-vehicles">0</span></p>
+            <p>可用自行车: <span id="available-bikes">0</span></p>
+            <p>总事件: <span id="total-events">0</span></p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        let map;
+        let vehicleMarkers = {};
+        let bikeMarkers = {};
+        let stationMarkers = {};
+        let simulationData = null;
+        let currentStep = 0;
+        let animationInterval = null;
+        let isPlaying = false;
+        const updateInterval = 100; // Milliseconds per animation frame
+
+        function initMap() {
+            if (map) {
+                map.remove();
+            }
+            map = L.map('map'); // Initialize without setView
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            // Add a resize observer to ensure map resizes correctly with its container
+            new ResizeObserver(() => {
+                map.invalidateSize();
+            }).observe(document.getElementById('map-container'));
+        }
+
+        async function loadSimulationData() {
+            try {
+                const response = await fetch('/simulation_data.json');
+                console.log('Fetch response status:', response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                simulationData = await response.json();
+                console.log('Simulation data loaded:', simulationData);
+                const timeSlider = document.getElementById('time-slider');
+                timeSlider.max = simulationData.frames.length - 1;
+
+                // Set initial map view using bbox from simulationData
+                if (simulationData.initial_map_view && simulationData.initial_map_view.bbox) {
+                    const [min_lat, max_lat, min_lon, max_lon] = simulationData.initial_map_view.bbox;
+                    const southWest = L.latLng(min_lat, min_lon);
+                    const northEast = L.latLng(max_lat, max_lon);
+                    const bounds = L.latLngBounds(southWest, northEast);
+                    map.fitBounds(bounds, { padding: [50, 50] }); // Add some padding
+                } else if (simulationData.initial_map_view && simulationData.initial_map_view.center) {
+                    // Fallback to center if bbox is not available
+                    map.setView(simulationData.initial_map_view.center, 13); // Default zoom if only center is available
+                }
+
+                updateMap(0);
+            } catch (error) {
+                console.error('Error loading simulation data:', error);
+                alert('无法加载模拟数据: ' + error.message + '. 请检查服务器和 simulation_data.json 文件。');
+            }
+        }
+
+        function updateMap(step) {
+            currentStep = step;
+            if (!simulationData || !simulationData.frames || step >= simulationData.frames.length) {
+                return;
+            }
+
+            const frame = simulationData.frames[currentStep];
+            console.log(`Updating map for step ${currentStep}:`, frame);
+            console.log(`Vehicles in frame: ${frame.vehicles.length}, Bikes in frame: ${frame.bikes.length}, Stations in frame: ${frame.stations ? frame.stations.length : 0}`);
+            const totalDuration = simulationData.total_duration;
+            const currentTime = (currentStep / (simulationData.frames.length - 1)) * totalDuration;
+
+            document.getElementById('time-slider').value = currentStep;
+            document.getElementById('current-time').textContent = formatTime(currentTime);
+            document.getElementById('current-step').textContent = currentStep;
+            document.getElementById('active-vehicles').textContent = frame.vehicles.length;
+            document.getElementById('available-bikes').textContent = frame.bikes.length;
+            document.getElementById('total-events').textContent = simulationData.frames.length;
+
+            // Update vehicle markers
+            const activeVehicleIds = new Set();
+            frame.vehicles.forEach(vehicle => {
+                activeVehicleIds.add(vehicle.id);
+                const latLng = [vehicle.lat, vehicle.lon];
+                if (vehicleMarkers[vehicle.id]) {
+                    vehicleMarkers[vehicle.id].setLatLng(latLng);
+                } else {
+                    vehicleMarkers[vehicle.id] = L.circleMarker(latLng, { color: 'blue', radius: 8, fillOpacity: 0.8 }).addTo(map);
+                    vehicleMarkers[vehicle.id].bindPopup(`无人车 ID: ${vehicle.id}`);
+                }
+            });
+            // Remove old vehicle markers
+            Object.keys(vehicleMarkers).forEach(id => {
+                if (!activeVehicleIds.has(id)) {
+                    map.removeLayer(vehicleMarkers[id]);
+                    delete vehicleMarkers[id];
+                }
+            });
+
+            // Update bike markers
+            const activeBikeIds = new Set();
+            frame.bikes.forEach(bike => {
+                activeBikeIds.add(bike.id);
+                const latLng = [bike.lat, bike.lon];
+                if (bikeMarkers[bike.id]) {
+                    bikeMarkers[bike.id].setLatLng(latLng);
+                } else {
+                    bikeMarkers[bike.id] = L.circleMarker(latLng, { color: 'red', radius: 6, fillOpacity: 0.8 }).addTo(map);
+                    bikeMarkers[bike.id].bindPopup(`自行车 ID: ${bike.id}`);
+                }
+            });
+            // Remove old bike markers
+            Object.keys(bikeMarkers).forEach(id => {
+                if (!activeBikeIds.has(id)) {
+                    map.removeLayer(bikeMarkers[id]);
+                    delete bikeMarkers[id];
+                }
+            });
+
+            // Update station markers (ensure they are always present if in data)
+            const activeStationIds = new Set();
+            if (frame.parking_spots) {
+                frame.parking_spots.forEach(station => {
+                    activeStationIds.add(station.id);
+                    const latLng = [station.lat, station.lon];
+                    if (stationMarkers[station.id]) {
+                        stationMarkers[station.id].setLatLng(latLng);
+                    } else {
+                        stationMarkers[station.id] = L.marker(latLng, {
+                            icon: L.divIcon({
+                                className: 'station-icon',
+                                html: `<div style="background-color: green; width: 16px; height: 16px; border-radius: 50%;"></div>`,
+                                iconSize: [16, 16]
+                            })
+                        }).addTo(map);
+                        stationMarkers[station.id].bindPopup(`站点 ID: ${station.id}`);
+                    }
+                });
+            }
+            // Remove old station markers
+            Object.keys(stationMarkers).forEach(id => {
+                if (!activeStationIds.has(id)) {
+                    map.removeLayer(stationMarkers[id]);
+                    delete stationMarkers[id];
+                }
+            });
+        }
+
+        function formatTime(seconds) {
+            const h = String(Math.floor(seconds / 3600)).padStart(2, '0');
+            const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+            const s = String(Math.floor(seconds % 60)).padStart(2, '0');
+            return `${h}:${m}:${s}`;
+        }
+
+        function togglePlayPause() {
+            isPlaying = !isPlaying;
+            const playPauseBtn = document.getElementById('play-pause-btn');
+            if (isPlaying) {
+                playPauseBtn.textContent = '暂停';
+                animationInterval = setInterval(() => {
+                    if (currentStep < simulationData.frames.length - 1) {
+                        updateMap(currentStep + 1);
+                    } else {
+                        updateMap(0); // Loop
+                    }
+                }, updateInterval);
+            } else {
+                playPauseBtn.textContent = '播放';
+                clearInterval(animationInterval);
+            }
+        }
+
+        function stopAnimation() {
+            isPlaying = false;
+            clearInterval(animationInterval);
+            document.getElementById('play-pause-btn').textContent = '播放';
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            initMap();
+            loadSimulationData();
+
+            document.getElementById('play-pause-btn').addEventListener('click', togglePlayPause);
+            document.getElementById('time-slider').addEventListener('input', (event) => {
+                stopAnimation(); // Stop animation when manually moving slider
+                updateMap(parseInt(event.target.value));
+            });
+        });
+    </script>
+{% endblock %}
