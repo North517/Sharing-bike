@@ -81,7 +81,6 @@
                                 </tr>
                             </thead>
                             <tbody id="kpi-table-body">
-                                <!-- 由 JS 填充 -->
                             </tbody>
                         </table>
                     </div>
@@ -97,22 +96,18 @@
     async function loadAnalysisData() {
         try {
             const resp = await fetch('/simulation_data.json');
-            if (!resp.ok) {
-                throw new Error('无法读取 simulation_data.json');
-            }
+            if (!resp.ok) throw new Error('无法读取 simulation_data.json');
             const data = await resp.json();
             const frames = data.frames || [];
-            if (!frames.length) {
-                return;
-            }
+            if (!frames.length) return;
 
             const totalDuration = data.total_duration || 0;
             const numVehicles = (frames[0].vehicles || []).length;
 
-            // 时间轴（以分钟计）
+            // 时间轴（分钟）
             const labels = frames.map(f => (f.time || 0) / 60);
 
-            // 每一帧：有任务的车辆数量（近似：has_bike 为 true 或 bikes 中有 on_vehicle_en_route）
+            // 每帧忙碌车辆数（粗略：has_bike 或附近有收车行为）
             const busyCounts = frames.map(f => {
                 const vehicles = f.vehicles || [];
                 const bikes = f.bikes || [];
@@ -121,11 +116,9 @@
                 return carrying + enRouteBikes;
             });
 
-            // 每一帧的利用率：busy / 总车辆
             let utilizationSeries = busyCounts.map(c => numVehicles ? (c / numVehicles) * 100 : 0);
 
-            // 粗略估算每辆自行车被搬运次数：
-            // 统计 status 从 "misplaced/on_vehicle_en_route" -> "at_parking" 的切换次数
+            // 粗略估计每辆自行车被搬运次数
             const bikeStatusHist = {};
             const bikeTurnovers = {};
             frames.forEach(f => {
@@ -148,14 +141,12 @@
             let turnoverValues = Object.values(bikeTurnovers);
             const totalBikesCollected = turnoverValues.reduce((a, b) => a + b, 0);
 
-            // 统计空闲时间：车辆在一帧中如果不忙，就视为空闲
             const idleFrameCounts = busyCounts.map(c => (c === 0 ? 1 : 0));
             const totalFrames = frames.length;
-            const idleFrames = idleFrameCounts.reduce((a, b) => a + b, 0);
-            let idleRatio = totalFrames ? (idleFrames / totalFrames) : 0;
+            let idleRatio = totalFrames ? (idleFrames => idleFrames / totalFrames)(idleFrameCounts.reduce((a, b) => a + b, 0)) : 0;
 
-            // 为了让分析结果在每次模拟/刷新时有一点“活的感觉”，在保持大致趋势不变的前提下加入轻微扰动
-            const jitter = () => (0.95 + Math.random() * 0.1); // 0.95 ~ 1.05
+            // 轻微扰动，让每次加载略有不同但趋势不变
+            const jitter = () => (0.95 + Math.random() * 0.1);
             utilizationSeries = utilizationSeries.map(v => Math.max(0, Math.min(100, v * jitter())));
             turnoverValues = turnoverValues.map(v => Math.max(0, v * jitter()));
             idleRatio = Math.max(0, Math.min(1, idleRatio * jitter()));
@@ -163,15 +154,14 @@
             // 顶部摘要
             document.getElementById('summary-duration').textContent = (totalDuration / 60).toFixed(1) + ' 分钟';
             document.getElementById('summary-bikes-collected').textContent = totalBikesCollected.toString() + ' 辆';
-
             const avgUtil = utilizationSeries.reduce((a, b) => a + b, 0) / (utilizationSeries.length || 1);
             document.getElementById('summary-utilization').textContent = avgUtil.toFixed(1) + '%';
 
-            // 车辆利用率折线图
+            // 利用率折线图
             new Chart(document.getElementById('vehicleUtilizationChart').getContext('2d'), {
                 type: 'line',
                 data: {
-                    labels: labels,
+                    labels,
                     datasets: [{
                         label: '车辆忙碌率（%）',
                         data: utilizationSeries,
@@ -183,22 +173,18 @@
                 },
                 options: {
                     scales: {
-                        x: {
-                            title: { display: true, text: '时间（分钟）' }
-                        },
+                        x: { title: { display: true, text: '时间（分钟）' } },
                         y: {
                             title: { display: true, text: '忙碌率（%）' },
                             min: 0,
                             max: 100
                         }
                     },
-                    plugins: {
-                        legend: { display: false }
-                    }
+                    plugins: { legend: { display: false } }
                 }
             });
 
-            // 自行车周转次数分布（直方图样式的柱状图）
+            // 周转次数柱状图
             const turnoverBuckets = { '0次': 0, '1次': 0, '2次': 0, '3次及以上': 0 };
             turnoverValues.forEach(v => {
                 if (v <= 0) turnoverBuckets['0次']++;
@@ -226,7 +212,7 @@
                 }
             });
 
-            // 空闲时间占比（饼图）
+            // 空闲时间占比
             new Chart(document.getElementById('idleTimeChart').getContext('2d'), {
                 type: 'doughnut',
                 data: {
@@ -236,11 +222,7 @@
                         backgroundColor: ['#ffc107', '#17a2b8']
                     }]
                 },
-                options: {
-                    plugins: {
-                        legend: { position: 'bottom' }
-                    }
-                }
+                options: { plugins: { legend: { position: 'bottom' } } }
             });
 
             // KPI 表格
@@ -270,4 +252,4 @@
 
     document.addEventListener('DOMContentLoaded', loadAnalysisData);
 </script>
-{% endblock %} ***!
+{% endblock %}

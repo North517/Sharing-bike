@@ -23,26 +23,13 @@ from fleetpy_utils import FleetPyNetworkHelper
 FLEETPY_MAIN_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_FILE = os.path.join(FLEETPY_MAIN_DIR, "simulation_data.json")
 
-# --- High-level simulation configuration ---
-# 为了让动画更顺滑，我们缩短总时长并进一步加密时间步，这样蓝点更接近“连续移动”
-SIMULATION_DURATION_MINUTES = 20  # 可视化 demo：20 分钟足够展示完整循环
-TIME_STEP_SECONDS = 1  # 1 秒一帧，结合前端 120ms 播放间隔，基本看不出跳跃
-
-# 无人车数量保持 3 个，方便肉眼追踪每一辆车的行为
-NUM_VEHICLES = 3  # Number of unmanned vehicles (blue dots)
-# 单车总数控制在二十来个即可
-NUM_BIKES = 24  # Number of shared bikes (red dots)
-# 绿点：停车站数量保持 3 个
-NUM_PARKING_SPOTS = 3  # Number of parking spots/stations (green dots)
-
-# --- Bike appearance configuration ---
-# 初始就有一小部分“散落”的单车（红点）可见，避免一开始地图太空
-INITIAL_ACTIVE_BIKES = 12  # 初始直接作为 misplaced 出现的红点数量
-
-# 后续红点逐渐增加：每隔一段时间，从 inactive 里再激活 3～4 个
-BIKE_APPEARANCE_INTERVAL_SECONDS = 90  # every 1.5 minutes introduce a few new bikes
-MIN_BIKES_PER_INTERVAL = 3  # 每次至少激活 3 个
-MAX_BIKES_PER_INTERVAL = 4  # 每次最多激活 4 个
+SIMULATION_DURATION_MINUTES = 60 # Total simulation time
+TIME_STEP_SECONDS = 5 # How often to record data points for visualization
+NUM_VEHICLES = 3 # Number of unmanned vehicles (blue dots)
+NUM_BIKES = 20 # Number of shared bikes (red dots)
+NUM_PARKING_SPOTS = 3 # Number of parking spots/stations (green dots)
+BIKE_APPEARANCE_INTERVAL_SECONDS = 180 # Every 3 minutes, new bikes might appear more frequently
+BIKES_PER_INTERVAL = 5 # Number of bikes to make misplaced per interval (increased for more activity)
 
 # --- Helper Initialization ---
 helper = FleetPyNetworkHelper(FLEETPY_MAIN_DIR)
@@ -67,7 +54,7 @@ for i, node_id in enumerate(random_parking_nodes):
     })
 
 # Initialize bikes
-all_bikes_state = {}  # {bike_id: "inactive" | "misplaced" | "on_vehicle" | "at_parking" | "on_vehicle_en_route"}
+all_bikes_state = {} # {bike_id: "misplaced" | "on_vehicle" | "at_parking"}
 bikes = []
 random_bike_nodes = random.sample(all_nodes, NUM_BIKES)
 for i, node_id in enumerate(random_bike_nodes):
@@ -79,38 +66,24 @@ for i, node_id in enumerate(random_bike_nodes):
         "lon": node_data['x'],
         "lat": node_data['y'],
     })
-
-# 初始：先把一部分单车直接设为“散落的红点”（misplaced），其余为 inactive，后续逐渐出现
-initial_active_ids = set(random.sample([b["id"] for b in bikes], min(INITIAL_ACTIVE_BIKES, NUM_BIKES)))
-for bike in bikes:
-    if bike["id"] in initial_active_ids:
-        all_bikes_state[bike["id"]] = "misplaced"
-    else:
-        all_bikes_state[bike["id"]] = "inactive"
+    all_bikes_state[bike_id] = "inactive" # Bikes start as inactive, appear dynamically
 
 # Initialize vehicles
 vehicles = []
-# 让车辆从停车站节点本身出发，避免总是在地图某个角落“刷出来”的感觉
-vehicle_capacity = 3  # 每辆车一次可以虚拟“携带”最多 3 辆单车
-for i in range(NUM_VEHICLES):
-    # 如果停车站数量不足，就循环使用
-    parking = parking_spots[i % len(parking_spots)]
-    node_id = parking["node_id"]
-    lon = parking["lon"]
-    lat = parking["lat"]
+random_vehicle_nodes = random.sample(all_nodes, NUM_VEHICLES)
+for i, node_id in enumerate(random_vehicle_nodes):
+    node_data = helper.G.nodes[node_id]
     vehicles.append({
         "id": f"vehicle_{i}",
         "node_id": node_id,
-        "lon": lon,
-        "lat": lat,
-        "current_task": None,  # "to_bike", "to_parking", "repositioning"
-        "current_bike_id": None,  # ID of the bike being picked up or dropped off（当前正在前往的目标）
-        "current_route_polyline": [],  # List of (lon, lat, cumulative_time) tuples
-        "current_route_start_time": 0,  # Simulation time when the route started
-        "current_route_total_time": 0,  # Total travel time for the current route
-        "has_bike": False,  # 是否至少携带了一辆车
-        "carried_bikes": 0,  # 当前已经装载的单车数量
-        "capacity": vehicle_capacity,  # 最大装载数量
+        "lon": node_data['x'],
+        "lat": node_data['y'],
+        "current_task": None, # "to_bike", "to_parking"
+        "current_bike_id": None, # ID of the bike being picked up or dropped off
+        "current_route_polyline": [], # List of (lon, lat, cumulative_time) tuples
+        "current_route_start_time": 0, # Simulation time when the route started
+        "current_route_total_time": 0, # Total travel time for the current route
+        "has_bike": False, # True if vehicle is carrying a bike
     })
 
 # --- Simulation Logic ---
@@ -123,102 +96,83 @@ def assign_new_task(vehicle, current_sim_time):
     """
     vehicle_node_id = vehicle["node_id"]
     
-    # Task 1: Drop off bikes at a parking if the vehicle is "full" 或附近没有更多红点
-    if vehicle["has_bike"] and vehicle.get("carried_bikes", 0) > 0:
-        # 所有停车点都可以作为目标，我们在“最近的若干个”里随机挑一个，避免一直走同一条路
-        candidate_parking_infos = []
+    # Task 1: Drop off a bike if the vehicle has one
+    if vehicle["has_bike"]:
+        best_target_parking = None
+        min_travel_time = float('inf')
+
         for parking in parking_spots:
             if parking["node_id"] == vehicle_node_id:
-                continue  # already at this parking
-
+                continue # Cannot drop off at current location if already there
+            
             route_polyline = helper._get_route_polyline_from_node_ids(vehicle_node_id, parking["node_id"])
             if route_polyline and route_polyline[-1][2] > 0:
                 travel_time = route_polyline[-1][2]
-                candidate_parking_infos.append((travel_time, parking, route_polyline))
+                if travel_time < min_travel_time:
+                    min_travel_time = travel_time
+                    best_target_parking = parking
+                    best_route_polyline = route_polyline
 
-        if candidate_parking_infos:
-            # 先按时间排序，再从前 K 个里随机选一个
-            candidate_parking_infos.sort(key=lambda x: x[0])
-            K = min(2, len(candidate_parking_infos))  # 最近的前 2 个里随机
-            chosen_travel_time, best_target_parking, best_route_polyline = random.choice(candidate_parking_infos[:K])
-
+        if best_target_parking:
             vehicle["current_task"] = "to_parking"
-            vehicle["current_bike_id"] = vehicle["current_bike_id"]  # Keep track of the bike
+            vehicle["current_bike_id"] = vehicle["current_bike_id"] # Keep track of the bike
             vehicle["current_route_polyline"] = best_route_polyline
             vehicle["current_route_start_time"] = current_sim_time
-            vehicle["current_route_total_time"] = chosen_travel_time
-            logger.debug(
-                f"Vehicle {vehicle['id']} assigned to drop off bike {vehicle['current_bike_id']} "
-                f"at parking {best_target_parking['id']} (travel time: {chosen_travel_time:.2f}s)."
-            )
+            vehicle["current_route_total_time"] = min_travel_time
+            logger.debug(f"Vehicle {vehicle['id']} assigned to drop off bike {vehicle['current_bike_id']} at parking {best_target_parking['id']} (travel time: {min_travel_time:.2f}s).")
             return True
         else:
             logger.debug(f"Vehicle {vehicle['id']} has bike but no valid route to any parking spots.")
-            return False  # No valid place to drop off
+            return False # No valid place to drop off
 
-    # Task 2: Pick up misplaced bikes if vehicle still has free capacity
+    # Task 2: Pick up a misplaced bike if vehicle has no bike
     else:
-        # 如果已经满载，则直接规划去停车场
-        if vehicle.get("carried_bikes", 0) >= vehicle.get("capacity", 1):
-            logger.debug(f"Vehicle {vehicle['id']} reached capacity, will go to parking next.")
-            vehicle["has_bike"] = True
-            return assign_new_task({**vehicle, "has_bike": True}, current_sim_time)
-
+        best_target_bike = None
+        min_travel_time = float('inf')
         eligible_misplaced_bike_ids = [bike_id for bike_id, status in all_bikes_state.items() if status == "misplaced"]
 
-        candidate_bike_infos = []
         for bike_id in eligible_misplaced_bike_ids:
             target_bike_node_id = next(b["node_id"] for b in bikes if b["id"] == bike_id)
-
+            
             route_polyline = helper._get_route_polyline_from_node_ids(vehicle_node_id, target_bike_node_id)
             if route_polyline and route_polyline[-1][2] > 0:
                 travel_time = route_polyline[-1][2]
-                candidate_bike_infos.append((travel_time, bike_id, route_polyline))
-
-        if candidate_bike_infos:
-            # 同样：取最近的若干个里随机选，增加路径多样性
-            candidate_bike_infos.sort(key=lambda x: x[0])
-            K = min(3, len(candidate_bike_infos))  # 最近的前 3 个里随机
-            chosen_travel_time, best_target_bike, best_route_polyline = random.choice(candidate_bike_infos[:K])
-
+                if travel_time < min_travel_time:
+                    min_travel_time = travel_time
+                    best_target_bike = bike_id
+                    best_route_polyline = route_polyline
+        
+        if best_target_bike:
             vehicle["current_task"] = "to_bike"
             vehicle["current_bike_id"] = best_target_bike
             vehicle["current_route_polyline"] = best_route_polyline
             vehicle["current_route_start_time"] = current_sim_time
-            vehicle["current_route_total_time"] = chosen_travel_time
-            all_bikes_state[best_target_bike] = "on_vehicle_en_route"  # Mark bike as being picked up
-            logger.debug(
-                f"Vehicle {vehicle['id']} assigned to pick up bike {best_target_bike} "
-                f"(travel time: {chosen_travel_time:.2f}s)."
-            )
+            vehicle["current_route_total_time"] = min_travel_time
+            all_bikes_state[best_target_bike] = "on_vehicle_en_route" # Mark bike as being picked up
+            logger.debug(f"Vehicle {vehicle['id']} assigned to pick up bike {best_target_bike} (travel time: {min_travel_time:.2f}s).")
             return True
         else:
             logger.debug(f"Vehicle {vehicle['id']} has no bike and no available misplaced bikes with valid routes.")
-
+            
             # Task 3: Reposition to a random parking spot if no misplaced bikes are available
             if not parking_spots:
                 logger.debug(f"Vehicle {vehicle['id']} has no bike, no misplaced bikes, and no parking spots to reposition to.")
-                return False  # No parking spots to reposition to
+                return False # No parking spots to reposition to
 
             target_parking_spot = random.choice(parking_spots)
             target_node_id = target_parking_spot["node_id"]
-
+            
             route_polyline = helper._get_route_polyline_from_node_ids(vehicle_node_id, target_node_id)
             if not route_polyline or route_polyline[-1][2] == 0:
-                logger.debug(
-                    f"Vehicle {vehicle['id']} (repositioning) - No valid route to random target parking {target_node_id}."
-                )
-                return False  # No valid route or zero travel time
-
+                logger.debug(f"Vehicle {vehicle['id']} (repositioning) - No valid route to random target parking {target_node_id}.")
+                return False # No valid route or zero travel time
+            
             vehicle["current_task"] = "repositioning"
             vehicle["current_bike_id"] = None
             vehicle["current_route_polyline"] = route_polyline
             vehicle["current_route_start_time"] = current_sim_time
             vehicle["current_route_total_time"] = route_polyline[-1][2]
-            logger.debug(
-                f"Vehicle {vehicle['id']} assigned to reposition to parking "
-                f"{target_parking_spot['id']} (travel time: {route_polyline[-1][2]:.2f}s)."
-            )
+            logger.debug(f"Vehicle {vehicle['id']} assigned to reposition to parking {target_parking_spot['id']} (travel time: {route_polyline[-1][2]:.2f}s).")
             return True
 
 # --- Simulation Loop ---
@@ -227,18 +181,14 @@ current_sim_time = 0 # seconds
 last_bike_appearance_time = 0
 
 while current_sim_time <= SIMULATION_DURATION_MINUTES * 60:
-    # Dynamic bike appearance: 每隔一段时间，从 inactive 里激活少量红点，形成“渐进增多”的效果
+    # Dynamic bike appearance (only if current_sim_time is a multiple of BIKE_APPEARANCE_INTERVAL_SECONDS)
     if current_sim_time > 0 and (current_sim_time - last_bike_appearance_time >= BIKE_APPEARANCE_INTERVAL_SECONDS):
         logger.debug(f"Attempting to activate bikes at {current_sim_time}s.")
         inactive_bikes = [bike_id for bike_id, status in all_bikes_state.items() if status == "inactive"]
         logger.debug(f"all_bikes_state at {current_sim_time}s: {all_bikes_state}")
         logger.debug(f"Found {len(inactive_bikes)} inactive bikes: {inactive_bikes}")
         if inactive_bikes:
-            bikes_to_activate_count = random.randint(
-                MIN_BIKES_PER_INTERVAL,
-                MAX_BIKES_PER_INTERVAL
-            )
-            bikes_to_activate = random.sample(inactive_bikes, min(bikes_to_activate_count, len(inactive_bikes)))
+            bikes_to_activate = random.sample(inactive_bikes, min(BIKES_PER_INTERVAL, len(inactive_bikes)))
             for bike_id in bikes_to_activate:
                 all_bikes_state[bike_id] = "misplaced"
                 logger.debug(f"Dynamically appeared bike {bike_id} at {current_sim_time}s.")
@@ -279,8 +229,6 @@ while current_sim_time <= SIMULATION_DURATION_MINUTES * 60:
                     bike_id_to_pickup = veh["current_bike_id"]
                     if bike_id_to_pickup and all_bikes_state.get(bike_id_to_pickup) == "on_vehicle_en_route":
                         veh["has_bike"] = True
-                        # 增加车上携带的数量，模拟“一路多捡几辆”
-                        veh["carried_bikes"] = veh.get("carried_bikes", 0) + 1
                         all_bikes_state[bike_id_to_pickup] = "on_vehicle"
                         # Bike is now on vehicle, it will not appear as a separate red dot
                     veh["current_task"] = None
@@ -292,8 +240,6 @@ while current_sim_time <= SIMULATION_DURATION_MINUTES * 60:
                     bike_id_to_dropoff = veh["current_bike_id"]
                     if bike_id_to_dropoff and all_bikes_state.get(bike_id_to_dropoff) == "on_vehicle":
                         veh["has_bike"] = False
-                        # 清空载货数，表示这一趟已经全部卸完
-                        veh["carried_bikes"] = 0
                         all_bikes_state[bike_id_to_dropoff] = "at_parking"
                         # Update bike's position to parking spot
                         for b in bikes:

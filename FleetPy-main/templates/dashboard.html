@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block title %}运营看板 - 共享单车调度系统{% endblock %}
+
+{% block head %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid h-100 d-flex flex-column">
+    <h2 class="mb-4">运营看板（示意）</h2>
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-header">总调度次数</div>
+                <div class="card-body">
+                    <h5 class="card-title" id="dash-total-dispatches">-- 次</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-header">平均取车距离</div>
+                <div class="card-body">
+                    <h5 class="card-title" id="dash-avg-distance">-- 米</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-header">车站平均占用率</div>
+                <div class="card-body">
+                    <h5 class="card-title" id="dash-station-util">--%</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row flex-grow-1">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header">按车站统计调度量</div>
+                <div class="card-body">
+                    <canvas id="stationDispatchChart" height="160"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header">不同时段调度量</div>
+                <div class="card-body">
+                    <canvas id="timeOfDayChart" height="160"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    async function initDashboard() {
+        try {
+            const resp = await fetch('/simulation_data.json');
+            if (!resp.ok) throw new Error('无法加载 simulation_data.json');
+            const data = await resp.json();
+            const frames = data.frames || [];
+            if (!frames.length) return;
+
+            // 简单构造一些与模拟规模相关、但带随机波动的指标
+            const bikesPerFrame = frames.map(f => (f.bikes || []).length);
+            const avgBikes = bikesPerFrame.reduce((a, b) => a + b, 0) / (bikesPerFrame.length || 1);
+            const totalDispatches = Math.round(avgBikes * 2 + 10 + Math.random() * 10);
+            document.getElementById('dash-total-dispatches').textContent = totalDispatches + ' 次';
+
+            const avgDistance = 150 + Math.random() * 250;
+            document.getElementById('dash-avg-distance').textContent = avgDistance.toFixed(0) + ' 米';
+
+            const stationUtil = 30 + Math.random() * 50;
+            document.getElementById('dash-station-util').textContent = stationUtil.toFixed(1) + '%';
+
+            // 车站调度量
+            const stationLabels = ['P0', 'P1', 'P2'];
+            const stationCounts = stationLabels.map(() => Math.round(totalDispatches / 3 + (Math.random() - 0.5) * 8));
+            new Chart(document.getElementById('stationDispatchChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: stationLabels,
+                    datasets: [{
+                        label: '调度次数',
+                        data: stationCounts,
+                        backgroundColor: '#007bff'
+                    }]
+                },
+                options: {
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { title: { display: true, text: '车站' } },
+                        y: { title: { display: true, text: '调度次数' }, beginAtZero: true }
+                    }
+                }
+            });
+
+            // 时段调度量
+            const timeLabels = ['早高峰', '平峰', '晚高峰', '夜间'];
+            const timeCounts = timeLabels.map(() => Math.round(totalDispatches / 4 + (Math.random() - 0.5) * 12));
+            new Chart(document.getElementById('timeOfDayChart').getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: timeLabels,
+                    datasets: [{
+                        label: '调度次数',
+                        data: timeCounts,
+                        borderColor: '#28a745',
+                        fill: false,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', initDashboard);
+</script>
+{% endblock %}
+

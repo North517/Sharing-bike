@@ -17,6 +17,18 @@ def data_analysis():
 def configuration():
     return render_template('configuration.html')
 
+@app.route('/events')
+def events():
+    return render_template('events.html')
+
+@app.route('/heatmap')
+def heatmap():
+    return render_template('heatmap.html')
+
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
+
 @app.route('/simulation_data.json')
 def get_simulation_data():
     file_path = os.path.join(FLEETPY_MAIN_DIR, 'simulation_data.json')

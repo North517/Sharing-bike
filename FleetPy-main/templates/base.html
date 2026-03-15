@@ -80,6 +80,21 @@
                         <i class="fas fa-cog mr-2"></i> 配置
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/events' %}active{% endif %}" href="/events">
+                        <i class="fas fa-stream mr-2"></i> 运行时间线
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/heatmap' %}active{% endif %}" href="/heatmap">
+                        <i class="fas fa-fire-alt mr-2"></i> 空间热力图
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/dashboard' %}active{% endif %}" href="/dashboard">
+                        <i class="fas fa-tachometer-alt mr-2"></i> 运营看板
+                    </a>
+                </li>
             </ul>
         </nav>
         <div id="main-panel">

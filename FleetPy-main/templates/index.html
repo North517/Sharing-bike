@@ -93,7 +93,7 @@
         let currentStep = 0;
         let animationInterval = null;
         let isPlaying = false;
-        // 使用更细时间步 + 较快刷新频率，让视觉上接近连续移动
+        // 更慢更顺滑的播放节奏
         const updateInterval = 120; // Milliseconds per animation frame
 
         function initMap() {
@@ -254,8 +254,10 @@
                     if (currentStep < simulationData.frames.length - 1) {
                         updateMap(currentStep + 1);
                     } else {
-                        // 播放到最后一帧后直接停在终点，避免蓝点瞬间回到初始位置重刷
-                        stopAnimation();
+                        // 播放到最后一帧后停在终点，不再自动回到开头
+                        clearInterval(animationInterval);
+                        isPlaying = false;
+                        playPauseBtn.textContent = '播放';
                     }
                 }, updateInterval);
             } else {

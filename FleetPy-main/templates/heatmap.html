@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}空间热力图 - 共享单车调度系统{% endblock %}
+
+{% block head %}
+    <style>
+        #heatmap-map {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid h-100 d-flex flex-column">
+    <h2 class="mb-3">空间热力图</h2>
+    <p class="text-muted">基于模拟过程中的红点位置，展示共享单车散落及回收的热点区域。</p>
+    <div class="card flex-grow-1">
+        <div class="card-body p-0">
+            <div id="heatmap-map"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let heatmapMap;
+
+    async function initHeatmap() {
+        heatmapMap = L.map('heatmap-map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(heatmapMap);
+
+        try {
+            const resp = await fetch('/simulation_data.json');
+            if (!resp.ok) throw new Error('无法加载 simulation_data.json');
+            const data = await resp.json();
+            const frames = data.frames || [];
+            if (!frames.length) return;
+
+            const heatPoints = [];
+            frames.forEach(f => {
+                (f.bikes || []).forEach(b => {
+                    // 将所有未被收走的红点位置计入热力图
+                    heatPoints.push([b.lat, b.lon, 0.5]);
+                });
+            });
+
+            if (data.initial_map_view && data.initial_map_view.bbox) {
+                const [min_lat, max_lat, min_lon, max_lon] = data.initial_map_view.bbox;
+                const southWest = L.latLng(min_lat, min_lon);
+                const northEast = L.latLng(max_lat, max_lon);
+                const bounds = L.latLngBounds(southWest, northEast);
+                heatmapMap.fitBounds(bounds, { padding: [40, 40] });
+            }
+
+            if (heatPoints.length) {
+                L.heatLayer(heatPoints, { radius: 18, blur: 20 }).addTo(heatmapMap);
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', initHeatmap);
+</script>
+{% endblock %}
+
