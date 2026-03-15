@@ -65,7 +65,8 @@ class FleetPyNetworkHelper:
             print("OSMnx graph constructed from GeoJSON files.")
             
             # Manually add speed and travel time to edges as GeoJSON might not have 'highway' tag
-            default_speed_kmh = 1.25 # Further reduced for slower vehicle movement based on user feedback
+            # 进一步降低速度，让车辆在可视化中移动得更慢、更容易观察
+            default_speed_kmh = 0.6  # ~0.6 km/h, very slow for clear visualization
             default_speed_mps = default_speed_kmh * 1000 / 3600  # meters per second
             for u, v, k, data in self.G.edges(keys=True, data=True):
                 if 'length' in data:
