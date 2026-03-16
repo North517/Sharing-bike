@@ -360,15 +360,19 @@ class FleetSimulationBase:
     def update_sim_state_fleets(self, last, next):
         for key, v in sorted(self.sim_vehicles.items(), key=lambda x: self.vehicle_update_order[x[0]]):
             op, vid = key
-            board, alight, passed, start_alight = v.update_veh_state(last, next)
-            for rid, (bt, pos) in board.items():
-                self.demand.record_boarding(rid, vid, op, bt, pos)
-                self.broker.acknowledge_user_boarding(op, rid, vid, bt)
-            for rid, (st, pos) in start_alight.items():
-                self.demand.record_alighting_start(rid, vid, op, st, pos)
-            for rid, et in alight.items():
-                self.demand.user_ends_alighting(rid, vid, op, et)
-                self.broker.acknowledge_user_alighting(op, rid, vid, et)
+            alighted_rids, boarded_rids, start_alighting_rq_objs, start_boarding_rq_objs = v.update_veh_state(last, next)
+            # Process newly boarded passengers
+            for rid in boarded_rids:
+                self.demand.record_boarding(rid, vid, op, next, pu_pos=v.pos)
+                self.broker.acknowledge_user_boarding(op, rid, vid, next)
+            # Process passengers starting to alight
+            for rq_obj in start_alighting_rq_objs:
+                rid = rq_obj.get_rid()
+                self.demand.record_alighting_start(rid, vid, op, next, do_pos=v.pos)
+            # Process newly alighted passengers
+            for rid in alighted_rids:
+                self.demand.user_ends_alighting(rid, vid, op, next)
+                self.broker.acknowledge_user_alighting(op, rid, vid, next)
 
     def run(self):
         if self._started:
@@ -452,14 +456,28 @@ class FleetSimulationBase:
                 vid_str=f"{vid[0]}-{vid[1]}", time=t_start, pos=pos,
                 end_time=end_t, end_pos=end_pos, soc=d.get("soc",1), pax=d.get("pax",0),
                 moving=True, status=st.name, parcels=0, passengers=0,
-                route=route, times=times
+                route=route, times=times, routing_engine=self.routing_engine
             )
             res = s.return_state(sim_time)
+            vehicle_entry = {"id": f"{vid[0]}-{vid[1]}", "status": st.value}
+
             if res and "nw_pos" in res:
                 lonlat = self.routing_engine.return_positions_lon_lat([res["nw_pos"]])[0]
+                vehicle_entry["lon"] = lonlat[0]
+                vehicle_entry["lat"] = lonlat[1]
             else:
                 lonlat = self.routing_engine.return_positions_lon_lat([pos])[0]
-            current["vehicles"].append({"id": f"{vid[0]}-{vid[1]}", "status": st.value, "lon": lonlat[0], "lat": lonlat[1]})
+                vehicle_entry["lon"] = lonlat[0]
+                vehicle_entry["lat"] = lonlat[1]
+
+            if route and times: # Check if route and times are available from d
+                # Convert list of node IDs to list of (node_id, None, None) position tuples
+                route_positions = [(node_id, None, None) for node_id in route]
+                route_lonlats = self.routing_engine.return_positions_lon_lat(route_positions)
+                vehicle_entry["route_lonlats"] = route_lonlats
+                vehicle_entry["route_times"] = times
+
+            current["vehicles"].append(vehicle_entry)
 
         for rid, (lon, lat) in zip(misplaced_bike_rids, misplaced_bike_coords):
             current["misplaced_bikes"].append({"id": int(rid), "lon": lon, "lat": lat})

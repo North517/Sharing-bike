@@ -116,7 +116,7 @@ def prep_output(gdf_row):
 
 class State:
     def __init__(self, vid_str, time, pos, end_time, end_pos, soc, pax,parcels,
-                 passengers,moving, status, route = None, times = None):
+                 passengers,moving, status, route = None, times = None, routing_engine=None):
         self.vid_str = vid_str
         self.time = time
         if type(pos) == str:
@@ -134,6 +134,9 @@ class State:
             self.end_pos = point_str_to_pos(end_pos)
         else:
             self.end_pos = end_pos
+        self.route = route
+        self.times = times
+        self.routing_engine = routing_engine
         self.trajectory = []
         if route and times:
             for node, t in zip(route, times):
@@ -150,43 +153,32 @@ class State:
         :param replay_time: current replay time
         :return: state-dict or empty dict
         """
-        if replay_time > self.end_time:
+        if replay_time >= self.end_time:
             self.pos = self.end_pos
-            return None
+            return self.to_dict()
+
         if not self.moving:
             return self.to_dict()
-        else:
-            while self.time < replay_time:
-                if len(self.trajectory) != 0:
-                    if self.trajectory[0][1] <= replay_time:
-                        self.time = self.trajectory[0][1]
-                        self.pos = (self.trajectory[0][0], -1, -1)
-                        self.trajectory = self.trajectory[1:]
-                        continue
-                    else:
-                        target = self.trajectory[0][0]
-                        target_time = self.trajectory[0][1]
-                        if self.pos[2] < 0:
-                            cur_pos = 0.0
-                        else:
-                            cur_pos = self.pos[2]
-                        delta_pos = (1.0 - cur_pos)/(target_time - self.time)*(replay_time - self.time)
-                        self.pos = (self.pos[0], target, cur_pos + delta_pos)
-                        self.time = replay_time
-                else:
-                    target = self.end_pos[0]
-                    target_time = self.end_time
-                    target_pos = self.end_pos[2]
-                    if target_pos is None:
-                        print("is this possible??")
-                    if self.pos[2] < 0:
-                        cur_pos = 0.0
-                    else:
-                        cur_pos = self.pos[2]
-                    delta_pos = (target_pos - cur_pos)/(target_time - self.time)*(replay_time - self.time)
-                    self.pos = (self.pos[0], target, cur_pos + delta_pos)
-                    self.time = replay_time
-            return self.to_dict()
+
+        # If routing_engine and route are available, use them for network-based interpolation
+        if self.routing_engine and self.route and len(self.route) > 1:
+            time_step = replay_time - self.time
+            if time_step < 0: # Should not happen if replay_time is after self.time
+                return self.to_dict()
+            try:
+                # self.pos is the current network position (start of the current leg for replay)
+                # self.route is the remaining part of the route for the current leg
+                new_pos, _, _ = self.routing_engine.move_along_route(self.pos, time_step, self.route)
+                return {"nw_pos": new_pos}
+            except Exception as e:
+                # Fallback if move_along_route fails (e.g., invalid route, time_step too large)
+                # print(f"Error in move_along_route for {self.vid_str}: {e}")
+                pass # Continue to fallback to to_dict()
+
+        # Fallback for cases where no routing engine, no valid route, or if routing_engine interpolation failed.
+        # This covers stationary or straight-line moving if no route provided
+        # or if the route could not be used.
+        return self.to_dict()
                     
         # if replay_time == self.time:
         #     return self.to_dict()

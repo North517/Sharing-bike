@@ -93,6 +93,7 @@
         let currentStep = 0;
         let animationInterval = null;
         let isPlaying = false;
+        let vehicleRoutes = {}; // New: Store polylines for vehicle routes
         // 更慢更顺滑的播放节奏
         const updateInterval = 120; // Milliseconds per animation frame
 
@@ -142,6 +143,51 @@
             }
         }
 
+        function interpolatePosition(route_lonlats, route_times, currentSimTime) {
+            if (!route_lonlats || route_lonlats.length < 2 || !route_times || route_times.length < 2) {
+                // Not enough data for interpolation, return the last known position or null
+                return route_lonlats && route_lonlats.length > 0 ? [route_lonlats[route_lonlats.length - 1][1], route_lonlats[route_lonlats.length - 1][0]] : null;
+            }
+
+            // Find the segment where the currentSimTime falls
+            let segmentIndex = -1;
+            for (let i = 0; i < route_times.length - 1; i++) {
+                if (currentSimTime >= route_times[i] && currentSimTime <= route_times[i+1]) {
+                    segmentIndex = i;
+                    break;
+                }
+            }
+
+            // If currentSimTime is before the first point, return the first point
+            if (segmentIndex === -1 && currentSimTime < route_times[0]) {
+                return [route_lonlats[0][1], route_lonlats[0][0]];
+            }
+            // If currentSimTime is after the last point, return the last point
+            if (segmentIndex === -1 && currentSimTime > route_times[route_times.length - 1]) {
+                return [route_lonlats[route_lonlats.length - 1][1], route_lonlats[route_lonlats.length - 1][0]];
+            }
+            // If segmentIndex is still -1, it means currentSimTime is outside the route_times range
+            // This case should ideally not happen if data is well-formed, but for safety, return last known pos
+            if (segmentIndex === -1) {
+                return [route_lonlats[route_lonlats.length - 1][1], route_lonlats[route_lonlats.length - 1][0]];
+            }
+
+            const t0 = route_times[segmentIndex];
+            const t1 = route_times[segmentIndex + 1];
+            const p0_lon = route_lonlats[segmentIndex][0];
+            const p0_lat = route_lonlats[segmentIndex][1];
+            const p1_lon = route_lonlats[segmentIndex + 1][0];
+            const p1_lat = route_lonlats[segmentIndex + 1][1];
+
+            const duration = t1 - t0;
+            const progress = (currentSimTime - t0) / duration;
+
+            const interpolatedLon = p0_lon + (p1_lon - p0_lon) * progress;
+            const interpolatedLat = p0_lat + (p1_lat - p0_lat) * progress;
+
+            return [interpolatedLat, interpolatedLon]; // Leaflet expects [lat, lon]
+        }
+
         function updateMap(step) {
             currentStep = step;
             if (!simulationData || !simulationData.frames || step >= simulationData.frames.length) {
@@ -165,9 +211,34 @@
             const activeVehicleIds = new Set();
             frame.vehicles.forEach(vehicle => {
                 activeVehicleIds.add(vehicle.id);
-                const latLng = [vehicle.lat, vehicle.lon];
+                const currentTimeInSimulation = simulationData.frames[currentStep].time;
+                let markerLatLng = [vehicle.lat, vehicle.lon]; // Default to current lat/lon
+
+                if (vehicle.route_lonlats && vehicle.route_times && vehicle.route_lonlats.length > 0 && vehicle.route_times.length > 0) {
+                    const interpolated = interpolatePosition(vehicle.route_lonlats, vehicle.route_times, currentTimeInSimulation);
+                    if (interpolated) {
+                        markerLatLng = interpolated;
+                    }
+                }
+
+                // Handle vehicle routes
+                if (vehicle.route_lonlats && vehicle.route_lonlats.length > 1) {
+                    const routeLatLngs = vehicle.route_lonlats.map(coord => [coord[1], coord[0]]); // Leaflet expects [lat, lon]
+                    if (vehicleRoutes[vehicle.id]) {
+                        vehicleRoutes[vehicle.id].setLatLngs(routeLatLngs);
+                    } else {
+                        vehicleRoutes[vehicle.id] = L.polyline(routeLatLngs, { color: 'blue', weight: 3, opacity: 0.7 }).addTo(map);
+                    }
+                } else {
+                    // If no route or invalid route, remove existing polyline
+                    if (vehicleRoutes[vehicle.id]) {
+                        map.removeLayer(vehicleRoutes[vehicle.id]);
+                        delete vehicleRoutes[vehicle.id];
+                    }
+                }
+
                 if (vehicleMarkers[vehicle.id]) {
-                    vehicleMarkers[vehicle.id].setLatLng(latLng);
+                    vehicleMarkers[vehicle.id].setLatLng(markerLatLng);
                 } else {
                     const shortId = vehicle.id.replace('vehicle_', '');
                     vehicleMarkers[vehicle.id] = L.marker(latLng, {
@@ -180,11 +251,15 @@
                     vehicleMarkers[vehicle.id].bindPopup(`无人车 ID: ${vehicle.id}`);
                 }
             });
-            // Remove old vehicle markers
+            // Remove old vehicle markers and routes
             Object.keys(vehicleMarkers).forEach(id => {
                 if (!activeVehicleIds.has(id)) {
                     map.removeLayer(vehicleMarkers[id]);
                     delete vehicleMarkers[id];
+                    if (vehicleRoutes[id]) {
+                        map.removeLayer(vehicleRoutes[id]);
+                        delete vehicleRoutes[id];
+                    }
                 }
             });
 

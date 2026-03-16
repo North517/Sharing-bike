@@ -193,8 +193,15 @@ class SimulationVehicle:
             self.cl_start_pos = self.pos
             self.cl_start_soc = self.soc
             self.cl_driven_distance = 0.0
-            self.cl_driven_route = []
             ca = self.assigned_route[0]
+            if self.replay_flag:
+                self.cl_driven_route = [self.pos[0]]
+                self.cl_driven_route_times = [simulation_time]
+            else:
+                self.cl_driven_route = []
+        if self.replay_flag:
+            self.cl_driven_route.append(self.pos[0])
+            self.cl_driven_route_times.append(simulation_time)
             self.status = ca.status
             if self.pos != ca.destination_pos:
                 if ca.route and self.pos[0] == ca.route[0]:
@@ -206,8 +213,7 @@ class SimulationVehicle:
                 except ValueError:
                     # TODO # check out after ISTTT
                     LOG.warning(f"First node in position {self.pos} not found in currently assigned route {ca.route}!")
-                self.cl_driven_route.append(self.pos[0])
-                self.cl_driven_route_times.append(simulation_time)
+
                 self.cl_remaining_time = None
                 list_boarding_pax = []
                 list_start_alighting_pax = []
@@ -307,11 +313,18 @@ class SimulationVehicle:
             record_dict[G_VR_ALIGHTING_RID] = ";".join([str(rid) for rid in list_alighting_pax])
             if self.record_route_flag:
                 record_dict[G_VR_NODE_LIST] = ";".join([str(x) for x in self.cl_driven_route])
-            if self.replay_flag:
-                route_length = len(self.cl_driven_route)
+            # Only create route_replay_str if replay_flag is True and route data is available
+            current_sim_time = simulation_time # Assign to a local variable
+            route_replay_str = ""
+            if self.replay_flag and self.cl_driven_route and len(self.cl_driven_route) == len(self.cl_driven_route_times):
                 route_replay_str = ";".join([f"{self.cl_driven_route[i]}:{self.cl_driven_route_times[i]}"\
-                                             for i in range(route_length)])
-                record_dict[G_VR_REPLAY_ROUTE] = route_replay_str
+                                             for i in range(len(self.cl_driven_route))])
+            else:
+                if self.replay_flag:
+                    LOG.warning(f"Vehicle {self.vid} has inconsistent route data for replay at time {current_sim_time}. "
+                                f"cl_driven_route length: {len(self.cl_driven_route)}, "
+                                f"cl_driven_route_times length: {len(self.cl_driven_route_times)}")
+            record_dict[G_VR_REPLAY_ROUTE] = route_replay_str
             # default status and shift to next leg
             self.reset_current_leg()
             self.assigned_route = self.assigned_route[1:]
@@ -380,92 +393,61 @@ class SimulationVehicle:
                 # self.start_next_leg(sim_time)
         # LOG.info(f"Vehicle {self.vid} after new assignment: {[str(x) for x in self.assigned_route]} at time {sim_time}")
 
-    def update_veh_state(self, current_time:float, next_time:float)->tp.Tuple[tp.Dict[tp.Any, tp.Tuple[float, tuple]], tp.Dict[tp.Any, tp.Tuple[float, tuple]], tp.List[VehicleRouteLeg], tp.Dict[tp.Any, tp.Tuple[float, tuple]]]:
-        LOG.debug(f"update_veh_state for veh {self.vid} at time {current_time}. Pos: {self.pos}, Status: {self.status}, Remaining time: {self.cl_remaining_time}, Assigned route length: {len(self.assigned_route)}")
-        """This method updates the current state of a simulation vehicle. This includes moving, boarding etc.
-        The method updates the vehicle position, soc. Additionally, it triggers the end and start of VehicleRouteLegs.
-        It returns a list of boarding request, alighting requests.
-
-        :param current_time: this time corresponds to the current state of the vehicle
-        :type current_time: float
-        :param next_time: the time until which the state should be updated
-        :type next_time: float
-        :return:(dict of boarding requests -> (time, position), dict of alighting request objects -> (time, position), list of passed VRL, dict_start_alighting)
-        :rtype: list
+    def update_veh_state(self, simulation_time:int, routing_engine:NetworkBase, current_time:float=None)->tp.Tuple[tp.List[int], tp.List[int], tp.List[RequestBase], tp.List[RequestBase]]:
         """
-        LOG.debug(f"update veh state {current_time} -> {next_time} : {self}")
-        dict_boarding_requests = {}
-        dict_start_alighting = {}
-        dict_alighting_requests = {}
-        list_passed_VRL = []
-        c_time = current_time
-        remaining_step_time = next_time - current_time
+        This method is called every simulation step. It updates the vehicle position and state.
+        :param simulation_time: current simulation time
+        :param routing_engine: routing engine
+        :param current_time: current time within the simulation step. if given, vehicle position is updated to current_time
+        :return: (list_alighting_pax_rid, list_boarding_pax_rid, list_start_alighting_rQ_obj, list_start_boarding_rQ_obj)
+        """
+        # check if new assignment should be started
         if self.start_next_leg_first:
-            add_boarding_rids, start_alighting_rids = self.start_next_leg(c_time)
-            for rid in add_boarding_rids:
-                dict_boarding_requests[rid] = (c_time, self.pos)
-            for rid in start_alighting_rids:
-                dict_start_alighting[rid] = (c_time, self.pos)
+            list_boarding_pax, list_start_alighting_pax = self.start_next_leg(simulation_time)
             self.start_next_leg_first = False
-        # LOG.debug(f"veh update state from {current_time} to {next_time}")
-        while remaining_step_time > 0:
-            # LOG.debug(f" veh moving c_time {c_time} remaining time step {remaining_step_time}")
-            if self.status in G_DRIVING_STATUS:
-                # 1) moving: update pos and soc (call move along route with record_node_times=replay_flag)
-                # LOG.debug(f"Vehicle {self.vid} is driving between {c_time} and {next_time}")
-                arrival_in_time_step = self._move(c_time, remaining_step_time, current_time)
-                if arrival_in_time_step == -1:
-                    #   a) move until next_time; do nothing
-                    remaining_step_time = 0
-                else:
-                    #   b) move up to destination [compute required time]
-                    #       end task, start next task; continue with remaining time
-                    remaining_step_time -= (arrival_in_time_step - c_time)
-                    c_time = arrival_in_time_step
-                    # LOG.debug(f"arrival in time step {arrival_in_time_step}")
-                    add_alighting_rq, passed_VRL = self.end_current_leg(c_time)
-                    for rid in add_alighting_rq:
-                        dict_alighting_requests[rid] = c_time
-                    if isinstance(passed_VRL, list):
-                        list_passed_VRL.extend(passed_VRL)
-                    else:
-                        list_passed_VRL.append(passed_VRL)
-                    if self.assigned_route:
-                        add_boarding_rids, start_alighting_rids = self.start_next_leg(c_time)
-                        for rid in add_boarding_rids:
-                            dict_boarding_requests[rid] = (c_time, self.pos)
-                        for rid in start_alighting_rids:
-                            dict_start_alighting[rid] = (c_time, self.pos)
-            elif self.status != VRL_STATES.IDLE: #elif self.status != 0 and not self.status in G_IDLE_BUSY_STATUS:
-                # 2) non-moving:
-                # LOG.debug(f"Vehicle {self.vid} performs non-moving task between {c_time} and {next_time}")    
-                if remaining_step_time < self.cl_remaining_time:
-                    #   a) duration is ongoing: do nothing
-                    self.cl_remaining_time -= remaining_step_time
-                    if self.assigned_route[0].stationary_process is not None:
-                        self.assigned_route[0].stationary_process.update_state(remaining_step_time)
-                    remaining_step_time = 0
-                else:
-                    #   b) duration is passed; end task, start next task; continue with remaining time
-                    c_time += self.cl_remaining_time
-                    # LOG.debug(f"cl remaining time {self.cl_remaining_time}")
-                    remaining_step_time -= self.cl_remaining_time
-                    if self.assigned_route[0].stationary_process is not None:
-                        self.assigned_route[0].stationary_process.update_state(self.cl_remaining_time)
-                    add_alighting_rq, passed_VRL = self.end_current_leg(c_time)
-                    for rid in add_alighting_rq:
-                        dict_alighting_requests[rid] = c_time
-                    list_passed_VRL.append(passed_VRL)
-                    if self.assigned_route:
-                        add_boarding_rids, start_alighting_rids = self.start_next_leg(c_time)
-                        for rid in add_boarding_rids:
-                            dict_boarding_requests[rid] = (c_time, self.pos)
-                        for rid in start_alighting_rids:
-                            dict_start_alighting[rid] = (c_time, self.pos)
-            else:
-                # 3) idle without VRL
-                remaining_step_time = 0
-        return dict_boarding_requests, dict_alighting_requests, list_passed_VRL, dict_start_alighting
+            return [], [], list_start_alighting_pax, list_boarding_pax
+        #
+        # vehicle is blocked and cannot perform any task
+        if self.status == VRL_STATES.BLOCKED_INIT:
+            if self.assigned_route[0].earliest_start_time <= simulation_time:
+                self.end_current_leg(simulation_time)
+            return [], [], [], []
+        #
+        # current leg in progress
+        list_alighting_pax_rid = []
+        list_boarding_pax_rid = []
+        list_start_alighting_rq_obj = []
+        list_start_boarding_rq_obj = []
+        #
+        if self.cl_remaining_time is None: # driving tasks
+            # how much time remaining in this simulation step
+            remaining_step_time = simulation_time + 1 - current_time if current_time else 1.0
+            #
+            arrival_in_time_step = self._move(current_time, remaining_step_time, simulation_time)
+            if arrival_in_time_step >= 0: # end of leg is reached
+                if self.assigned_route: # new leg will be started in current time step
+                    list_alighting_pax_rid, passed_VRL = self.end_current_leg(arrival_in_time_step)
+                    list_start_alighting_rq_obj = []
+                    # start new leg
+                    list_boarding_pax_rid, list_start_boarding_rq_obj = self.start_next_leg(arrival_in_time_step)
+                else: # no new leg -> vehicle idle
+                    list_alighting_pax_rid, passed_VRL = self.end_current_leg(arrival_in_time_step)
+                    list_start_alighting_rq_obj = []
+            else: # no arrival in this time step -> still driving
+                pass
+        else: # stationary tasks
+            if self.cl_remaining_time <= 1: # end of leg is reached
+                if self.assigned_route: # new leg will be started in current time step
+                    list_alighting_pax_rid, passed_VRL = self.end_current_leg(simulation_time+1)
+                    list_start_alighting_rq_obj = passed_VRL.rq_dict.get(-1, [])
+                    # start new leg
+                    list_boarding_pax_rid, list_start_boarding_rq_obj = self.start_next_leg(simulation_time+1)
+                else: # no new leg -> vehicle idle
+                    list_alighting_pax_rid, passed_VRL = self.end_current_leg(simulation_time+1)
+                    list_start_alighting_rq_obj = passed_VRL.rq_dict.get(-1, [])
+            else: # no arrival in this time step -> still stationary
+                self.cl_remaining_time -= 1
+        return list_alighting_pax_rid, list_boarding_pax_rid, list_start_alighting_rq_obj, list_start_boarding_rq_obj
 
     def update_route(self):
         if self.assigned_route:
@@ -479,68 +461,6 @@ class SimulationVehicle:
                     LOG.warning(f"First node in position {self.pos} not found in currently assigned route {ca.route}!")
                 # LOG.info(f"veh {self.vid} update route {self.pos} -> {ca.destination_pos} : {self.cl_remaining_route}")
 
-    def compute_soc_consumption(self, distance:float)->float:
-        """This method returns the SOC change for driving a certain given distance.
-
-        :param distance: driving distance in meters
-        :type distance: float
-        :return: delta SOC (positive value!)
-        :rtype: float
-        """
-        return distance * self.soc_per_m
-
-    def compute_soc_charging(self, power:float, duration:float)->float:
-        """This method returns the SOC change for charging a certain amount of power for a given duration.
-
-        :param power: power of charging process in kW(!)
-        :type power: float
-        :param duration: duration of charging process in seconds(!)
-        :type duration: float
-        :return: delta SOC
-        :rtype: float
-        """
-        return power * duration / (self.battery_size * 3600)
-
-    def get_charging_duration(self, power:float, init_soc:float, final_soc:float=1.0)->float:
-        """This method computes the charging duration required to charge the vehicle from init_soc to final_soc.
-
-        :param power: power of charging process in kW(!); result should be in seconds
-        :type power: float
-        :param init_soc: soc at beginning of charging process
-        :type init_soc: float in [0,1]
-        :param final_soc: soc at end of charging process
-        :type final_soc: float in [0,1]
-        :return: duration in seconds
-        :rtype: float
-        """
-        return (final_soc - init_soc) * self.battery_size * 3600 / power
-
-    def get_nr_pax_without_currently_boarding(self)->int:
-        """ this method returns the current number of pax for the use of setting the inititial stats for 
-        the update_tt_... function in fleetControlBase.py.
-        In case the vehicle is currently boarding, this method doesnt count the number of currently boarding customers
-        the reason is that boarding and deboarding of customers is recognized during different timesteps of the vcl
-        :return: number of pax without currently boarding ones
-        :rtype: int
-        """
-        if self.status == VRL_STATES.BOARDING:
-            return sum([rq.nr_pax for rq in self.pax if not rq.is_parcel]) - sum([rq.nr_pax for rq in self.assigned_route[0].rq_dict.get(1, []) if not rq.is_parcel])
-        else:
-            return sum([rq.nr_pax for rq in self.pax if not rq.is_parcel if not rq.is_parcel])
-        
-    def get_nr_parcels_without_currently_boarding(self)->int:
-        """ this method returns the current number of parcels for the use of setting the inititial stats for 
-        the update_tt_... function in fleetControlBase.py.
-        In case the vehicle is currently boarding, this method doesnt count the number of currently boarding parcels
-        the reason is that boarding and deboarding of parcels is recognized during different timesteps of the vcl
-        :return: number of parcels without currently boarding ones
-        :rtype: int
-        """
-        if self.status == VRL_STATES.BOARDING:
-            return sum([rq.nr_pax for rq in self.pax if rq.is_parcel]) - sum([rq.nr_pax for rq in self.assigned_route[0].rq_dict.get(1, []) if rq.is_parcel])
-        else:
-            return sum([rq.nr_pax for rq in self.pax if rq.is_parcel])
-
     def _move(self, c_time:float, remaining_step_time:float, update_start_time:float)->float:
         """ this function is used internally to move the vehicle when called in update_veh_state
             -> can be overwritten in case no movement is performed within the simulation framework but externally
@@ -548,33 +468,47 @@ class SimulationVehicle:
         :param remaining_step_time: remaining time of the current update step
         :param update_start_time: time when update step started
         :return: arrival in time step (-1 if still moving at end of update step, time of arrival at end of route otherwise"""        
+        LOG.debug(f"Vehicle {self.vid} replay_flag: {self.replay_flag} before move_along_route")
         (new_pos, driven_distance, arrival_in_time_step, passed_nodes, passed_node_times) = \
-            self.routing_engine.move_along_route(self.cl_remaining_route, self.pos, remaining_step_time,
-                                                    sim_vid_id=(self.op_id, self.vid),
-                                                    new_sim_time=c_time,
+            self.routing_engine.move_along_route(self.cl_remaining_route, self.pos, remaining_step_time,\
+                                                    sim_vid_id=(self.op_id, self.vid),\
+                                                    new_sim_time=current_time,\
                                                     record_node_times=self.replay_flag)
-        last_node = self.pos[0]
         self.pos = new_pos
+        # Update cl_remaining_route based on the new position
+        if self.cl_remaining_route and new_pos[0] in self.cl_remaining_route:
+            # Find the index of the new position's node in the current remaining route
+            try:
+                index_of_new_pos = self.cl_remaining_route.index(new_pos[0])
+                # Truncate the route, starting from the node AFTER the current position
+                # because new_pos[0] is the current node, not a node to be passed.
+                self.cl_remaining_route = self.cl_remaining_route[index_of_new_pos + 1:]
+            except ValueError:
+                # This should theoretically not happen if new_pos[0] was in cl_remaining_route
+                LOG.error(f"Error: Node {new_pos[0]} not found in cl_remaining_route after check.")
+        else:
+            # If new_pos[0] is not in the remaining route, it means the route is completed
+            # or there's an inconsistency.
+            self.cl_remaining_route = []
+        # Removed the redundant assignment of last_node for clarity and moved its usage. Changed it to c_node
+        c_node = self.pos[0]
         self.cl_driven_distance += driven_distance
-        self.soc -= self.compute_soc_consumption(driven_distance)
-        if passed_nodes:
+        self.soc -= driven_distance * self.soc_per_m
+        if self.replay_flag and passed_nodes:
             self.cl_driven_route.extend(passed_nodes)
-            if self.replay_flag: # Only add node times if replay_flag is True
-                self.cl_driven_route_times.extend(passed_node_times)
+            self.cl_driven_route_times.extend(passed_node_times)
         for node in passed_nodes:
-            self.cl_remaining_route.remove(node)
-            tmp_toll_route = [last_node, node]
+            tmp_toll_route = [c_node, node]
             # TODO #
             _, toll_costs, _ = \
                 self.routing_engine.get_zones_external_route_costs(update_start_time,
                                                                     tmp_toll_route,
                                                                     park_origin=False, park_destination=False)
             self.cl_toll_costs += toll_costs
-            last_node = node
-        if passed_node_times:
-            self.cl_driven_route_times.extend(passed_node_times)
+            c_node = node
+
         return arrival_in_time_step
-    
+
     def _compute_new_route(self, target_pos:tuple)->tp.List[int]:
         """ this function is used internally when the route has to be updated
         this is usefull in case it has to be overwritten to trigger additional processes
@@ -582,13 +516,12 @@ class SimulationVehicle:
         :return: list of node ids (route from pos to target_pos)"""
         return self.routing_engine.return_best_route_1to1(self.pos, target_pos)
 
-# ===================================================================================================== #
 
-class ExternallyMovingSimulationVehicle(SimulationVehicle):
-    """ this class can be used for simulations where vehicle movements are controlled externally i.e. when coupling with
-    an microscopic traffic simulation.
-    boarding processes are still handled in this class, but vehicles only move if their positions are actively updated
-    and driving legs are only ended if reaching a destination is externally triggered """
+class AimsunVehicle(SimulationVehicle):
+    """
+    This class inherits from the SimulationVehicle and has additional attributes and methods required for the
+    interaction with Aimsun.
+    """
     def __init__(self, operator_id, vehicle_id, vehicle_data_dir, vehicle_type, routing_engine, rq_db, op_output, record_route_flag, replay_flag):
         super().__init__(operator_id, vehicle_id, vehicle_data_dir, vehicle_type, routing_engine, rq_db, op_output, record_route_flag, replay_flag)
         self._route_update_needed = False # set true if new route available or vehicle doesnt move on planned route
@@ -609,9 +542,8 @@ class ExternallyMovingSimulationVehicle(SimulationVehicle):
                 if self.pos[0] in self.cl_remaining_route:
                     i = self.cl_remaining_route.index(self.pos[0])
                     dr = self.cl_remaining_route[:i+1]
-                    dt = [simulation_time for _ in range(i+1)]
                     self.cl_driven_route.extend(dr)
-                    self.cl_driven_route_times.extend(dt)
+                    self.cl_driven_route_times.extend(passed_node_times[len(self.cl_driven_route_times):len(self.cl_driven_route_times)+len(dr)])
                     self.cl_remaining_route = self.cl_remaining_route[i+1:]
                 if self.pos[1] is not None:
                     if len(self.cl_remaining_route) > 0 and self.cl_remaining_route[0] != self.pos[1]:
@@ -622,34 +554,25 @@ class ExternallyMovingSimulationVehicle(SimulationVehicle):
                         self._route_update_needed = True
                     elif len(self.cl_remaining_route) == 0:
                         LOG.warning("no route planned anymore? {} {}".format(veh_pos, self))
+                else:
+                    #LOG.warning("vehicle stands on node, but is driving...")
+                    if self.cl_remaining_route: # vehicle still has a route
+                        if self.pos[0] != self.cl_remaining_route[0]:
+                            LOG.warning("vehicle has route but is on wrong node. compute new route")
+                            self.update_route()
+                            self._route_update_needed = True
+                    elif self.assigned_route and self.assigned_route[0].destination_pos[0] != self.pos[0]: # vehicle has a task but no route
+                        LOG.warning("vehicle has task but no route. compute new route")
+                        self.update_route()
+                        self._route_update_needed = True
         elif veh_pos is not None and not self.start_next_leg_first:
             raise EnvironmentError(f"moving without having a driving task? {self}")
 
-    def start_next_leg(self, simulation_time):
-        """
-        This function resets the current task attributes of a vehicle. Furthermore, it returns a list of currently
-        boarding requests.
-        in case a new driving task is started, a flag is set to indicate a new route that needs to be communicated
-        :param simulation_time
-        :return: list of currently boarding requests, list of starting to alight requests
-        """
-        LOG.debug("start next leg {}".format(self.vid))
-        r = super().start_next_leg(simulation_time)
-        if self.status in G_DRIVING_STATUS:
-            self._route_update_needed = True
-        return r
-    
     def _compute_new_route(self, target_pos):
         """ a new route has to be computed -> set also flag that this route will be sent to vehicle controller """
         self._route_update_needed = True
         LOG.debug(" -> compute new route for {}".format(self))
         return super()._compute_new_route(target_pos)
-
-    def _move(self, c_time, remaining_step_time, update_start_time):
-        """ overwrite the function called in update_veh_state
-        -> return -1 indicating that vehicle is still moving; (controlled externally
-            and can only end if reached_destination is called)"""
-        return -1
 
     def get_new_route(self):
         """ this function is used to return the current pos of the vehicle and the route that is needed to be driven in the aimsun simulation
@@ -727,64 +650,90 @@ class ExternallyMovingSimulationVehicle(SimulationVehicle):
             if self.status in G_DRIVING_STATUS:
                 self._route_update_needed = True
 
-    def reached_destination(self, simulation_time):
-        """ this function is called, when the corresponding aimsun vehicle reaches its destination in aimsun
-        :param simulation_time: time the vehicle reached destination
-        """
-        if self.status in G_DRIVING_STATUS:
-            if self.pos[1] is not None:
-                LOG.debug(f'cl_driven_route {self.cl_driven_route}')
-                if self.cl_driven_route[-1] != self.pos[1]:
-                    self.cl_driven_route.append(self.pos[1])
-                    self.cl_driven_route_times.append(simulation_time)
-                self.pos = self.routing_engine.return_node_position(self.pos[1])
-            if len(self.cl_driven_route) > 1:
-                try:
-                    _, driven_distance = self.routing_engine.return_route_infos(self.cl_driven_route, 0.0, 0.0)
-                except KeyError:
-                    LOG.debug(f'reached_destination had a Keyerror')
-                    driven_distance = 0
-                    if len(self.cl_driven_route) > 2:
-                        for i in range(2, len(self.cl_driven_route)):
-                            try:
-                                tt, dis = self.routing_engine.get_section_infos(self.cl_driven_route[i-1], self.cl_driven_route[i])
-                            except:
-                                dis = 0
-                            driven_distance += dis
-                            LOG.debug(f'driven_distance {driven_distance}')
-            else:
-                driven_distance = 0
+    def _get_travel_time_to_assigned_next_pos(self, current_time):
+        if self.assigned_route:
+            first_leg = self.assigned_route[0]
+            if first_leg.status == VRL_STATES.DRIVING and self.pos != first_leg.destination_pos:
+                return self.routing_engine.return_travel_time_1to1(self.pos, first_leg.destination_pos, current_time)
+        return 0
 
-            if len(self.assigned_route) == 0:
-                LOG.debug("no assigned route but moved -> unassignment?")
-            else:
-                target_pos = self.assigned_route[0].destination_pos
-                if self.pos != target_pos:
-                    LOG.debug("reached destination but not at target {}: pos {} target pos {}".format(self, self.pos, target_pos))
-                    r = self._compute_new_route(target_pos)
-                    if len(r) <= 2:
-                        LOG.debug("only one edge missed: if this is a turn, everything is fine! route: {}".format(r))
-                        self.pos = target_pos
-                        self.cl_driven_route.append(target_pos[0])
-                        self.cl_driven_route_times.append( self.cl_driven_route_times[-1] )
-                        self._route_update_needed = False
-                    elif self.routing_engine.return_route_infos(r, 0, 0)[0] < 0.1:
-                        LOG.debug("more edges but very short edges -> assume reached destination!")
-                        self.pos = target_pos
-                        for x in r[1:]:
-                            self.cl_driven_route.append(x)
-                            self.cl_driven_route_times.append( simulation_time )
-                        self._route_update_needed = False
-                    else:
-                        self.cl_remaining_route = r
-                        LOG.debug(f"vehicle reached_destination but not at Target") #No occurence
-                        return
+    def _get_current_pax_rid_list(self):
+        return [pax.get_rid_struct() for pax in self.pax]
 
-            self.cl_driven_distance += driven_distance
-            self.end_current_leg(simulation_time)
-            self.start_next_leg_first = True
+    def _get_current_pax_obj_list(self):
+        return self.pax
+
+    def _get_pos(self):
+        return self.pos
+
+    def _set_pos(self, val):
+        self.pos = val
+
+    def _get_soc(self):
+        return self.soc
+
+    def _set_soc(self, val):
+        self.soc = val
+
+    def _get_vid(self):
+        return self.vid
+    
+    def _get_op_id(self):
+        return self.op_id
+    
+    def _get_current_status(self):
+        return self.status
+
+    def get_status_info(self):
+        if self.status == VRL_STATES.DRIVING and self.cl_remaining_route:
+            return self.status.display_name, self.cl_remaining_route[0]
         else:
-            LOG.error("vehicle reached destination without performing routing VRL!")
-            LOG.error("unassignment might be the reason?")
-            LOG.error(f"sim time {simulation_time} route with time {self.cl_driven_route} {self.cl_driven_route_times} | veh {self}")
-            raise NotImplementedError
+            return self.status.display_name, None
+
+    def compute_soc_consumption(self, distance):
+        """
+        This method computes the SOC consumption for a given distance.
+        :param distance: distance in meters
+        :return: SOC consumption
+        """
+        return distance * self.soc_per_m
+
+    def check_if_reached_destination(self, simulation_time, full_simulation_time, allow_dest_node_mismatch=False):
+        """
+        This function is used to check if the vehicle reached its current destination.
+        :param simulation_time:
+        :param full_simulation_time: current simulation time (since beginning of simulation)
+        :param allow_dest_node_mismatch: if this is true, the destination node might be different from the actual position if only one link was missed
+        :return:
+        """
+        if self.assigned_route:
+            target_pos = self.assigned_route[0].destination_pos
+            if self.pos != target_pos:
+                LOG.debug(f"veh {self.vid} not at destination: pos {self.pos} target {target_pos} for leg {self.assigned_route[0].__dict__}")
+                if allow_dest_node_mismatch and self.pos[1] is not None and target_pos[1] is None and self.pos[0] == target_pos[0]:
+                    LOG.debug(" -> allow_dest_node_mismatch: vehicle is on link, destination is node. but same start node. OK!")
+                    self.pos = target_pos
+                    return
+                # if vehicle is in different position than target_pos -> compute new route
+                r = self._compute_new_route(target_pos)
+                if len(r) <= 2:
+                    LOG.debug("only one edge missed: if this is a turn, everything is fine! route: {}".format(r))
+                    self.pos = target_pos
+                    self.cl_driven_route.append(target_pos[0])
+                    self.cl_driven_route_times.append( full_simulation_time )
+                    self._route_update_needed = False
+                elif self.routing_engine.return_route_infos(r, 0, 0)[0] < 0.1:
+                    LOG.debug("more edges but very short edges -> assume reached destination!")
+                    self.pos = target_pos
+                    for x in r[1:]:
+                        self.cl_driven_route.append(x)
+                        self.cl_driven_route_times.append( full_simulation_time )
+                    self._route_update_needed = False
+                else:
+                    LOG.warning(f"vehicle {self.vid} did not reach destination {target_pos} from {self.pos} at time {simulation_time}! -> new route {r}")
+                    self.cl_remaining_route = r
+        elif self.pos[1] is not None:
+            # this happens when no assigned route is present and vehicle moves for some reason
+            # -> vehicle needs to move to node
+            LOG.warning(f"vehicle {self.vid} has no assigned route but is on link {self.pos}. move to node!")
+            self.cl_remaining_route = self._compute_new_route( (self.pos[0], None, None) )

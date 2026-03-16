@@ -791,8 +791,8 @@ class VehiclePlan:
                     c_time = boarding_startet
             key_translator = {sub_rid[0]: sub_rid for sub_rid in self.pax_info.keys() if type(sub_rid) == tuple}
             c_pax = {key_translator.get(rq.get_rid_struct(), rq.get_rid_struct()): 1 for rq in veh_obj.pax}
-            nr_pax = veh_obj.get_nr_pax_without_currently_boarding()  # sum([rq.nr_pax for rq in veh_obj.pax])
-            nr_parcels = veh_obj.get_nr_parcels_without_currently_boarding()
+            nr_pax = sum([rq.nr_pax for rq in veh_obj.pax])
+            nr_parcels = 0
             self.pax_info = {}
             for rq in veh_obj.pax:
                 rid = key_translator.get(rq.get_rid_struct(), rq.get_rid_struct())
@@ -803,7 +803,7 @@ class VehiclePlan:
                 _, tt, tdist = routing_engine.return_travel_costs_1to1(c_pos, pstop.get_pos())
                 c_pos = pstop.get_pos()
                 c_time += tt
-                c_soc -= veh_obj.compute_soc_consumption(tdist)
+                c_soc -= tdist * veh_obj.soc_per_m
             if c_pos == pstop.get_pos():
                 last_c_time = c_time
                 last_c_soc = c_soc
@@ -881,8 +881,8 @@ class VehiclePlan:
                 if boarding_started is not None:
                     c_time = boarding_started
             c_pax = {key_translator.get(rq.get_rid_struct(), rq.get_rid_struct()): 1 for rq in veh_obj.pax}
-            c_nr_pax = veh_obj.get_nr_pax_without_currently_boarding()  # sum([rq.nr_pax for rq in veh_obj.pax])
-            c_nr_parcels = veh_obj.get_nr_parcels_without_currently_boarding()
+            c_nr_pax = sum([rq.nr_pax for rq in veh_obj.pax])
+            c_nr_parcels = 0
             for rq in veh_obj.pax:
                 # LOG.debug(f"add pax info {rq.get_rid_struct()} : {rq.pu_time}")
                 rid = key_translator.get(rq.get_rid_struct(), rq.get_rid_struct())
@@ -902,7 +902,7 @@ class VehiclePlan:
                 c_time += tt
                 # LOG.debug(f"c_time 2 {c_time}")
 
-                c_soc -= veh_obj.compute_soc_consumption(tdist)
+                c_soc -= tdist * veh_obj.soc_per_m
                 if c_soc < 0:
                     is_feasible = False
                     infeasible_index = i

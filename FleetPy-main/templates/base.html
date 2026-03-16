@@ -95,6 +95,11 @@
                         <i class="fas fa-tachometer-alt mr-2"></i> 运营看板
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/resimulate' %}active{% endif %}" href="/resimulate">
+                        <i class="fas fa-sync-alt mr-2"></i> 重新模拟
+                    </a>
+                </li>
             </ul>
         </nav>
         <div id="main-panel">
@@ -113,6 +118,54 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- FontAwesome for icons -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const resimulateLink = document.querySelector('a[href="/resimulate"]');
+            if (resimulateLink) {
+                resimulateLink.addEventListener('click', async function(event) {
+                    event.preventDefault(); // Prevent default link navigation
+
+                    if (confirm('确定要重新模拟吗？这可能需要一些时间。')) {
+                        try {
+                            // Show a loading indicator (optional, but good for UX)
+                            const sidebar = document.getElementById('sidebar');
+                            const loadingDiv = document.createElement('div');
+                            loadingDiv.id = 'resimulate-loading';
+                            loadingDiv.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.7); color: white; padding: 20px; border-radius: 10px; z-index: 1000;';
+                            loadingDiv.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> 正在重新模拟...请稍候...';
+                            document.body.appendChild(loadingDiv);
+
+                            const response = await fetch('/resimulate', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                            });
+
+                            document.body.removeChild(loadingDiv); // Remove loading indicator
+
+                            const data = await response.json();
+
+                            if (response.ok) {
+                                alert(data.message);
+                                // Optionally redirect to the simulation page or refresh
+                                window.location.href = '/'; // Redirect to the simulation visualization page
+                            } else {
+                                alert('重新模拟失败: ' + (data.error || '未知错误'));
+                            }
+                        } catch (error) {
+                            console.error('Error during re-simulation:', error);
+                            alert('重新模拟请求失败，请检查控制台。');
+                            const loadingDiv = document.getElementById('resimulate-loading');
+                            if (loadingDiv) {
+                                document.body.removeChild(loadingDiv);
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
     {% block scripts %}{% endblock %}
 </body>
 </html>

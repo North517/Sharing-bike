@@ -1,0 +1,20 @@
+2026-03-16 21:55:03,259-31112-src.routing.NetworkBasic-INFO-... no network dynamics file given -> read folder structure
+2026-03-16 21:55:03,260-31112-src.routing.NetworkBasic-INFO-Loading nodes from E:\Sharing bike\FleetPy-main\FleetPy-main\data\networks\example_network\base\nodes.csv ...
+2026-03-16 21:55:03,524-31112-src.routing.NetworkBasic-INFO-Loading edges from E:\Sharing bike\FleetPy-main\FleetPy-main\data\networks\example_network\base\edges.csv ...
+2026-03-16 21:55:04,058-31112-src.routing.NetworkBasic-INFO-... 7617 nodes loaded!
+2026-03-16 21:55:04,088-31112-src.demand.demand-INFO-init(): 0/50 requests removed (rq_time not in simulation time)
+2026-03-16 21:55:04,089-31112-src.demand.demand-INFO-init(): 0/50 requests removed (start == end)
+2026-03-16 21:55:04,090-31112-src.demand.bike_rebalancing_demand-INFO-Loaded 50 bike rebalancing requests.
+2026-03-16 21:55:04,134-31112-src.fleetctrl.FleetControlBase-INFO-Scenario bike_rebalancing_sc_1
+Operator 0 control strategy: PoolingInsertionHeuristicOnly
+	 control function: {'func_key': 'bike_rebalancing_objective'}
+Operator 0 additional strategies:
+	 RV Heuristics: {}
+	 Stop-Insert Heuristics: {}
+	 Charging: None
+	 On-Street Parking: True
+	 Repositioning: None
+	 Dynamic Pricing: None
+	 Dynamic Fleet Sizing: TimeBasedFS
+
+2026-03-16 21:55:04,145-31112-src.fleetctrl.fleetsizing.TimeBasedFS-INFO-Loaded nr-of-active-vehicles curve from E:\Sharing bike\FleetPy-main\FleetPy-main\data\fleetctrl\elastic_fleet_size\example_active_fleetsize.csv.

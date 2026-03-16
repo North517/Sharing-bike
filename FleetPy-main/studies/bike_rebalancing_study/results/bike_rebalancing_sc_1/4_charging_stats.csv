@@ -1,6 +1,0 @@
-time,event,station_id,ch_op_id,vid,op_id,veh_type,current_soc,socket_id,socket_power,initial_soc,transferred_power,connection_duration
-3600,detach,1,op_0,1,0,unmanned_bike_collector,0.795,0,7.5,0.749,2.2643034785713834,1086.8656697142865
-3600,detach,1,op_0,1,0,unmanned_bike_collector,0.795,0,7.5,,0,
-3600,detach,1,op_0,0,0,unmanned_bike_collector,0.779,1,7.5,0.749,1.5119516071428196,725.7367714285697
-3600,detach,1,op_0,0,0,unmanned_bike_collector,0.779,1,7.5,,0,
-8668.70209761056,detach,0,op_0,0,0,unmanned_bike_collector,1.0,0,15,0.778,11.100300244805904,2664.072058753417

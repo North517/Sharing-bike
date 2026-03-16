@@ -409,7 +409,10 @@ class Depot(ChargingStation):
     def pick_vehicle_to_be_active(self) -> SimulationVehicle:
         """ selects the vehicle with highest soc from the list of deactivated vehicles (does not activate the vehicle yet!)
         :return: simulation vehicle obj"""
-        return max([veh for veh in self.deactivated_vehicles if veh.pos == self.pos], key = lambda x:x.soc)
+        eligible_vehicles = [veh for veh in self.deactivated_vehicles if veh.pos == self.pos]
+        if eligible_vehicles:
+            return max(eligible_vehicles, key = lambda x:x.soc)
+        return None
     
     def refill_charging(self, fleetctrl: FleetControlBase, simulation_time, keep_free_for_short_term=0):
         """This method fills empty charging slots in a depot with the lowest SOC parking (status 5) vehicles.

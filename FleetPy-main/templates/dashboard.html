@@ -61,27 +61,33 @@
 <script>
     async function initDashboard() {
         try {
-            const resp = await fetch('/simulation_data.json');
-            if (!resp.ok) throw new Error('无法加载 simulation_data.json');
+            const resp = await fetch('/dashboard_data.json');
+            if (!resp.ok) throw new Error('无法加载 dashboard_data.json');
             const data = await resp.json();
-            const frames = data.frames || [];
-            if (!frames.length) return;
 
-            // 简单构造一些与模拟规模相关、但带随机波动的指标
-            const bikesPerFrame = frames.map(f => (f.bikes || []).length);
-            const avgBikes = bikesPerFrame.reduce((a, b) => a + b, 0) / (bikesPerFrame.length || 1);
-            const totalDispatches = Math.round(avgBikes * 2 + 10 + Math.random() * 10);
-            document.getElementById('dash-total-dispatches').textContent = totalDispatches + ' 次';
+            const scenarioName = "bike_rebalancing_sc_1"; // Assuming this is the relevant scenario
 
-            const avgDistance = 150 + Math.random() * 250;
-            document.getElementById('dash-avg-distance').textContent = avgDistance.toFixed(0) + ' 米';
+            // Extract KPI values
+            const totalDispatches = data['total_number_requests'] ? data['total_number_requests'][scenarioName] : 'N/A';
+            const servedRequests = data['served_requests'] ? data['served_requests'][scenarioName] : 'N/A';
+            const avgWaitTime = data['average_wait_time'] ? data['average_wait_time'][scenarioName] : 'N/A';
+            const avgTripTime = data['average_trip_time'] ? data['average_trip_time'][scenarioName] : 'N/A';
+            const totalDistance = data['total_driven_distance_km'] ? data['total_driven_distance_km'][scenarioName] : 'N/A';
+            const emptyDistance = data['empty_driven_distance_km'] ? data['empty_driven_distance_km'][scenarioName] : 'N/A';
+            const serviceRate = data['service_rate'] ? (data['service_rate'][scenarioName] * 100).toFixed(1) : 'N/A';
+            const fleetUtilization = data['fleet_utilization'] ? (data['fleet_utilization'][scenarioName] * 100).toFixed(1) : 'N/A';
+            const occupancyRate = data['occupancy_rate'] ? (data['occupancy_rate'][scenarioName] * 100).toFixed(1) : 'N/A';
 
-            const stationUtil = 30 + Math.random() * 50;
-            document.getElementById('dash-station-util').textContent = stationUtil.toFixed(1) + '%';
+            // Update dashboard elements
+            document.getElementById('dash-total-dispatches').textContent = `${totalDispatches} 次`;
+            // Placeholder for average distance, assuming 'empty_driven_distance_km' or 'total_driven_distance_km' can be used as a proxy or calculated from them
+            document.getElementById('dash-avg-distance').textContent = `${(totalDistance / servedRequests).toFixed(2)} km`; // This is a rough estimation, needs refinement based on actual KPI
+            document.getElementById('dash-station-util').textContent = `${fleetUtilization}%`; // Using fleet utilization as a proxy for now
 
+            // For the charts, we will use static/placeholder data for now, as standard_eval.csv does not contain this granularity
             // 车站调度量
             const stationLabels = ['P0', 'P1', 'P2'];
-            const stationCounts = stationLabels.map(() => Math.round(totalDispatches / 3 + (Math.random() - 0.5) * 8));
+            const stationCounts = [30, 45, 25]; // Static placeholder
             new Chart(document.getElementById('stationDispatchChart').getContext('2d'), {
                 type: 'bar',
                 data: {
@@ -103,7 +109,7 @@
 
             // 时段调度量
             const timeLabels = ['早高峰', '平峰', '晚高峰', '夜间'];
-            const timeCounts = timeLabels.map(() => Math.round(totalDispatches / 4 + (Math.random() - 0.5) * 12));
+            const timeCounts = [40, 20, 50, 10]; // Static placeholder
             new Chart(document.getElementById('timeOfDayChart').getContext('2d'), {
                 type: 'line',
                 data: {

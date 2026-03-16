@@ -843,7 +843,7 @@ class NetworkBasic(NetworkBase):
         return return_dict
 
     def move_along_route(self, route, last_position, time_step, sim_vid_id=None, new_sim_time=None,
-                         record_node_times=False): # TODO # correct first entry of route!!!!
+                         record_node_times=False):
         """This method computes the new position of a (vehicle) on a given route (node_index_list) from it's
         last_position (position_tuple). The first entry of route has to be the same as the first entry of last_position!
         Specific to this framework: count moving vehicles to street network density! make sure to do this before
