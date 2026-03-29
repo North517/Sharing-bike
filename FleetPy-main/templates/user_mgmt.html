@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+
+{% block title %}用户管理 - 共享单车调度系统{% endblock %}
+
+{% block head %}
+<style>
+.mgmt-container { padding: 20px; overflow-y: auto; height: 100%; }
+.section-card { background: var(--bg-card); border: 1px solid var(--accent-border); border-radius: 12px; margin-bottom: 20px; overflow: hidden; }
+.section-header { background: rgba(0,212,170,0.06); border-bottom: 1px solid var(--accent-border); padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; }
+.section-header h5 { color: var(--accent); margin: 0; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
+.section-body { padding: 20px; }
+.user-table { width: 100%; border-collapse: collapse; }
+.user-table th { color: var(--text-muted); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; padding: 8px 12px; border-bottom: 1px solid var(--accent-border); text-align: left; }
+.user-table td { padding: 12px 12px; border-bottom: 1px solid rgba(0,212,170,0.06); font-size: 13px; color: var(--text-primary); vertical-align: middle; }
+.user-table tr:last-child td { border-bottom: none; }
+.user-table tr:hover td { background: rgba(0,212,170,0.03); }
+.role-badge { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+.role-admin { background: rgba(255,181,71,0.15); color: var(--warning); border: 1px solid rgba(255,181,71,0.3); }
+.role-user  { background: rgba(61,184,245,0.12); color: var(--info); border: 1px solid rgba(61,184,245,0.25); }
+.btn-sm-action { padding: 4px 12px; border-radius: 6px; font-size: 12px; border: none; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+.btn-del  { background: rgba(255,77,109,0.12); color: var(--danger); border: 1px solid rgba(255,77,109,0.25); }
+.btn-del:hover  { background: rgba(255,77,109,0.25); }
+.btn-pwd  { background: rgba(61,184,245,0.12); color: var(--info); border: 1px solid rgba(61,184,245,0.25); }
+.btn-pwd:hover  { background: rgba(61,184,245,0.25); }
+.form-row-inline { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; }
+.form-field { display: flex; flex-direction: column; gap: 5px; }
+.form-field label { font-size: 11px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+.form-field input, .form-field select { background: rgba(0,0,0,0.3); border: 1px solid var(--accent-border); border-radius: 8px; padding: 8px 12px; color: var(--text-primary); font-size: 13px; font-family: inherit; outline: none; min-width: 140px; }
+.form-field input:focus, .form-field select:focus { border-color: var(--accent); }
+.form-field select option { background: #0d1526; }
+.btn-create { padding: 8px 20px; background: linear-gradient(135deg, var(--accent), #00a880); border: none; border-radius: 8px; color: #fff; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; transition: all 0.2s; }
+.btn-create:hover { opacity: 0.85; }
+.msg-box { padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 12px; display: none; }
+.msg-ok  { background: rgba(0,212,170,0.1); border: 1px solid rgba(0,212,170,0.3); color: var(--accent); }
+.msg-err { background: rgba(255,77,109,0.1); border: 1px solid rgba(255,77,109,0.3); color: var(--danger); }
+.log-table { width: 100%; border-collapse: collapse; }
+.log-table th { color: var(--text-muted); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; padding: 8px 12px; border-bottom: 1px solid var(--accent-border); text-align: left; }
+.log-table td { padding: 10px 12px; border-bottom: 1px solid rgba(0,212,170,0.06); font-size: 12px; color: var(--text-secondary); }
+.stats-row { display: flex; gap: 14px; margin-bottom: 20px; flex-wrap: wrap; }
+.stat-mini { background: var(--bg-card); border: 1px solid var(--accent-border); border-radius: 10px; padding: 14px 20px; flex: 1; min-width: 120px; }
+.stat-mini .val { font-size: 28px; font-weight: 700; color: var(--accent); }
+.stat-mini .lbl { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="mgmt-container">
+    <h2 class="mb-4"><i class="fas fa-users-cog mr-2" style="color:var(--accent)"></i>用户管理</h2>
+
+    <div id="msg" class="msg-box"></div>
+
+    <!-- 统计卡片 -->
+    <div class="stats-row" id="stats-row">
+        <div class="stat-mini"><div class="val" id="stat-total">--</div><div class="lbl">总用户数</div></div>
+        <div class="stat-mini"><div class="val" id="stat-admin">--</div><div class="lbl">管理员</div></div>
+        <div class="stat-mini"><div class="val" id="stat-user">--</div><div class="lbl">普通用户</div></div>
+        <div class="stat-mini"><div class="val" id="stat-logins">--</div><div class="lbl">登录记录数</div></div>
+    </div>
+
+    <!-- 用户列表 -->
+    <div class="section-card">
+        <div class="section-header">
+            <h5><i class="fas fa-list mr-2"></i>用户列表</h5>
+            <button class="btn-sm-action btn-pwd" onclick="loadUsers()"><i class="fas fa-sync-alt mr-1"></i>刷新</button>
+        </div>
+        <div class="section-body" style="padding:0;">
+            <table class="user-table">
+                <thead><tr><th>ID</th><th>用户名</th><th>角色</th><th>创建时间</th><th>最近登录</th><th>操作</th></tr></thead>
+                <tbody id="user-tbody"><tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:20px;">加载中...</td></tr></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 新建用户 -->
+    <div class="section-card">
+        <div class="section-header"><h5><i class="fas fa-user-plus mr-2"></i>新建用户</h5></div>
+        <div class="section-body">
+            <div class="form-row-inline">
+                <div class="form-field"><label>用户名</label><input type="text" id="new-username" placeholder="输入用户名"></div>
+                <div class="form-field"><label>密码</label><input type="password" id="new-password" placeholder="输入密码"></div>
+                <div class="form-field">
+                    <label>角色</label>
+                    <select id="new-role">
+                        <option value="user">普通用户</option>
+                        <option value="admin">管理员</option>
+                    </select>
+                </div>
+                <div class="form-field"><label>&nbsp;</label><button class="btn-create" onclick="createUser()"><i class="fas fa-plus mr-1"></i>创建</button></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 登录日志 -->
+    <div class="section-card">
+        <div class="section-header"><h5><i class="fas fa-history mr-2"></i>最近登录日志（最新50条）</h5></div>
+        <div class="section-body" style="padding:0;max-height:300px;overflow-y:auto;">
+            <table class="log-table">
+                <thead><tr><th>ID</th><th>用户名</th><th>登录时间</th><th>IP地址</th></tr></thead>
+                <tbody id="log-tbody"><tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:20px;">加载中...</td></tr></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function showMsg(text, ok=true) {
+    const el = document.getElementById('msg');
+    el.textContent = text;
+    el.className = 'msg-box ' + (ok ? 'msg-ok' : 'msg-err');
+    el.style.display = 'block';
+    setTimeout(() => el.style.display = 'none', 3000);
+}
+
+async function loadUsers() {
+    const resp = await fetch('/api/users');
+    const users = await resp.json();
+    const tbody = document.getElementById('user-tbody');
+    tbody.innerHTML = '';
+    let adminCount = 0, userCount = 0;
+    users.forEach(u => {
+        if (u.role === 'admin') adminCount++; else userCount++;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td style="color:var(--text-muted)">${u.id}</td>
+            <td><strong>${u.username}</strong></td>
+            <td><span class="role-badge ${u.role === 'admin' ? 'role-admin' : 'role-user'}">${u.role === 'admin' ? '管理员' : '普通用户'}</span></td>
+            <td style="color:var(--text-muted);font-size:12px">${u.created_at || '--'}</td>
+            <td style="color:var(--text-muted);font-size:12px">${u.last_login || '从未登录'}</td>
+            <td style="display:flex;gap:6px;">
+                <button class="btn-sm-action btn-pwd" onclick="resetPwd(${u.id},'${u.username}')"><i class="fas fa-key mr-1"></i>重置密码</button>
+                <button class="btn-sm-action btn-del" onclick="deleteUser(${u.id},'${u.username}')"><i class="fas fa-trash mr-1"></i>删除</button>
+            </td>`;
+        tbody.appendChild(tr);
+    });
+    document.getElementById('stat-total').textContent = users.length;
+    document.getElementById('stat-admin').textContent = adminCount;
+    document.getElementById('stat-user').textContent = userCount;
+}
+
+async function loadLog() {
+    const resp = await fetch('/api/login_log');
+    const logs = await resp.json();
+    const tbody = document.getElementById('log-tbody');
+    tbody.innerHTML = '';
+    logs.forEach(l => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${l.id}</td><td><strong>${l.username}</strong></td><td>${l.login_time}</td><td>${l.ip || '--'}</td>`;
+        tbody.appendChild(tr);
+    });
+    document.getElementById('stat-logins').textContent = logs.length;
+}
+
+async function createUser() {
+    const username = document.getElementById('new-username').value.trim();
+    const password = document.getElementById('new-password').value.trim();
+    const role = document.getElementById('new-role').value;
+    if (!username || !password) { showMsg('用户名和密码不能为空', false); return; }
+    const resp = await fetch('/api/users', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({username, password, role})
+    });
+    const data = await resp.json();
+    if (resp.ok) {
+        showMsg(data.message, true);
+        document.getElementById('new-username').value = '';
+        document.getElementById('new-password').value = '';
+        loadUsers();
+    } else {
+        showMsg(data.error || '创建失败', false);
+    }
+}
+
+async function deleteUser(id, name) {
+    if (!confirm(`确定删除用户「${name}」吗？此操作不可撤销。`)) return;
+    const resp = await fetch(`/api/users/${id}`, {method: 'DELETE'});
+    const data = await resp.json();
+    if (resp.ok) { showMsg(data.message, true); loadUsers(); }
+    else { showMsg(data.error || '删除失败', false); }
+}
+
+async function resetPwd(id, name) {
+    const newPwd = prompt(`重置用户「${name}」的密码，请输入新密码：`);
+    if (!newPwd || !newPwd.trim()) return;
+    const resp = await fetch(`/api/users/${id}/password`, {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({password: newPwd.trim()})
+    });
+    const data = await resp.json();
+    showMsg(resp.ok ? data.message : (data.error || '重置失败'), resp.ok);
+}
+
+document.addEventListener('DOMContentLoaded', () => { loadUsers(); loadLog(); });
+</script>
+{% endblock %}

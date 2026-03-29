@@ -29,7 +29,6 @@
                             <tr><td>调度策略</td><td><span class="badge badge-success">最近单车优先（贪心）</span></td></tr>
                             <tr><td>地图底图</td><td>高德地图（autonavi）</td></tr>
                             <tr><td>仿真区域</td><td>山西农业大学太谷校区</td></tr>
-                            <tr><td>预设方案数</td><td>3 套（可通过「重新模拟」切换）</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -38,9 +37,7 @@
     </div>
 
     <div class="alert alert-info" role="alert">
-        <strong>说明：</strong> 当前系统使用预生成的仿真数据，参数调整请重新运行
-        <code>gen_campus_scene.py</code> 或 <code>gen_presets.py</code> 脚本。
-        点击左侧「重新模拟」可在三套预设方案间切换。
+        <strong>说明：</strong> 当前系统基于高德路线规划 API 生成真实道路路径，点击左侧「重新模拟」可重新随机分布单车并更新所有统计数据。
     </div>
 </div>
 {% endblock %}
