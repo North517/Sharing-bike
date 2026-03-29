@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - 共享单车调度系统</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            background: #0f1923;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            overflow: hidden;
+        }
+
+        /* 动态背景网格 */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0,200,150,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,200,150,0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: 0;
+        }
+
+        /* 光晕效果 */
+        body::after {
+            content: '';
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0,180,130,0.12) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .login-wrapper {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 420px;
+            padding: 20px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .login-header .logo {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #00c896, #00a878);
+            border-radius: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 32px rgba(0,200,150,0.35);
+        }
+
+        .login-header h1 {
+            color: #e8f5f0;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+        }
+
+        .login-header p {
+            color: #6b8a80;
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        .login-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(0,200,150,0.15);
+            border-radius: 20px;
+            padding: 40px 36px;
+            backdrop-filter: blur(20px);
+            box-shadow:
+                0 20px 60px rgba(0,0,0,0.4),
+                inset 0 1px 0 rgba(255,255,255,0.06);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #8ab8a8;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper .icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #4a7a68;
+            font-size: 16px;
+            pointer-events: none;
+        }
+
+        .form-group input {
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(0,200,150,0.2);
+            border-radius: 10px;
+            padding: 13px 14px 13px 42px;
+            color: #e0f0ea;
+            font-size: 15px;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.25s ease;
+        }
+
+        .form-group input::placeholder {
+            color: #3d6456;
+        }
+
+        .form-group input:focus {
+            border-color: rgba(0,200,150,0.6);
+            background: rgba(0,0,0,0.4);
+            box-shadow: 0 0 0 3px rgba(0,200,150,0.08);
+        }
+
+        .error-msg {
+            background: rgba(220,53,69,0.12);
+            border: 1px solid rgba(220,53,69,0.3);
+            border-radius: 8px;
+            color: #ff8090;
+            font-size: 13px;
+            padding: 10px 14px;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #00c896, #00a070);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            font-family: inherit;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 20px rgba(0,200,150,0.3);
+            margin-top: 8px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(0,200,150,0.45);
+            background: linear-gradient(135deg, #00daa6, #00b882);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 28px;
+            color: #3d6456;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        .login-footer span {
+            color: #00c896;
+        }
+
+        /* 浮动粒子装饰 */
+        .particle {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: rgba(0,200,150,0.4);
+            border-radius: 50%;
+            animation: float linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes float {
+            0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10%  { opacity: 1; }
+            90%  { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(720deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 浮动粒子 -->
+    <div class="particle" style="left:10%;animation-duration:8s;animation-delay:0s;width:3px;height:3px;"></div>
+    <div class="particle" style="left:25%;animation-duration:12s;animation-delay:2s;"></div>
+    <div class="particle" style="left:40%;animation-duration:9s;animation-delay:4s;width:5px;height:5px;"></div>
+    <div class="particle" style="left:60%;animation-duration:11s;animation-delay:1s;"></div>
+    <div class="particle" style="left:75%;animation-duration:7s;animation-delay:3s;width:3px;height:3px;"></div>
+    <div class="particle" style="left:88%;animation-duration:13s;animation-delay:5s;"></div>
+
+    <div class="login-wrapper">
+        <div class="login-header">
+            <div class="logo">🚲</div>
+            <h1>共享单车调度系统</h1>
+            <p>Smart Bike Dispatch Management System</p>
+        </div>
+
+        <div class="login-card">
+            {% if error %}
+            <div class="error-msg">
+                <span>⚠</span> {{ error }}
+            </div>
+            {% endif %}
+
+            <form method="POST" action="/login">
+                <div class="form-group">
+                    <label for="username">用户名</label>
+                    <div class="input-wrapper">
+                        <span class="icon">👤</span>
+                        <input type="text" id="username" name="username"
+                               placeholder="请输入用户名" autocomplete="username" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <div class="input-wrapper">
+                        <span class="icon">🔒</span>
+                        <input type="password" id="password" name="password"
+                               placeholder="请输入密码" autocomplete="current-password" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-login">进 入 系 统</button>
+            </form>
+        </div>
+
+        <div class="login-footer">
+            <span>山西农业大学太谷校区</span> · 智慧共享单车调度平台<br>
+            FleetPy Simulation Framework · 2025
+        </div>
+    </div>
+</body>
+</html>

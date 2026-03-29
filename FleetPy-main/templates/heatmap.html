@@ -6,7 +6,8 @@
     <style>
         #heatmap-map {
             width: 100%;
-            height: 100%;
+            height: calc(100vh - 180px);
+            min-height: 400px;
         }
     </style>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
@@ -15,9 +16,9 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid h-100 d-flex flex-column">
-    <h2 class="mb-3">空间热力图</h2>
-    <p class="text-muted">基于模拟过程中的红点位置，展示共享单车散落及回收的热点区域。</p>
+<div class="container-fluid h-100 d-flex flex-column" style="padding:15px;">
+    <h2 class="mb-2">空间热力图</h2>
+    <p class="text-muted mb-2">基于仿真全程单车散落位置，展示校区内高密度堆积热点区域。</p>
     <div class="card flex-grow-1">
         <div class="card-body p-0">
             <div id="heatmap-map"></div>
@@ -28,46 +29,36 @@
 
 {% block scripts %}
 <script>
-    let heatmapMap;
-
     async function initHeatmap() {
-        heatmapMap = L.map('heatmap-map');
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap contributors'
+        const heatmapMap = L.map('heatmap-map');
+        L.tileLayer('https://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
+            attribution: '&copy; <a href="https://www.amap.com/">高德地图</a>',
+            maxZoom: 18
         }).addTo(heatmapMap);
 
+        new ResizeObserver(() => heatmapMap.invalidateSize()).observe(document.getElementById('heatmap-map'));
+
         try {
-            const resp = await fetch('/simulation_data.json');
-            if (!resp.ok) throw new Error('无法加载 simulation_data.json');
-            const data = await resp.json();
-            const frames = data.frames || [];
-            if (!frames.length) return;
+            const resp = await fetch('/api/stats');
+            if (!resp.ok) throw new Error('无法加载统计数据');
+            const d = await resp.json();
 
-            const heatPoints = [];
-            frames.forEach(f => {
-                (f.bikes || []).forEach(b => {
-                    // 将所有未被收走的红点位置计入热力图
-                    heatPoints.push([b.lat, b.lon, 0.5]);
-                });
-            });
-
-            if (data.initial_map_view && data.initial_map_view.bbox) {
-                const [min_lat, max_lat, min_lon, max_lon] = data.initial_map_view.bbox;
-                const southWest = L.latLng(min_lat, min_lon);
-                const northEast = L.latLng(max_lat, max_lon);
-                const bounds = L.latLngBounds(southWest, northEast);
-                heatmapMap.fitBounds(bounds, { padding: [40, 40] });
+            if (d.initial_map_view && d.initial_map_view.bbox) {
+                const [min_lat, max_lat, min_lon, max_lon] = d.initial_map_view.bbox;
+                heatmapMap.fitBounds(L.latLngBounds(
+                    L.latLng(min_lat, min_lon), L.latLng(max_lat, max_lon)
+                ), { padding: [40, 40] });
+            } else if (d.initial_map_view && d.initial_map_view.center) {
+                heatmapMap.setView(d.initial_map_view.center, 16);
             }
 
-            if (heatPoints.length) {
-                L.heatLayer(heatPoints, { radius: 18, blur: 20 }).addTo(heatmapMap);
+            if (d.heat_points && d.heat_points.length) {
+                L.heatLayer(d.heat_points, { radius: 20, blur: 25, maxZoom: 18 }).addTo(heatmapMap);
             }
         } catch (e) {
             console.error(e);
         }
     }
-
     document.addEventListener('DOMContentLoaded', initHeatmap);
 </script>
 {% endblock %}
-

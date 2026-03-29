@@ -7,30 +7,42 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid h-100 d-flex flex-column">
-    <h2 class="mb-4">运营看板（示意）</h2>
+<div class="container-fluid h-100 d-flex flex-column" style="overflow-y:auto;padding:15px;">
+    <h2 class="mb-4">运营看板</h2>
     <div class="row mb-4">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card text-white bg-primary mb-3">
                 <div class="card-header">总调度次数</div>
                 <div class="card-body">
-                    <h5 class="card-title" id="dash-total-dispatches">-- 次</h5>
+                    <h5 class="card-title" id="dash-total-dispatches">--</h5>
+                    <p class="card-text">无人车出站执行任务总次数</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card text-white bg-success mb-3">
                 <div class="card-header">平均取车距离</div>
                 <div class="card-body">
                     <h5 class="card-title" id="dash-avg-distance">-- 米</h5>
+                    <p class="card-text">无人车到达单车位置的平均距离</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card text-white bg-info mb-3">
-                <div class="card-header">车站平均占用率</div>
+                <div class="card-header">车辆忙碌率</div>
                 <div class="card-body">
-                    <h5 class="card-title" id="dash-station-util">--%</h5>
+                    <h5 class="card-title" id="dash-utilization">--%</h5>
+                    <p class="card-text">无人车在途执行任务的时间占比</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-warning mb-3">
+                <div class="card-header">总行驶距离</div>
+                <div class="card-body">
+                    <h5 class="card-title" id="dash-total-distance">-- 米</h5>
+                    <p class="card-text">所有无人车行驶路程之和</p>
                 </div>
             </div>
         </div>
@@ -39,7 +51,7 @@
     <div class="row flex-grow-1">
         <div class="col-md-6 mb-4">
             <div class="card h-100">
-                <div class="card-header">按车站统计调度量</div>
+                <div class="card-header">按停车站统计收车量</div>
                 <div class="card-body">
                     <canvas id="stationDispatchChart" height="160"></canvas>
                 </div>
@@ -47,9 +59,20 @@
         </div>
         <div class="col-md-6 mb-4">
             <div class="card h-100">
-                <div class="card-header">不同时段调度量</div>
+                <div class="card-header">收车进度（每时间段收车数）</div>
                 <div class="card-body">
                     <canvas id="timeOfDayChart" height="160"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="card">
+                <div class="card-header">各无人车行驶距离对比（米）</div>
+                <div class="card-body">
+                    <canvas id="vehicleDistChart" height="80"></canvas>
                 </div>
             </div>
         </div>
@@ -61,80 +84,92 @@
 <script>
     async function initDashboard() {
         try {
-            const resp = await fetch('/dashboard_data.json');
-            if (!resp.ok) throw new Error('无法加载 dashboard_data.json');
-            const data = await resp.json();
+            const resp = await fetch('/api/stats');
+            if (!resp.ok) throw new Error('无法加载统计数据');
+            const d = await resp.json();
 
-            const scenarioName = "bike_rebalancing_sc_1"; // Assuming this is the relevant scenario
+            // 顶部指标
+            const totalDispatches = d.events
+                ? d.events.filter(e => e.type === '从车站出发').length
+                : '--';
+            document.getElementById('dash-total-dispatches').textContent = totalDispatches + ' 次';
+            document.getElementById('dash-avg-distance').textContent = d.avg_collect_dist_m + ' 米';
+            document.getElementById('dash-utilization').textContent = d.avg_utilization_pct + '%';
+            document.getElementById('dash-total-distance').textContent = d.total_distance_m + ' 米';
 
-            // Extract KPI values
-            const totalDispatches = data['total_number_requests'] ? data['total_number_requests'][scenarioName] : 'N/A';
-            const servedRequests = data['served_requests'] ? data['served_requests'][scenarioName] : 'N/A';
-            const avgWaitTime = data['average_wait_time'] ? data['average_wait_time'][scenarioName] : 'N/A';
-            const avgTripTime = data['average_trip_time'] ? data['average_trip_time'][scenarioName] : 'N/A';
-            const totalDistance = data['total_driven_distance_km'] ? data['total_driven_distance_km'][scenarioName] : 'N/A';
-            const emptyDistance = data['empty_driven_distance_km'] ? data['empty_driven_distance_km'][scenarioName] : 'N/A';
-            const serviceRate = data['service_rate'] ? (data['service_rate'][scenarioName] * 100).toFixed(1) : 'N/A';
-            const fleetUtilization = data['fleet_utilization'] ? (data['fleet_utilization'][scenarioName] * 100).toFixed(1) : 'N/A';
-            const occupancyRate = data['occupancy_rate'] ? (data['occupancy_rate'][scenarioName] * 100).toFixed(1) : 'N/A';
-
-            // Update dashboard elements
-            document.getElementById('dash-total-dispatches').textContent = `${totalDispatches} 次`;
-            // Placeholder for average distance, assuming 'empty_driven_distance_km' or 'total_driven_distance_km' can be used as a proxy or calculated from them
-            document.getElementById('dash-avg-distance').textContent = `${(totalDistance / servedRequests).toFixed(2)} km`; // This is a rough estimation, needs refinement based on actual KPI
-            document.getElementById('dash-station-util').textContent = `${fleetUtilization}%`; // Using fleet utilization as a proxy for now
-
-            // For the charts, we will use static/placeholder data for now, as standard_eval.csv does not contain this granularity
-            // 车站调度量
-            const stationLabels = ['P0', 'P1', 'P2'];
-            const stationCounts = [30, 45, 25]; // Static placeholder
+            // 按停车站收车量柱状图
+            const stationLabels = Object.keys(d.station_collect).map(k => k.replace('parking_', 'P'));
+            const stationValues = Object.values(d.station_collect);
             new Chart(document.getElementById('stationDispatchChart').getContext('2d'), {
                 type: 'bar',
                 data: {
                     labels: stationLabels,
                     datasets: [{
-                        label: '调度次数',
-                        data: stationCounts,
-                        backgroundColor: '#007bff'
+                        label: '收车次数',
+                        data: stationValues,
+                        backgroundColor: ['#007bff', '#28a745', '#ffc107']
                     }]
                 },
                 options: {
                     plugins: { legend: { display: false } },
                     scales: {
-                        x: { title: { display: true, text: '车站' } },
-                        y: { title: { display: true, text: '调度次数' }, beginAtZero: true }
+                        x: { title: { display: true, text: '停车站' } },
+                        y: { title: { display: true, text: '收车次数' }, beginAtZero: true, ticks: { stepSize: 1 } }
                     }
                 }
             });
 
-            // 时段调度量
-            const timeLabels = ['早高峰', '平峰', '晚高峰', '夜间'];
-            const timeCounts = [40, 20, 50, 10]; // Static placeholder
+            // 时间段收车进度折线图
+            const timeLabels = d.time_segments.map(s => s.time_min + ' 分');
+            const timeCounts = d.time_segments.map(s => s.count);
             new Chart(document.getElementById('timeOfDayChart').getContext('2d'), {
-                type: 'line',
+                type: 'bar',
                 data: {
                     labels: timeLabels,
                     datasets: [{
-                        label: '调度次数',
+                        label: '收车数',
                         data: timeCounts,
+                        backgroundColor: 'rgba(40,167,69,0.7)',
                         borderColor: '#28a745',
-                        fill: false,
-                        tension: 0.3
+                        borderWidth: 1
                     }]
                 },
                 options: {
                     plugins: { legend: { display: false } },
                     scales: {
-                        y: { beginAtZero: true }
+                        x: { title: { display: true, text: '时间（分钟）' } },
+                        y: { title: { display: true, text: '收车数' }, beginAtZero: true, ticks: { stepSize: 1 } }
                     }
                 }
             });
+
+            // 各车行驶距离横向条形图
+            const vids = Object.keys(d.vehicle_distances);
+            const vdists = vids.map(k => d.vehicle_distances[k]);
+            new Chart(document.getElementById('vehicleDistChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: vids,
+                    datasets: [{
+                        label: '行驶距离（米）',
+                        data: vdists,
+                        backgroundColor: ['#007bff', '#28a745', '#ffc107']
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { title: { display: true, text: '距离（米）' }, beginAtZero: true },
+                        y: { title: { display: true, text: '无人车' } }
+                    }
+                }
+            });
+
         } catch (e) {
             console.error(e);
         }
     }
-
     document.addEventListener('DOMContentLoaded', initDashboard);
 </script>
 {% endblock %}
-

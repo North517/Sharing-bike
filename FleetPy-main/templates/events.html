@@ -3,14 +3,14 @@
 {% block title %}运行事件时间线 - 共享单车调度系统{% endblock %}
 
 {% block content %}
-<div class="container-fluid h-100 d-flex flex-column">
-    <h2 class="mb-4">运行事件时间线（示意）</h2>
-    <p class="text-muted">这里展示无人车在模拟过程中的关键事件，例如出发、捡车、回站等。</p>
+<div class="container-fluid h-100 d-flex flex-column" style="overflow-y:auto;padding:15px;">
+    <h2 class="mb-3">运行事件时间线</h2>
+    <p class="text-muted">基于仿真数据自动提取的无人车关键事件：出发、捡车、返站。</p>
     <div class="card flex-grow-1">
-        <div class="card-body d-flex flex-column">
-            <div class="table-responsive flex-grow-1">
-                <table class="table table-sm table-striped">
-                    <thead>
+        <div class="card-body d-flex flex-column p-0">
+            <div class="table-responsive" style="max-height:calc(100vh - 220px);overflow-y:auto;">
+                <table class="table table-sm table-striped mb-0">
+                    <thead class="thead-dark" style="position:sticky;top:0;">
                         <tr>
                             <th>时间</th>
                             <th>车辆 ID</th>
@@ -19,25 +19,7 @@
                         </tr>
                     </thead>
                     <tbody id="events-table-body">
-                        <!-- 简单示例数据，后续可根据 simulation_data.json 自动生成 -->
-                        <tr>
-                            <td>00:00:10</td>
-                            <td>vehicle_0</td>
-                            <td>从车站出发</td>
-                            <td>从 P0 出发执行第一轮收车</td>
-                        </tr>
-                        <tr>
-                            <td>00:01:00</td>
-                            <td>vehicle_0</td>
-                            <td>捡起单车</td>
-                            <td>接触附近红点并收车</td>
-                        </tr>
-                        <tr>
-                            <td>00:02:00</td>
-                            <td>vehicle_0</td>
-                            <td>返回车站</td>
-                            <td>在 P1 卸车</td>
-                        </tr>
+                        <tr><td colspan="4" class="text-center text-muted">加载中...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -46,3 +28,48 @@
 </div>
 {% endblock %}
 
+{% block scripts %}
+<script>
+    async function loadEvents() {
+        try {
+            const resp = await fetch('/api/stats');
+            if (!resp.ok) throw new Error('无法读取数据');
+            const d = await resp.json();
+            const tbody = document.getElementById('events-table-body');
+            tbody.innerHTML = '';
+
+            const typeColors = {
+                '从车站出发': 'table-primary',
+                '捡起单车':   'table-success',
+                '返回车站':   'table-warning'
+            };
+            const typeIcons = {
+                '从车站出发': '🚀',
+                '捡起单车':   '🚲',
+                '返回车站':   '🏠'
+            };
+
+            if (!d.events || d.events.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">暂无事件数据</td></tr>';
+                return;
+            }
+
+            d.events.forEach(ev => {
+                const tr = document.createElement('tr');
+                tr.className = typeColors[ev.type] || '';
+                tr.innerHTML = `
+                    <td><code>${ev.time}</code></td>
+                    <td><strong>${ev.vehicle}</strong></td>
+                    <td>${typeIcons[ev.type] || ''} ${ev.type}</td>
+                    <td>${ev.desc}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        } catch (e) {
+            document.getElementById('events-table-body').innerHTML =
+                '<tr><td colspan="4" class="text-danger">加载失败：' + e.message + '</td></tr>';
+        }
+    }
+    document.addEventListener('DOMContentLoaded', loadEvents);
+</script>
+{% endblock %}

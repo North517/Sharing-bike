@@ -9,7 +9,7 @@
         "demand_module": "bike_rebalancing_demand",
         "infra_structure_name": "example_infra",
         "rq_file": "bike_rebalancing_requests.csv",
-        "random_seed": 97892,
+        "random_seed": 38678,
         "start_time": 0,
         "end_time": 7200,
         "time_step": 60,
@@ -91,14 +91,14 @@
         }
     ],
     "directories": {
-        "main": "E:\\Sharing bike\\FleetPy-main\\FleetPy-main",
-        "data": "E:\\Sharing bike\\FleetPy-main\\FleetPy-main\\data",
-        "output": "E:\\Sharing bike\\FleetPy-main\\FleetPy-main\\studies\\Temp\\results\\bike_rebalancing_sc_1",
-        "web_visualisation_output": "E:\\Sharing bike\\FleetPy-main\\FleetPy-main\\studies\\Temp\\results\\bike_rebalancing_sc_1\\web_visualisation_output",
-        "network": "E:\\Sharing bike\\FleetPy-main\\FleetPy-main\\data\\networks\\example_network",
-        "vehicles": "E:\\Sharing bike\\FleetPy-main\\FleetPy-main\\data\\vehicles",
-        "fleetctrl": "E:\\Sharing bike\\FleetPy-main\\FleetPy-main\\data\\fleetctrl",
-        "demand": "E:\\Sharing bike\\FleetPy-main\\FleetPy-main\\data\\demand\\example_demand\\matched\\example_network",
-        "infra": "E:\\Sharing bike\\FleetPy-main\\FleetPy-main\\data\\infra\\example_infra\\example_network"
+        "main": "e:\\Sharing bike\\FleetPy-main\\FleetPy-main",
+        "data": "e:\\Sharing bike\\FleetPy-main\\FleetPy-main\\data",
+        "output": "e:\\Sharing bike\\FleetPy-main\\FleetPy-main\\studies\\Temp\\results\\bike_rebalancing_sc_1",
+        "web_visualisation_output": "e:\\Sharing bike\\FleetPy-main\\FleetPy-main\\studies\\Temp\\results\\bike_rebalancing_sc_1\\web_visualisation_output",
+        "network": "e:\\Sharing bike\\FleetPy-main\\FleetPy-main\\data\\networks\\example_network",
+        "vehicles": "e:\\Sharing bike\\FleetPy-main\\FleetPy-main\\data\\vehicles",
+        "fleetctrl": "e:\\Sharing bike\\FleetPy-main\\FleetPy-main\\data\\fleetctrl",
+        "demand": "e:\\Sharing bike\\FleetPy-main\\FleetPy-main\\data\\demand\\example_demand\\matched\\example_network",
+        "infra": "e:\\Sharing bike\\FleetPy-main\\FleetPy-main\\data\\infra\\example_infra\\example_network"
     }
 }

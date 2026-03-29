@@ -7,8 +7,9 @@
         /* Map should fill the entire main-content area */
         #map-container {
             position: relative;
-            flex-grow: 1;
-            height: 100%;
+            width: 100%;
+            height: calc(100vh - 30px);
+            min-height: 400px;
         }
         #map {
             height: 100%;
@@ -102,8 +103,9 @@
                 map.remove();
             }
             map = L.map('map'); // Initialize without setView
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            L.tileLayer('https://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
+                attribution: '&copy; <a href="https://www.amap.com/">高德地图</a>',
+                maxZoom: 18
             }).addTo(map);
 
             // Add a resize observer to ensure map resizes correctly with its container
@@ -241,7 +243,7 @@
                     vehicleMarkers[vehicle.id].setLatLng(markerLatLng);
                 } else {
                     const shortId = vehicle.id.replace('vehicle_', '');
-                    vehicleMarkers[vehicle.id] = L.marker(latLng, {
+                    vehicleMarkers[vehicle.id] = L.marker(markerLatLng, {
                         icon: L.divIcon({
                             className: 'vehicle-icon',
                             html: `<div style="background-color: #007bff; color: #fff; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 11px; border: 2px solid #ffffff;">${shortId}</div>`,
