@@ -4,7 +4,6 @@
 
 {% block head %}
     <style>
-        /* Map should fill the entire main-content area */
         #map-container {
             position: relative;
             width: 100%;
@@ -19,7 +18,7 @@
             position: absolute;
             bottom: 10px;
             left: 10px;
-            background: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
+            background: rgba(255, 255, 255, 0.9);
             padding: 10px;
             border-radius: 8px;
             z-index: 1000;
@@ -35,7 +34,7 @@
         #current-time {
             font-weight: bold;
             margin-left: 10px;
-            min-width: 120px; /* Ensure time display has enough space */
+            min-width: 120px;
             text-align: center;
         }
         .info-box {
@@ -71,9 +70,15 @@
             color: #e2eaf5;
             font-weight: 600;
         }
-        }
         .leaflet-container {
-            background: #f8f9fa; /* Light background for map if tiles not loaded */
+            background: #f8f9fa;
+        }
+        @keyframes bikePulse {
+            0%,100% { opacity: 1; }
+            50%      { opacity: 0.3; }
+        }
+        .bike-blink {
+            animation: bikePulse 1.8s ease-in-out infinite;
         }
     </style>
 {% endblock %}
@@ -82,7 +87,7 @@
     <div id="map-container">
         <div id="map"></div>
         <div id="controls">
-            <button id="play-pause-btn" class="btn btn-primary">播放</button>
+            <button id="play-pause-btn" class="btn btn-primary">开始调度</button>
             <input type="range" id="time-slider" min="0" value="0">
             <span id="current-time">00:00:00</span>
         </div>
@@ -107,111 +112,135 @@
         let currentStep = 0;
         let animationInterval = null;
         let isPlaying = false;
-        let vehicleRoutes = {}; // New: Store polylines for vehicle routes
-        // 更慢更顺滑的播放节奏
-        const updateInterval = 120; // Milliseconds per animation frame
+        let vehicleRoutes = {};
+        let vehicleHistory = {};   // vid -> [{latlng, step},...]
+        let trailDots = {};        // vid -> [circleMarker, ...]
+        let vehicleAngles = {};    // vid -> current heading angle (degrees)
+        const updateInterval = 120;
+
+        // 货车图标（俯视长方体，带朝向旋转）
+        function makeCarIcon(shortId, angleDeg) {
+            const rotate = angleDeg !== undefined ? angleDeg : 0;
+            // 货车俯视：长方形车身 + 驾驶舱 + 前灯 + 尾灯
+            return L.divIcon({
+                className: '',
+                html: `<div style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
+  <svg width="22" height="34" viewBox="0 0 22 34" xmlns="http://www.w3.org/2000/svg"
+       style="transform:rotate(${rotate}deg);transform-origin:center;">
+    <!-- 车身（长方形） -->
+    <rect x="2" y="6" width="18" height="22" rx="2.5" fill="#1a6fcf" stroke="#ffffff" stroke-width="1.5"/>
+    <!-- 驾驶舱（车头部分） -->
+    <rect x="4" y="6" width="14" height="8" rx="2" fill="#2d8cf0"/>
+    <!-- 车窗 -->
+    <rect x="6" y="7.5" width="10" height="5" rx="1.2" fill="rgba(180,220,255,0.75)"/>
+    <!-- 前灯（车头两侧） -->
+    <rect x="2" y="4" width="4" height="3" rx="1" fill="#ffe066"/>
+    <rect x="16" y="4" width="4" height="3" rx="1" fill="#ffe066"/>
+    <!-- 尾灯 -->
+    <rect x="2" y="28" width="4" height="3" rx="1" fill="#ff4444"/>
+    <rect x="16" y="28" width="4" height="3" rx="1" fill="#ff4444"/>
+    <!-- 车牌/编号 -->
+    <rect x="7" y="17" width="8" height="6" rx="1" fill="rgba(255,255,255,0.18)"/>
+    <text x="11" y="22" text-anchor="middle" fill="#fff" font-size="5" font-weight="bold" font-family="monospace">${shortId}</text>
+  </svg>
+</div>`,
+                iconSize: [36, 36],
+                iconAnchor: [18, 18]
+            });
+        }
+
+        // 根据两点计算方向角（0°=正北，顺时针）
+        function calcAngle(from, to) {
+            const dy = to[0] - from[0];
+            const dx = to[1] - from[1];
+            const angle = Math.atan2(dx, dy) * 180 / Math.PI;
+            return angle;
+        }
 
         function initMap() {
-            if (map) {
-                map.remove();
-            }
-            map = L.map('map'); // Initialize without setView
+            if (map) { map.remove(); }
+            map = L.map('map');
             L.tileLayer('https://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
                 attribution: '&copy; <a href="https://www.amap.com/">高德地图</a>',
                 maxZoom: 18
             }).addTo(map);
-
-            // Add a resize observer to ensure map resizes correctly with its container
-            new ResizeObserver(() => {
-                map.invalidateSize();
-            }).observe(document.getElementById('map-container'));
+            new ResizeObserver(() => { map.invalidateSize(); }).observe(document.getElementById('map-container'));
         }
 
         async function loadSimulationData() {
             try {
                 const response = await fetch('/simulation_data.json');
-                console.log('Fetch response status:', response.status);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 simulationData = await response.json();
-                console.log('Simulation data loaded:', simulationData);
                 const timeSlider = document.getElementById('time-slider');
                 timeSlider.max = simulationData.frames.length - 1;
-
-                // Set initial map view using bbox from simulationData
                 if (simulationData.initial_map_view && simulationData.initial_map_view.bbox) {
                     const [min_lat, max_lat, min_lon, max_lon] = simulationData.initial_map_view.bbox;
-                    const southWest = L.latLng(min_lat, min_lon);
-                    const northEast = L.latLng(max_lat, max_lon);
-                    const bounds = L.latLngBounds(southWest, northEast);
-                    map.fitBounds(bounds, { padding: [50, 50] }); // Add some padding
+                    map.fitBounds(L.latLngBounds(L.latLng(min_lat, min_lon), L.latLng(max_lat, max_lon)), { padding: [50, 50] });
                 } else if (simulationData.initial_map_view && simulationData.initial_map_view.center) {
-                    // Fallback to center if bbox is not available
-                    map.setView(simulationData.initial_map_view.center, 13); // Default zoom if only center is available
+                    map.setView(simulationData.initial_map_view.center, 13);
                 }
-
                 updateMap(0);
             } catch (error) {
                 console.error('Error loading simulation data:', error);
-                alert('无法加载模拟数据: ' + error.message + '. 请检查服务器和 simulation_data.json 文件。');
+                alert('无法加载模拟数据: ' + error.message);
             }
         }
 
         function interpolatePosition(route_lonlats, route_times, currentSimTime) {
             if (!route_lonlats || route_lonlats.length < 2 || !route_times || route_times.length < 2) {
-                // Not enough data for interpolation, return the last known position or null
-                return route_lonlats && route_lonlats.length > 0 ? [route_lonlats[route_lonlats.length - 1][1], route_lonlats[route_lonlats.length - 1][0]] : null;
+                return route_lonlats && route_lonlats.length > 0 ? [route_lonlats[route_lonlats.length-1][1], route_lonlats[route_lonlats.length-1][0]] : null;
             }
-
-            // Find the segment where the currentSimTime falls
             let segmentIndex = -1;
             for (let i = 0; i < route_times.length - 1; i++) {
-                if (currentSimTime >= route_times[i] && currentSimTime <= route_times[i+1]) {
-                    segmentIndex = i;
-                    break;
-                }
+                if (currentSimTime >= route_times[i] && currentSimTime <= route_times[i+1]) { segmentIndex = i; break; }
             }
+            if (segmentIndex === -1 && currentSimTime < route_times[0]) return [route_lonlats[0][1], route_lonlats[0][0]];
+            if (segmentIndex === -1) return [route_lonlats[route_lonlats.length-1][1], route_lonlats[route_lonlats.length-1][0]];
+            const t0 = route_times[segmentIndex], t1 = route_times[segmentIndex+1];
+            const progress = (currentSimTime - t0) / (t1 - t0);
+            return [
+                route_lonlats[segmentIndex][1] + progress * (route_lonlats[segmentIndex+1][1] - route_lonlats[segmentIndex][1]),
+                route_lonlats[segmentIndex][0] + progress * (route_lonlats[segmentIndex+1][0] - route_lonlats[segmentIndex][0])
+            ];
+        }
 
-            // If currentSimTime is before the first point, return the first point
-            if (segmentIndex === -1 && currentSimTime < route_times[0]) {
-                return [route_lonlats[0][1], route_lonlats[0][0]];
+        // 更新某辆车的渐隐拖尾点
+        function updateTrail(vid, newLatLng) {
+            if (!vehicleHistory[vid]) vehicleHistory[vid] = [];
+            vehicleHistory[vid].push([...newLatLng]);
+            if (vehicleHistory[vid].length > 5) vehicleHistory[vid].shift();
+
+            // 清理旧拖尾点
+            if (trailDots[vid]) {
+                trailDots[vid].forEach(d => map.removeLayer(d));
             }
-            // If currentSimTime is after the last point, return the last point
-            if (segmentIndex === -1 && currentSimTime > route_times[route_times.length - 1]) {
-                return [route_lonlats[route_lonlats.length - 1][1], route_lonlats[route_lonlats.length - 1][0]];
+            trailDots[vid] = [];
+
+            // 画最近 4 个历史点（越旧越透明越小）
+            const hist = vehicleHistory[vid];
+            const n = hist.length;
+            for (let i = 0; i < n - 1; i++) {
+                const age = n - 1 - i;          // 1=最近, 4=最旧
+                const opacity = 0.55 - age * 0.12;
+                const radius  = 4 - age * 0.6;
+                if (opacity <= 0 || radius <= 0) continue;
+                const dot = L.circleMarker(hist[i], {
+                    radius: radius,
+                    color: 'transparent',
+                    fillColor: '#4a9eff',
+                    fillOpacity: opacity,
+                    interactive: false
+                }).addTo(map);
+                trailDots[vid].push(dot);
             }
-            // If segmentIndex is still -1, it means currentSimTime is outside the route_times range
-            // This case should ideally not happen if data is well-formed, but for safety, return last known pos
-            if (segmentIndex === -1) {
-                return [route_lonlats[route_lonlats.length - 1][1], route_lonlats[route_lonlats.length - 1][0]];
-            }
-
-            const t0 = route_times[segmentIndex];
-            const t1 = route_times[segmentIndex + 1];
-            const p0_lon = route_lonlats[segmentIndex][0];
-            const p0_lat = route_lonlats[segmentIndex][1];
-            const p1_lon = route_lonlats[segmentIndex + 1][0];
-            const p1_lat = route_lonlats[segmentIndex + 1][1];
-
-            const duration = t1 - t0;
-            const progress = (currentSimTime - t0) / duration;
-
-            const interpolatedLon = p0_lon + (p1_lon - p0_lon) * progress;
-            const interpolatedLat = p0_lat + (p1_lat - p0_lat) * progress;
-
-            return [interpolatedLat, interpolatedLon]; // Leaflet expects [lat, lon]
         }
 
         function updateMap(step) {
             currentStep = step;
-            if (!simulationData || !simulationData.frames || step >= simulationData.frames.length) {
-                return;
-            }
+            if (!simulationData || !simulationData.frames || step >= simulationData.frames.length) return;
 
             const frame = simulationData.frames[currentStep];
-            console.log(`Updating map for step ${currentStep}:`, frame);
-            console.log(`Vehicles in frame: ${frame.vehicles.length}, Bikes in frame: ${frame.bikes.length}, Stations in frame: ${frame.stations ? frame.stations.length : 0}`);
             const totalDuration = simulationData.total_duration;
             const currentTime = (currentStep / (simulationData.frames.length - 1)) * totalDuration;
 
@@ -222,63 +251,52 @@
             document.getElementById('available-bikes').textContent = frame.bikes.length;
             document.getElementById('total-events').textContent = simulationData.frames.length;
 
-            // Update vehicle markers
+            // --- 无人车 ---
             const activeVehicleIds = new Set();
             frame.vehicles.forEach(vehicle => {
                 activeVehicleIds.add(vehicle.id);
-                const currentTimeInSimulation = simulationData.frames[currentStep].time;
-                let markerLatLng = [vehicle.lat, vehicle.lon]; // Default to current lat/lon
-
-                if (vehicle.route_lonlats && vehicle.route_times && vehicle.route_lonlats.length > 0 && vehicle.route_times.length > 0) {
-                    const interpolated = interpolatePosition(vehicle.route_lonlats, vehicle.route_times, currentTimeInSimulation);
-                    if (interpolated) {
-                        markerLatLng = interpolated;
-                    }
+                let markerLatLng = [vehicle.lat, vehicle.lon];
+                const simTime = simulationData.frames[currentStep].time;
+                if (vehicle.route_lonlats && vehicle.route_times && vehicle.route_lonlats.length > 0) {
+                    const interp = interpolatePosition(vehicle.route_lonlats, vehicle.route_times, simTime);
+                    if (interp) markerLatLng = interp;
                 }
 
-                // Handle vehicle routes
-                if (vehicle.route_lonlats && vehicle.route_lonlats.length > 1) {
-                    const routeLatLngs = vehicle.route_lonlats.map(coord => [coord[1], coord[0]]); // Leaflet expects [lat, lon]
-                    if (vehicleRoutes[vehicle.id]) {
-                        vehicleRoutes[vehicle.id].setLatLngs(routeLatLngs);
-                    } else {
-                        vehicleRoutes[vehicle.id] = L.polyline(routeLatLngs, { color: 'blue', weight: 3, opacity: 0.7 }).addTo(map);
-                    }
-                } else {
-                    // If no route or invalid route, remove existing polyline
-                    if (vehicleRoutes[vehicle.id]) {
-                        map.removeLayer(vehicleRoutes[vehicle.id]);
-                        delete vehicleRoutes[vehicle.id];
-                    }
-                }
-
+                const shortId = vehicle.id.replace('vehicle_', '');
                 if (vehicleMarkers[vehicle.id]) {
+                    // 计算朝向角
+                    const hist = vehicleHistory[vehicle.id];
+                    let angle = vehicleAngles[vehicle.id] || 0;
+                    if (hist && hist.length >= 1) {
+                        const prev = hist[hist.length - 1];
+                        const dlat = markerLatLng[0] - prev[0];
+                        const dlon = markerLatLng[1] - prev[1];
+                        if (Math.abs(dlat) + Math.abs(dlon) > 1e-7) {
+                            angle = Math.atan2(dlon, dlat) * 180 / Math.PI;
+                            vehicleAngles[vehicle.id] = angle;
+                        }
+                    }
                     vehicleMarkers[vehicle.id].setLatLng(markerLatLng);
+                    vehicleMarkers[vehicle.id].setIcon(makeCarIcon(shortId, angle));
+                    updateTrail(vehicle.id, markerLatLng);
                 } else {
-                    const shortId = vehicle.id.replace('vehicle_', '');
-                    vehicleMarkers[vehicle.id] = L.marker(markerLatLng, {
-                        icon: L.divIcon({
-                            className: 'vehicle-icon',
-                            html: `<div style="background-color: #007bff; color: #fff; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 11px; border: 2px solid #ffffff;">${shortId}</div>`,
-                            iconSize: [20, 20]
-                        })
-                    }).addTo(map);
-                    vehicleMarkers[vehicle.id].bindPopup(`无人车 ID: ${vehicle.id}`);
+                    vehicleAngles[vehicle.id] = 0;
+                    vehicleMarkers[vehicle.id] = L.marker(markerLatLng, { icon: makeCarIcon(shortId, 0), zIndexOffset: 100 }).addTo(map);
+                    vehicleMarkers[vehicle.id].bindPopup(`无人车 ${shortId} 号`);
+                    vehicleHistory[vehicle.id] = [markerLatLng];
                 }
             });
-            // Remove old vehicle markers and routes
             Object.keys(vehicleMarkers).forEach(id => {
                 if (!activeVehicleIds.has(id)) {
                     map.removeLayer(vehicleMarkers[id]);
                     delete vehicleMarkers[id];
-                    if (vehicleRoutes[id]) {
-                        map.removeLayer(vehicleRoutes[id]);
-                        delete vehicleRoutes[id];
-                    }
+                    if (trailDots[id]) { trailDots[id].forEach(d => map.removeLayer(d)); delete trailDots[id]; }
+                    delete vehicleHistory[id];
+                    delete vehicleAngles[id];
                 }
             });
 
-            // Update bike markers
+            // --- 散落单车 ---
             const activeBikeIds = new Set();
             frame.bikes.forEach(bike => {
                 activeBikeIds.add(bike.id);
@@ -286,19 +304,22 @@
                 if (bikeMarkers[bike.id]) {
                     bikeMarkers[bike.id].setLatLng(latLng);
                 } else {
-                    bikeMarkers[bike.id] = L.circleMarker(latLng, { color: 'red', radius: 5, fillOpacity: 0.9 }).addTo(map);
-                    bikeMarkers[bike.id].bindPopup(`自行车 ID: ${bike.id}`);
+                    bikeMarkers[bike.id] = L.circleMarker(latLng, {
+                        radius: 6,
+                        color: '#ff6666',
+                        weight: 2,
+                        fillColor: '#ff2222',
+                        fillOpacity: 1.0,
+                        className: 'bike-blink'
+                    }).addTo(map);
+                    bikeMarkers[bike.id].bindPopup(`散落单车: ${bike.id}`);
                 }
             });
-            // Remove old bike markers
             Object.keys(bikeMarkers).forEach(id => {
-                if (!activeBikeIds.has(id)) {
-                    map.removeLayer(bikeMarkers[id]);
-                    delete bikeMarkers[id];
-                }
+                if (!activeBikeIds.has(id)) { map.removeLayer(bikeMarkers[id]); delete bikeMarkers[id]; }
             });
 
-            // Update station markers (ensure they are always present if in data)
+            // --- 停车站 ---
             const activeStationIds = new Set();
             if (frame.parking_spots) {
                 frame.parking_spots.forEach(station => {
@@ -310,21 +331,18 @@
                         const shortId = station.id.replace('parking_', 'P');
                         stationMarkers[station.id] = L.marker(latLng, {
                             icon: L.divIcon({
-                                className: 'station-icon',
-                                html: `<div style="background-color: #28a745; color: #fff; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 11px; border: 2px solid #ffffff;">${shortId}</div>`,
-                                iconSize: [22, 22]
+                                className: '',
+                                html: `<div style="width:28px;height:28px;border-radius:50%;background:#1e8c45;border:2.5px solid #ffffff;box-shadow:0 2px 8px rgba(0,140,60,0.45);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;font-family:monospace;">${shortId}</div>`,
+                                iconSize: [28, 28],
+                                iconAnchor: [14, 14]
                             })
                         }).addTo(map);
-                        stationMarkers[station.id].bindPopup(`站点 ID: ${station.id}`);
+                        stationMarkers[station.id].bindPopup(`停车站 ${shortId}`);
                     }
                 });
             }
-            // Remove old station markers
             Object.keys(stationMarkers).forEach(id => {
-                if (!activeStationIds.has(id)) {
-                    map.removeLayer(stationMarkers[id]);
-                    delete stationMarkers[id];
-                }
+                if (!activeStationIds.has(id)) { map.removeLayer(stationMarkers[id]); delete stationMarkers[id]; }
             });
         }
 
@@ -337,21 +355,20 @@
 
         function togglePlayPause() {
             isPlaying = !isPlaying;
-            const playPauseBtn = document.getElementById('play-pause-btn');
+            const btn = document.getElementById('play-pause-btn');
             if (isPlaying) {
-                playPauseBtn.textContent = '暂停';
+                btn.textContent = '暂停调度';
                 animationInterval = setInterval(() => {
                     if (currentStep < simulationData.frames.length - 1) {
                         updateMap(currentStep + 1);
                     } else {
-                        // 播放到最后一帧后停在终点，不再自动回到开头
                         clearInterval(animationInterval);
                         isPlaying = false;
-                        playPauseBtn.textContent = '播放';
+                        btn.textContent = '开始调度';
                     }
                 }, updateInterval);
             } else {
-                playPauseBtn.textContent = '播放';
+                btn.textContent = '开始调度';
                 clearInterval(animationInterval);
             }
         }
@@ -359,17 +376,15 @@
         function stopAnimation() {
             isPlaying = false;
             clearInterval(animationInterval);
-            document.getElementById('play-pause-btn').textContent = '播放';
+            document.getElementById('play-pause-btn').textContent = '开始调度';
         }
 
-        // Event listeners
         document.addEventListener('DOMContentLoaded', () => {
             initMap();
             loadSimulationData();
-
             document.getElementById('play-pause-btn').addEventListener('click', togglePlayPause);
             document.getElementById('time-slider').addEventListener('input', (event) => {
-                stopAnimation(); // Stop animation when manually moving slider
+                stopAnimation();
                 updateMap(parseInt(event.target.value));
             });
         });
