@@ -470,11 +470,11 @@
             if (resimulateLink) {
                 resimulateLink.addEventListener('click', async function(e) {
                     e.preventDefault();
-                    if (!confirm('确定要重新模拟吗？单车分布将切换到下一套预设方案。')) return;
+                    if (!confirm('确定要重新模拟吗？单车将随机重新分布并重新规划调度路径。')) return;
                     const loading = document.getElementById('global-loading');
                     const loadingText = document.getElementById('loading-text');
                     if (loading) { loading.style.display = 'flex'; }
-                    if (loadingText) loadingText.textContent = '正在切换仿真预设...';
+                    if (loadingText) loadingText.textContent = '正在重新模拟，随机分布单车中...';
                     try {
                         const resp = await fetch('/resimulate', { method: 'POST', headers: {'Content-Type': 'application/json'} });
                         const data = await resp.json();
