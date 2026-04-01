@@ -77,7 +77,7 @@ cd Sharing-bike
 python -m venv venv
 ```
 
-激活虚拟环境（每次重新打开终端，都需要先激活一次）：
+激活虚拟环境（每次重新打开终端，都需要先激活一次），这里如果失败的话可以使用cmd打开去激活：
 
 ```bash
 venv\Scripts\activate
@@ -95,16 +95,24 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-启动项目：
+启动项目（这里一定要先cd到这个app.py文件的目录文件夹内去运行,这个可以要找到这个文件的路径位置，因为每个人都不一样）：
 
 ```bash
 python app.py
 ```
 
+这里可能会遇到缺失模块的问题,因为前面的所需依赖可能会有遗失或者不兼容,出现缺什么模块儿对应下载即可
+
+# eg: 正确安装 Flask
+
+```bash
+pip install flask
+```
+
 终端看到类似：
 
 ```text
-Running on http://127.0.0.1:5000/
+Running on http://127.0.0.1:8000/
 ```
 
 在浏览器中访问：
