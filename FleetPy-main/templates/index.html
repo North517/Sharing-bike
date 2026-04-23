@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}模拟可视化 - 共享单车调度系统{% endblock %}
+{% block title %}模拟可视化 - 校园共享单车调度无人车管理系统{% endblock %}
 
 {% block head %}
     <style>
@@ -80,12 +80,212 @@
         .bike-blink {
             animation: bikePulse 1.8s ease-in-out infinite;
         }
+        .monitor-panel {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            width: 300px;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+            background: rgba(10, 15, 26, 0.94);
+            border: 1px solid rgba(0,212,170,0.28);
+            border-radius: 12px;
+            padding: 14px;
+            z-index: 1000;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+            backdrop-filter: blur(8px);
+        }
+        .panel-title {
+            margin: 0 0 10px;
+            color: #00d4aa;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .panel-subtitle {
+            margin: 14px 0 8px;
+            color: #8acbbb;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .gps-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 10px;
+            padding: 10px 12px;
+            margin-bottom: 10px;
+        }
+        .gps-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+            gap: 10px;
+        }
+        .gps-main strong {
+            color: #e2eaf5;
+            font-size: 13px;
+        }
+        .gps-tag {
+            font-size: 11px;
+            color: #00d4aa;
+            background: rgba(0,212,170,0.12);
+            border: 1px solid rgba(0,212,170,0.22);
+            border-radius: 999px;
+            padding: 2px 8px;
+            white-space: nowrap;
+        }
+        .gps-meta {
+            font-size: 12px;
+            color: #b0ccd8;
+            line-height: 1.7;
+        }
+        .battery-list,
+        .alarm-list,
+        .trace-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .battery-card,
+        .alarm-card,
+        .trace-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 10px;
+            padding: 10px 12px;
+        }
+        .battery-card-header,
+        .trace-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            gap: 10px;
+        }
+        .battery-bar {
+            width: 100%;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.08);
+            overflow: hidden;
+        }
+        .battery-fill {
+            height: 100%;
+            border-radius: 999px;
+            transition: width 0.25s ease;
+        }
+        .battery-meta,
+        .trace-meta,
+        .alarm-meta {
+            font-size: 12px;
+            color: #a9c4d1;
+            line-height: 1.6;
+        }
+        .alarm-card {
+            border-left: 3px solid #ffb547;
+        }
+        .alarm-card.alarm-danger {
+            border-left-color: #ff4d6d;
+        }
+        .alarm-card.alarm-normal {
+            border-left-color: #00d4aa;
+        }
+        .alarm-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+            gap: 10px;
+            font-size: 12px;
+        }
+        .alarm-level {
+            border-radius: 999px;
+            padding: 2px 8px;
+            font-size: 10px;
+        }
+        .alarm-danger .alarm-level {
+            color: #ff8ea1;
+            background: rgba(255,77,109,0.12);
+        }
+        .alarm-warning .alarm-level {
+            color: #ffd089;
+            background: rgba(255,181,71,0.12);
+        }
+        .alarm-normal .alarm-level {
+            color: #76f3d1;
+            background: rgba(0,212,170,0.12);
+        }
+        .trace-toolbar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .trace-toolbar button {
+            flex: 1;
+            border: 1px solid rgba(0,212,170,0.25);
+            background: rgba(0,212,170,0.08);
+            color: #9fe7d4;
+            border-radius: 8px;
+            padding: 7px 10px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .trace-toolbar button.active {
+            background: rgba(0,212,170,0.18);
+            color: #ffffff;
+        }
+        .trace-card.active {
+            border-color: rgba(61,184,245,0.4);
+            box-shadow: 0 0 0 1px rgba(61,184,245,0.18) inset;
+        }
+        .trace-card-header button {
+            border: none;
+            background: rgba(61,184,245,0.14);
+            color: #8fd4ff;
+            border-radius: 8px;
+            padding: 4px 10px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+        .trace-empty {
+            color: #6f8ea3;
+            font-size: 12px;
+        }
     </style>
 {% endblock %}
 
 {% block content %}
     <div id="map-container">
         <div id="map"></div>
+        <div class="monitor-panel">
+            <h5 class="panel-title">单车位置监控</h5>
+            <div class="gps-box">
+                <div class="gps-main">
+                    <strong>GPS 实时监控</strong>
+                    <span class="gps-tag">在线定位</span>
+                </div>
+                <div class="gps-meta">
+                    当前时间：<span id="gps-time">00:00:00</span><br>
+                    选中车辆：<span id="gps-selected">vehicle_0</span><br>
+                    实时坐标：<span id="gps-position">--, --</span><br>
+                    运行状态：<span id="gps-status">正常巡航</span>
+                </div>
+            </div>
+
+            <div class="panel-subtitle">车辆电量展示</div>
+            <div id="battery-list" class="battery-list"></div>
+
+            <div class="panel-subtitle">故障报警</div>
+            <div id="alarm-list" class="alarm-list"></div>
+
+            <div class="panel-subtitle">轨迹追溯</div>
+            <div class="trace-toolbar">
+                <button id="trace-toggle-btn" class="active" type="button">显示轨迹</button>
+                <button id="trace-clear-btn" type="button">重置轨迹</button>
+            </div>
+            <div id="trace-list" class="trace-list"></div>
+        </div>
         <div id="controls">
             <button id="play-pause-btn" class="btn btn-primary">开始调度</button>
             <input type="range" id="time-slider" min="0" value="0">
@@ -116,6 +316,10 @@
         let vehicleHistory = {};   // vid -> [{latlng, step},...]
         let trailDots = {};        // vid -> [circleMarker, ...]
         let vehicleAngles = {};    // vid -> current heading angle (degrees)
+        let tracePolylines = {};
+        let latestVehiclePositions = {};
+        let selectedVehicleId = 'vehicle_0';
+        let traceVisible = true;
         const updateInterval = 120;
 
         // 货车图标（俯视长方体，带朝向旋转）
@@ -209,21 +413,22 @@
         function updateTrail(vid, newLatLng) {
             if (!vehicleHistory[vid]) vehicleHistory[vid] = [];
             vehicleHistory[vid].push([...newLatLng]);
-            if (vehicleHistory[vid].length > 5) vehicleHistory[vid].shift();
+            if (vehicleHistory[vid].length > 60) vehicleHistory[vid].shift();
 
-            // 清理旧拖尾点
             if (trailDots[vid]) {
                 trailDots[vid].forEach(d => map.removeLayer(d));
             }
             trailDots[vid] = [];
 
-            // 画最近 4 个历史点（越旧越透明越小）
+            if (!traceVisible) return;
+
             const hist = vehicleHistory[vid];
             const n = hist.length;
-            for (let i = 0; i < n - 1; i++) {
-                const age = n - 1 - i;          // 1=最近, 4=最旧
-                const opacity = 0.55 - age * 0.12;
-                const radius  = 4 - age * 0.6;
+            const start = Math.max(0, n - 5);
+            for (let i = start; i < n - 1; i++) {
+                const age = n - 1 - i;
+                const opacity = 0.55 - age * 0.1;
+                const radius = 4 - age * 0.5;
                 if (opacity <= 0 || radius <= 0) continue;
                 const dot = L.circleMarker(hist[i], {
                     radius: radius,
@@ -234,6 +439,156 @@
                 }).addTo(map);
                 trailDots[vid].push(dot);
             }
+        }
+
+        function ensureTraceLine(vid) {
+            if (!tracePolylines[vid]) {
+                tracePolylines[vid] = L.polyline([], {
+                    color: selectedVehicleId === vid ? '#7fd1ff' : '#00d4aa',
+                    weight: selectedVehicleId === vid ? 4 : 2,
+                    opacity: traceVisible ? (selectedVehicleId === vid ? 0.95 : 0.45) : 0
+                }).addTo(map);
+            }
+            return tracePolylines[vid];
+        }
+
+        function getVehicleBattery(vid, step) {
+            const index = parseInt(vid.replace('vehicle_', ''), 10) || 0;
+            const drain = step * (0.18 + index * 0.03);
+            return Math.max(18, Math.min(100, Math.round(100 - drain - index * 6)));
+        }
+
+        function getBatteryColor(level) {
+            if (level <= 30) return '#ff4d6d';
+            if (level <= 55) return '#ffb547';
+            return '#00d4aa';
+        }
+
+        function getVehicleStatus(vehicle, battery, step) {
+            if (battery <= 28) return '低电量运行';
+            if ((step + vehicle.id.length) % 23 === 0) return '通信轻微波动';
+            if (vehicle.has_bike) return '执行回收任务';
+            return '正常巡航';
+        }
+
+        function getVehicleAlarm(vehicle, battery, step) {
+            const shortId = vehicle.id.replace('vehicle_', '');
+            if (battery <= 28) {
+                return {
+                    level: 'danger',
+                    label: '高优先级',
+                    title: `无人车 ${shortId} 电量偏低`,
+                    message: `当前电量 ${battery}%，建议尽快返站补能。`
+                };
+            }
+            if ((step + shortId.length) % 23 === 0) {
+                return {
+                    level: 'warning',
+                    label: '中优先级',
+                    title: `无人车 ${shortId} 通信异常提醒`,
+                    message: 'GPS 信号短时抖动，系统已自动重连。'
+                };
+            }
+            return {
+                level: 'normal',
+                label: '正常',
+                title: `无人车 ${shortId} 运行正常`,
+                message: '车辆状态稳定，未检测到新增故障报警。'
+            };
+        }
+
+        function updateMonitoringPanel(frame, currentTime) {
+            const vehicles = frame.vehicles || [];
+            if (!vehicles.length) return;
+            if (!vehicles.some(v => v.id === selectedVehicleId)) {
+                selectedVehicleId = vehicles[0].id;
+            }
+
+            const batteryList = document.getElementById('battery-list');
+            const alarmList = document.getElementById('alarm-list');
+            const traceList = document.getElementById('trace-list');
+            const selected = vehicles.find(v => v.id === selectedVehicleId) || vehicles[0];
+            const selectedPos = latestVehiclePositions[selected.id] || [selected.lat, selected.lon];
+            const selectedBattery = getVehicleBattery(selected.id, currentStep);
+            const selectedStatus = getVehicleStatus(selected, selectedBattery, currentStep);
+
+            document.getElementById('gps-time').textContent = formatTime(currentTime);
+            document.getElementById('gps-selected').textContent = selected.id;
+            document.getElementById('gps-position').textContent = `${selectedPos[1].toFixed(6)}, ${selectedPos[0].toFixed(6)}`;
+            document.getElementById('gps-status').textContent = selectedStatus;
+
+            batteryList.innerHTML = vehicles.map(vehicle => {
+                const battery = getVehicleBattery(vehicle.id, currentStep);
+                const color = getBatteryColor(battery);
+                const status = getVehicleStatus(vehicle, battery, currentStep);
+                return `
+                    <div class="battery-card">
+                        <div class="battery-card-header">
+                            <strong>${vehicle.id}</strong>
+                            <span style="color:${color};font-weight:700;">${battery}%</span>
+                        </div>
+                        <div class="battery-bar">
+                            <div class="battery-fill" style="width:${battery}%;background:${color};"></div>
+                        </div>
+                        <div class="battery-meta">状态：${status}<br>补能建议：${battery <= 30 ? '建议优先返站' : '可继续执行任务'}</div>
+                    </div>
+                `;
+            }).join('');
+
+            alarmList.innerHTML = vehicles.map(vehicle => {
+                const battery = getVehicleBattery(vehicle.id, currentStep);
+                const alarm = getVehicleAlarm(vehicle, battery, currentStep);
+                return `
+                    <div class="alarm-card alarm-${alarm.level}">
+                        <div class="alarm-title">
+                            <strong>${alarm.title}</strong>
+                            <span class="alarm-level">${alarm.label}</span>
+                        </div>
+                        <div class="alarm-meta">${alarm.message}</div>
+                    </div>
+                `;
+            }).join('');
+
+            traceList.innerHTML = vehicles.map(vehicle => {
+                const hist = vehicleHistory[vehicle.id] || [];
+                const lastPoint = hist[hist.length - 1];
+                return `
+                    <div class="trace-card ${selectedVehicleId === vehicle.id ? 'active' : ''}">
+                        <div class="trace-card-header">
+                            <strong>${vehicle.id}</strong>
+                            <button type="button" onclick="selectTraceVehicle('${vehicle.id}')">查看轨迹</button>
+                        </div>
+                        <div class="trace-meta">
+                            轨迹点数：${hist.length}<br>
+                            最近位置：${lastPoint ? `${lastPoint[1].toFixed(5)}, ${lastPoint[0].toFixed(5)}` : '--'}
+                        </div>
+                    </div>
+                `;
+            }).join('') || '<div class="trace-empty">暂无轨迹记录</div>';
+        }
+
+        function selectTraceVehicle(vehicleId) {
+            selectedVehicleId = vehicleId;
+            if (latestVehiclePositions[vehicleId]) {
+                map.panTo(latestVehiclePositions[vehicleId]);
+            }
+            updateMap(currentStep);
+        }
+        window.selectTraceVehicle = selectTraceVehicle;
+
+        function resetTraces() {
+            Object.keys(vehicleHistory).forEach(id => {
+                const last = latestVehiclePositions[id];
+                vehicleHistory[id] = last ? [[...last]] : [];
+            });
+            Object.values(trailDots).forEach(dots => dots.forEach(dot => map.removeLayer(dot)));
+            trailDots = {};
+            Object.keys(tracePolylines).forEach(id => {
+                if (tracePolylines[id]) {
+                    tracePolylines[id].setLatLngs(vehicleHistory[id] || []);
+                }
+            });
+            updateMap(currentStep);
         }
 
         function updateMap(step) {
@@ -261,10 +616,10 @@
                     const interp = interpolatePosition(vehicle.route_lonlats, vehicle.route_times, simTime);
                     if (interp) markerLatLng = interp;
                 }
+                latestVehiclePositions[vehicle.id] = markerLatLng;
 
                 const shortId = vehicle.id.replace('vehicle_', '');
                 if (vehicleMarkers[vehicle.id]) {
-                    // 计算朝向角
                     const hist = vehicleHistory[vehicle.id];
                     let angle = vehicleAngles[vehicle.id] || 0;
                     if (hist && hist.length >= 1) {
@@ -278,21 +633,32 @@
                     }
                     vehicleMarkers[vehicle.id].setLatLng(markerLatLng);
                     vehicleMarkers[vehicle.id].setIcon(makeCarIcon(shortId, angle));
-                    updateTrail(vehicle.id, markerLatLng);
                 } else {
                     vehicleAngles[vehicle.id] = 0;
                     vehicleMarkers[vehicle.id] = L.marker(markerLatLng, { icon: makeCarIcon(shortId, 0), zIndexOffset: 100 }).addTo(map);
                     vehicleMarkers[vehicle.id].bindPopup(`无人车 ${shortId} 号`);
                     vehicleHistory[vehicle.id] = [markerLatLng];
+                    vehicleMarkers[vehicle.id].on('click', () => selectTraceVehicle(vehicle.id));
                 }
+
+                updateTrail(vehicle.id, markerLatLng);
+                const traceLine = ensureTraceLine(vehicle.id);
+                traceLine.setLatLngs(vehicleHistory[vehicle.id] || []);
+                traceLine.setStyle({
+                    color: selectedVehicleId === vehicle.id ? '#7fd1ff' : '#00d4aa',
+                    weight: selectedVehicleId === vehicle.id ? 4 : 2,
+                    opacity: traceVisible ? (selectedVehicleId === vehicle.id ? 0.95 : 0.45) : 0
+                });
             });
             Object.keys(vehicleMarkers).forEach(id => {
                 if (!activeVehicleIds.has(id)) {
                     map.removeLayer(vehicleMarkers[id]);
                     delete vehicleMarkers[id];
                     if (trailDots[id]) { trailDots[id].forEach(d => map.removeLayer(d)); delete trailDots[id]; }
+                    if (tracePolylines[id]) { map.removeLayer(tracePolylines[id]); delete tracePolylines[id]; }
                     delete vehicleHistory[id];
                     delete vehicleAngles[id];
+                    delete latestVehiclePositions[id];
                 }
             });
 
@@ -344,6 +710,8 @@
             Object.keys(stationMarkers).forEach(id => {
                 if (!activeStationIds.has(id)) { map.removeLayer(stationMarkers[id]); delete stationMarkers[id]; }
             });
+
+            updateMonitoringPanel(frame, currentTime);
         }
 
         function formatTime(seconds) {
@@ -387,6 +755,14 @@
                 stopAnimation();
                 updateMap(parseInt(event.target.value));
             });
+            document.getElementById('trace-toggle-btn').addEventListener('click', () => {
+                traceVisible = !traceVisible;
+                const btn = document.getElementById('trace-toggle-btn');
+                btn.classList.toggle('active', traceVisible);
+                btn.textContent = traceVisible ? '显示轨迹' : '隐藏轨迹';
+                updateMap(currentStep);
+            });
+            document.getElementById('trace-clear-btn').addEventListener('click', resetTraces);
         });
     </script>
 {% endblock %}
